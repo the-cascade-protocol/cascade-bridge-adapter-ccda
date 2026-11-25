@@ -49,8 +49,7 @@ wraps it:
 The organizations the header names are records too, outside the table's classes:
 the custodian's `representedCustodianOrganization` and each author's
 `representedOrganization`, each named by the vocabulary's
-`OrganizationNamingRule` from one of its `id`s, as the vocabulary's
-`decisions/naming.md` maps and picks it. HL7's CDA-to-FHIR identifier mapping
+`OrganizationNamingRule` from one of its `id`s. HL7's CDA-to-FHIR identifier mapping
 ([C-CDA on FHIR, Mapping Guidance](https://hl7.org/fhir/us/ccda/en/mappingGuidance.html),
 "CDA id → FHIR Identifier", read 2026-10-24) makes each `id` an identifier: a
 root that FHIR's [identifier registry](https://hl7.org/fhir/R4/identifier-registry.html)
@@ -193,8 +192,7 @@ the version carries a node `<version>#absent-` and the property's local name,
 naming the property (`cascade:absentValueProperty`, a result's value being
 `cascade:resultValueKind`) and the code as cascade-vocabulary's
 `cascade:NullFlavor` writes it (`cascade:absentReasonCode`), never mapped to
-another system (cascade-vocabulary's
-`decisions/partial-dates-and-absent-reasons.md`). The seventeen codes are in
+another system. The seventeen codes are in
 `../vocab/ccda-null-flavors.ttl`, read without regard to case; a flavour that is
 none of them carries nothing and is a finding, `ccda:nullFlavorNotListed`, on a
 result's value, on a problem's `value`, on a procedure's `code`, on a time or a
@@ -305,8 +303,7 @@ The fingerprint vectors, each with the statements that pin it in these fixtures:
 
 A code is its `code` and its `codeSystem`, an OID. A code's IRI is the stem
 `../vocab/ccda-code-systems.ttl` gives its OID, then the code percent-encoded.
-The stem is cascade-vocabulary's `void:uriSpace`, as its `decisions/code-iris.md`
-rules it, and the FHIR URI is the system's `cascade:codingSystemUri`. A stem is never the FHIR URI the same concept names:
+The stem is cascade-vocabulary's `void:uriSpace`, and the FHIR URI is the system's `cascade:codingSystemUri`. A stem is never the FHIR URI the same concept names:
 FHIR R5 says "there is no simple formula for determining the correct IRI stem
 from a Coding.system" ([RDF](https://hl7.org/fhir/R5/rdf.html#iri-stem), read on
 2026-10-10). The table holds the OIDs this release knows. A
@@ -346,9 +343,7 @@ drug, and for a problem and for a procedure any system the table gives an IRI st
 but v3 NullFlavor and data-absent-reason (`cascade:conditionCode`, `cascade:procedureCode`).
 Any other is a literal, the code trimmed of spaces, typed by its system's URI,
 on the kind's `cascade:testCodeInOtherSystem`, `medicationCodeInOtherSystem`,
-`conditionCodeInOtherSystem` or `procedureCodeInOtherSystem` (cascade-vocabulary's
-`decisions/code-iris.md`, the row "a code in a system the vocabulary lists no form
-for"). The URI is the `cascade:codingSystemUri` the table gives the OID, so an
+`conditionCodeInOtherSystem` or `procedureCodeInOtherSystem`. The URI is the `cascade:codingSystemUri` the table gives the OID, so an
 HCPCS code is typed `http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets`,
 and an OID the table does not hold is `urn:oid:` and the OID, read
 without regard to the prefix's case. A SNOMED CT code of a drug stays a
@@ -375,8 +370,7 @@ finding.
 ## Timestamps
 
 A `ts` is `YYYYMMDDHHMMSS.UUUU[+|-ZZzz]`, digits left off the right to state
-less precision, and each time is typed by the precision it states, as
-cascade-vocabulary's `decisions/partial-dates-and-absent-reasons.md` rules: a
+less precision, and each time is typed by the precision it states: a
 year is an `xsd:gYear`, a month an `xsd:gYearMonth`, a day an `xsd:date`, and a
 time stating the second an `xsd:dateTime`, each with its offset where it states
 one and with none where it does not. A time stating the hour or the minute and

@@ -1677,7 +1677,7 @@
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "The custodian's and each author's organization as a record named by cascade:OrganizationNamingRule from one of its ids, mapped to an identifier by HL7's CDA-to-FHIR identifier mapping, the NPI's root as its registered URI, and picked as cascade-vocabulary's decisions/naming.md says: the NPI, else the least by code point; its version carrying its name, identifiers and addresses, read from the first element naming it; and the document's prov:wasGeneratedBy act, a blank node, carrying a prov:qualifiedAssociation naming it once in each role, cascade:CustodianRole or cascade:AuthorRole, with the document prov:wasAttributedTo it."
+      "description": "The custodian's and each author's organization as a record named by cascade:OrganizationNamingRule from one of its ids, mapped to an identifier by HL7's CDA-to-FHIR identifier mapping, the NPI's root as its registered URI, and picked: the NPI, else the least by code point; its version carrying its name, identifiers and addresses, read from the first element naming it; and the document's prov:wasGeneratedBy act, a blank node, carrying a prov:qualifiedAssociation naming it once in each role, cascade:CustodianRole or cascade:AuthorRole, with the document prov:wasAttributedTo it."
     },
     {
       "@id": "in/sparql/section-findings.rq",
@@ -1936,8 +1936,8 @@
       "@type": "File",
       "name": "Concept map: code systems",
       "encodingFormat": "text/turtle",
-      "contentSize": "10304",
-      "sha256": "138a08b2b8d7d8ef542034a3dec1468fd3c3b7509ce76fb08d0895a7bc2f3f49",
+      "contentSize": "9490",
+      "sha256": "bbacfddad6b1d90702ac38fa6e8a38e18413df608a0dfb27c1366739710a36ec",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
@@ -2202,8 +2202,8 @@
       "@type": "File",
       "name": "HL7 v3 NullFlavor codes",
       "encodingFormat": "text/turtle",
-      "contentSize": "3435",
-      "sha256": "7ec48a26a0d87521c5d721e26a3b4a872ee432160e06c7f8f46b605c790f504b",
+      "contentSize": "3316",
+      "sha256": "96528b0299cffc06a85b9cb3ed0ea53450575a9797697efc994a9ed6cb551342",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
@@ -7173,7 +7173,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/allergies.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per AllergyOrIntolerance record at its current version, else at each version, with its source id and allergen, allergen code, status, verification status, criticality, onset, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per AllergyOrIntolerance record at its current version, else at each version, with its source id and allergen, allergen code, status, verification status, criticality, onset, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "views/conditions.rq",
@@ -7188,7 +7188,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/conditions.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per ProblemOrDiagnosis record at its current version, else at each version, with its source id and name, status, verification status, onset, abatement and condition code IRI, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per ProblemOrDiagnosis record at its current version, else at each version, with its source id and name, status, verification status, onset, abatement and condition code IRI, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "views/immunizations.rq",
@@ -7203,7 +7203,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/immunizations.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per Vaccination record at its current version, else at each version, with its source id and vaccine name, vaccine code, status, administration date, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per Vaccination record at its current version, else at each version, with its source id and vaccine name, vaccine code, status, administration date, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "views/procedures.rq",
@@ -7218,7 +7218,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/procedures.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per cascade:MedicalProcedure record at its current version, else at each version, with its source id and name, procedure code IRI, status, date, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per cascade:MedicalProcedure record at its current version, else at each version, with its source id and name, procedure code IRI, status, date, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "views/patients.rq",
@@ -7233,7 +7233,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/patients.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per PatientProfile record at its current version, else at each version, with its source id and date of birth, given, family and full name, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per PatientProfile record at its current version, else at each version, with its source id and date of birth, given, family and full name, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "views/medications.rq",
@@ -7248,7 +7248,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/medications.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per cascade:PrescribedOrReportedMedication record at its current version, else at each version, with its source id and drug name, RxNorm code, intent, status, start date, end date and dosage, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per cascade:PrescribedOrReportedMedication record at its current version, else at each version, with its source id and drug name, RxNorm code, intent, status, start date, end date and dosage, each a plain string. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "views/lab-results.rq",
@@ -7263,7 +7263,7 @@
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-adapter-fhir-r4/blob/b124be5f352634ab6d69e94807cce62ef7fdd30b/views/lab-results.rq"
       },
-      "description": "A SELECT over a Bridge's graph: one row per LaboratoryTestResult record at its current version, else at each version, with its source id and test name, LOINC code, value, unit, reference range, interpretation code, status and performed date, each a plain string; a record flagged twice is two rows, one per code. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map and decisions/code-iris.md say. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
+      "description": "A SELECT over a Bridge's graph: one row per LaboratoryTestResult record at its current version, else at each version, with its source id and test name, LOINC code, value, unit, reference range, interpretation code, status and performed date, each a plain string; a record flagged twice is two rows, one per code. Copied on 2026-10-23 from the FHIR R4 adapter's views/ at the commit isBasedOn names, the same records layer, its terms and code stems since moved as cascade-vocabulary's term map says. Not run by a Bridge: #view-comparison-with-cascade-cli names what it is compared with."
     },
     {
       "@id": "#view-comparison-with-cascade-cli",

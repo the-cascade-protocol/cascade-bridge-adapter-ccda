@@ -13,7 +13,7 @@ ccda:codeSystemRxNorm a skos:Concept ;
   skos:notation "2.16.840.1.113883.6.88" ;
   cascade:codingSystemUri "http://www.nlm.nih.gov/research/umls/rxnorm"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/rxnorm/" ;
-  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/code-iris.md> .
+  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> .
 
 ccda:codeSystemSnomedCt a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
@@ -34,28 +34,28 @@ ccda:codeSystemIcd10Cm a skos:Concept ;
   skos:notation "2.16.840.1.113883.6.90" ;
   cascade:codingSystemUri "http://hl7.org/fhir/sid/icd-10-cm"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/icd10cm/" ;
-  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/code-iris.md> .
+  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> .
 
 ccda:codeSystemIcd9Cm a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
   skos:notation "2.16.840.1.113883.6.103" ;
   cascade:codingSystemUri "http://hl7.org/fhir/sid/icd-9-cm"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/icd9cm/" ;
-  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/code-iris.md> .
+  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> .
 
 ccda:codeSystemCpt a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
   skos:notation "2.16.840.1.113883.6.12" ;
   cascade:codingSystemUri "http://www.ama-assn.org/go/cpt"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/cpt/" ;
-  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/code-iris.md> .
+  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> .
 
 ccda:codeSystemCvx a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
   skos:notation "2.16.840.1.113883.12.292" ;
   cascade:codingSystemUri "http://hl7.org/fhir/sid/cvx"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/cvx/" ;
-  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/code-iris.md> .
+  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> .
 
 ccda:codeSystemNdc a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
@@ -69,7 +69,7 @@ ccda:codeSystemUnii a skos:Concept ;
   skos:notation "2.16.840.1.113883.4.9" ;
   cascade:codingSystemUri "http://fdasis.nlm.nih.gov"^^xsd:anyURI ;
   void:uriSpace "https://identifiers.org/unii:" ;
-  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/code-iris.md> .
+  dct:source <https://github.com/the-cascade-protocol/cascade-vocabulary/issues/111> .
 
 ccda:codeSystemIcd9CmProcedures a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
@@ -122,14 +122,14 @@ ccda:codeSystemDataAbsentReason a skos:Concept ;
   skos:notation "2.16.840.1.113883.4.642.4.1048" ;
   cascade:codingSystemUri "http://terminology.hl7.org/CodeSystem/data-absent-reason"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/data-absent-reason/" ;
-  dct:source <https://terminology.hl7.org/CodeSystem-data-absent-reason.html> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/partial-dates-and-absent-reasons.md> .
+  dct:source <https://terminology.hl7.org/CodeSystem-data-absent-reason.html> .
 
 ccda:codeSystemNullFlavor a skos:Concept ;
   skos:inScheme ccda:codeSystems ;
   skos:notation "2.16.840.1.113883.5.1008" ;
   cascade:codingSystemUri "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"^^xsd:anyURI ;
   void:uriSpace "https://ns.cascadeprotocol.org/codes/nullflavor/" ;
-  dct:source <https://terminology.hl7.org/CodeSystem-v3-NullFlavor.html> , <https://github.com/the-cascade-protocol/cascade-vocabulary/blob/main/decisions/partial-dates-and-absent-reasons.md> .
+  dct:source <https://terminology.hl7.org/CodeSystem-v3-NullFlavor.html> .
 
 ccda:dataAbsentReasons a skos:ConceptScheme ;
   skos:prefLabel "The codes FHIR's data-absent-reason CodeSystem defines, as the vocabulary's cascade:DataAbsentReasonCodeShape lists them; the v3 NullFlavor codes are ccda:nullFlavors"@en ;
