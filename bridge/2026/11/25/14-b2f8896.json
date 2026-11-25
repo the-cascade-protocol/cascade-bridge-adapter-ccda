@@ -1,0 +1,812 @@
+{
+  "env": {
+    "os": "Ubuntu 26.04.1 LTS",
+    "runner": "github-hosted",
+    "cpus": 4,
+    "node": "22.23.5",
+    "host": "node",
+    "profile": "wasm",
+    "cpu": "AMD EPYC 7763 64-Core Processor"
+  },
+  "commit": {
+    "cascade-bridge-adapter-ccda": "b2f88968bbc81c839cf34d03a175da40791013e6",
+    "cascade-vocabulary": "e8e564123c0e6c072d4bb58929837a3bd724c4b0",
+    "cascade-bridge-rs": "a0f59bd8e8cafef9e44d6d61972b7149efdc4cb5"
+  },
+  "results": [
+    {
+      "name": "ccda-entries-x10/convert/first",
+      "unit": "s",
+      "value": 0.564221,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.554643-0.564975",
+      "extra": "Seconds the first convert of a fresh process takes, timed without the step-by-step breakdown. A caller that opens an adapter and converts once also waits for the engine to start (the boot rows) and the adapter to load (the load rows), which this does not count. The C-CDA medications-and-results example with its entries repeated 10 times, as one document. sha256 77454794ba3cf02cf329e249f7a4a1874ca58cd0761d4f5622163ea9e85efa0e, 138124 bytes"
+    },
+    {
+      "name": "ccda-entries-x10/convert/second",
+      "unit": "s",
+      "value": 0.293518,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.291196-0.297855",
+      "extra": "Seconds a second convert of the same document takes in the same process, timed without the step-by-step breakdown: the warm cost."
+    },
+    {
+      "name": "ccda-entries-x10/convert/profiled",
+      "unit": "s",
+      "value": 0.647761,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.647761-0.647761",
+      "extra": "Seconds of the one convert run with the step-by-step breakdown on, from which the stage and query rows are read. The breakdown makes it slower than a plain convert."
+    },
+    {
+      "name": "ccda-entries-x10/memory.grow/first",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "cost",
+      "samples": 3,
+      "range": "0-0",
+      "extra": "How many times the engine's memory grew during the first convert."
+    },
+    {
+      "name": "ccda-entries-x10/memory.grow/second",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "cost",
+      "samples": 3,
+      "range": "0-0",
+      "extra": "How many times the engine's memory grew during the second convert."
+    },
+    {
+      "name": "ccda-entries-x10/wasm-memory/first",
+      "unit": "By",
+      "value": 52625408,
+      "kind": "cost",
+      "samples": 3,
+      "range": "52625408-52625408",
+      "extra": "Bytes of memory the engine holds once the first convert is done."
+    },
+    {
+      "name": "ccda-entries-x10/wasm-memory/second",
+      "unit": "By",
+      "value": 52625408,
+      "kind": "cost",
+      "samples": 3,
+      "range": "52625408-52625408",
+      "extra": "Bytes of memory the engine holds once the second convert is done."
+    },
+    {
+      "name": "ccda-entries-x10/rss",
+      "unit": "By",
+      "value": 361365504,
+      "kind": "clock",
+      "samples": 3,
+      "range": "346181632-363925504",
+      "extra": "Peak memory the whole process held in RAM, in bytes: the engine's start, the adapter's load and both converts all count."
+    },
+    {
+      "name": "ccda-entries-x10/records",
+      "unit": "{count}",
+      "value": 1,
+      "kind": "output",
+      "extra": "Source records the Bridge found in the document and converted. The C-CDA medications-and-results example with its entries repeated 10 times, as one document."
+    },
+    {
+      "name": "ccda-entries-x10/triples",
+      "unit": "{count}",
+      "value": 1926,
+      "kind": "output",
+      "extra": "Distinct triples in the output graph."
+    },
+    {
+      "name": "ccda-entries-x10/findings",
+      "unit": "{count}",
+      "value": 93,
+      "kind": "output",
+      "extra": "Findings the conversion wrote."
+    },
+    {
+      "name": "ccda-entries-x10/output-bytes/graph",
+      "unit": "By",
+      "value": 200988,
+      "kind": "output",
+      "extra": "Bytes of the output graph as Turtle."
+    },
+    {
+      "name": "ccda-entries-x10/output-bytes/findings",
+      "unit": "By",
+      "value": 126707,
+      "kind": "output",
+      "extra": "Bytes of the findings as Turtle."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/document-table.rq",
+      "unit": "s",
+      "value": 0.151648,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.151648-0.151648",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/allergy.rq",
+      "unit": "s",
+      "value": 0.00039,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.00039-0.00039",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/condition.rq",
+      "unit": "s",
+      "value": 0.000388,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000388-0.000388",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/document-organizations.rq",
+      "unit": "s",
+      "value": 0.001486,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.001486-0.001486",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/immunization.rq",
+      "unit": "s",
+      "value": 0.000847,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000847-0.000847",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/medication.rq",
+      "unit": "s",
+      "value": 0.015977,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.015977-0.015977",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/note-or-document.rq",
+      "unit": "s",
+      "value": 0.002411,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.002411-0.002411",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/patient.rq",
+      "unit": "s",
+      "value": 0.000344,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000344-0.000344",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/procedure.rq",
+      "unit": "s",
+      "value": 0.0009,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.0009-0.0009",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/record.rq",
+      "unit": "s",
+      "value": 0.008191,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.008191-0.008191",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/report.rq",
+      "unit": "s",
+      "value": 0.005605,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.005605-0.005605",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/result-identifiers.rq",
+      "unit": "s",
+      "value": 0.003109,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.003109-0.003109",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/result-quantities.rq",
+      "unit": "s",
+      "value": 0.007482,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.007482-0.007482",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/result.rq",
+      "unit": "s",
+      "value": 0.026703,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.026703-0.026703",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/allergy-findings.rq",
+      "unit": "s",
+      "value": 0.000458,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000458-0.000458",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/condition-findings.rq",
+      "unit": "s",
+      "value": 0.000937,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000937-0.000937",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/document-findings.rq",
+      "unit": "s",
+      "value": 0.000756,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000756-0.000756",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/entry-findings.rq",
+      "unit": "s",
+      "value": 0.003716,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.003716-0.003716",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/entry-statement-findings.rq",
+      "unit": "s",
+      "value": 0.005537,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.005537-0.005537",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/medication-findings.rq",
+      "unit": "s",
+      "value": 0.00362,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.00362-0.00362",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/name-findings.rq",
+      "unit": "s",
+      "value": 0.001761,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.001761-0.001761",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/narrative-findings.rq",
+      "unit": "s",
+      "value": 0.003815,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.003815-0.003815",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/organization-findings.rq",
+      "unit": "s",
+      "value": 0.000764,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000764-0.000764",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/patient-findings.rq",
+      "unit": "s",
+      "value": 0.000155,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000155-0.000155",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/reference-findings.rq",
+      "unit": "s",
+      "value": 0.004771,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.004771-0.004771",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/report-and-note-findings.rq",
+      "unit": "s",
+      "value": 0.001758,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.001758-0.001758",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/result-findings.rq",
+      "unit": "s",
+      "value": 0.024729,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.024729-0.024729",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/section-findings.rq",
+      "unit": "s",
+      "value": 0.000529,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000529-0.000529",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-time/detect.rq",
+      "unit": "s",
+      "value": 0.010928,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.010928-0.010928",
+      "extra": "Seconds one of the adapter's queries took, summed over every record it ran on, in the profiled convert."
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/document-table.rq",
+      "unit": "{count}",
+      "value": 824,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/allergy.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/condition.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/document-organizations.rq",
+      "unit": "{count}",
+      "value": 13,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/immunization.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/medication.rq",
+      "unit": "{count}",
+      "value": 240,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/note-or-document.rq",
+      "unit": "{count}",
+      "value": 12,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/patient.rq",
+      "unit": "{count}",
+      "value": 4,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/procedure.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/record.rq",
+      "unit": "{count}",
+      "value": 985,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/report.rq",
+      "unit": "{count}",
+      "value": 80,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/result-identifiers.rq",
+      "unit": "{count}",
+      "value": 50,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/result-quantities.rq",
+      "unit": "{count}",
+      "value": 240,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/result.rq",
+      "unit": "{count}",
+      "value": 380,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/allergy-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/condition-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/document-findings.rq",
+      "unit": "{count}",
+      "value": 18,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/entry-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/entry-statement-findings.rq",
+      "unit": "{count}",
+      "value": 90,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/medication-findings.rq",
+      "unit": "{count}",
+      "value": 180,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/name-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/narrative-findings.rq",
+      "unit": "{count}",
+      "value": 18,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/organization-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/patient-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/reference-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/report-and-note-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/result-findings.rq",
+      "unit": "{count}",
+      "value": 270,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/section-findings.rq",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/query-rows/detect.rq",
+      "unit": "{count}",
+      "value": 1,
+      "kind": "output",
+      "extra": "Rows one of the adapter's queries returned, summed over every record it ran on. executions: 1"
+    },
+    {
+      "name": "ccda-entries-x10/stage/document-table",
+      "unit": "s",
+      "value": 0.155134,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.155134-0.155134",
+      "extra": "Running the adapter's document-table query on every record of the document, to link a record to any other record, in the document or not. (Specification stage: link records.)"
+    },
+    {
+      "name": "ccda-entries-x10/stage/lift",
+      "unit": "s",
+      "value": 0.089296,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.089296-0.089296",
+      "extra": "Reading the source document into the triples the adapter's queries can ask about, one record at a time. (Specification stage: read and chunk.)"
+    },
+    {
+      "name": "ccda-entries-x10/stage/source-validation",
+      "unit": "s",
+      "value": 0.038274,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.038274-0.038274",
+      "extra": "Checking each source record, and the document as a whole where the adapter gives a document schema, against the adapter's schema (XSD or JSON Schema). A failure is a finding, never a refusal. (Specification stage: check, validate.)"
+    },
+    {
+      "name": "ccda-entries-x10/stage/accounting",
+      "unit": "s",
+      "value": 0.001352,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.001352-0.001352",
+      "extra": "Working out, against the adapter's accounting file, what became of each part of each source record."
+    },
+    {
+      "name": "ccda-entries-x10/stage/dataset",
+      "unit": "s",
+      "value": 0.000072,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.000072-0.000072",
+      "extra": "Putting the facts about a record into the store its queries run over."
+    },
+    {
+      "name": "ccda-entries-x10/stage/index",
+      "unit": "s",
+      "value": 0.028104,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.028104-0.028104",
+      "extra": "Building the lookup structure that compiled queries read, from a record's triples. A query the general evaluator answers needs none."
+    },
+    {
+      "name": "ccda-entries-x10/stage/mapping",
+      "unit": "s",
+      "value": 0.074554,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.074554-0.074554",
+      "extra": "Running the adapter's mapping queries on each record, without the time of building their lookup structure. (Specification stage: transform.)"
+    },
+    {
+      "name": "ccda-entries-x10/stage/records",
+      "unit": "s",
+      "value": 0.036734,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.036734-0.036734",
+      "extra": "Turning what the mapping produced into each record's graph: naming its versions, keeping one where the mapping wrote several, and writing their arrivals. (Specification stage: name versions, write arrivals.)"
+    },
+    {
+      "name": "ccda-entries-x10/stage/output-validation",
+      "unit": "s",
+      "value": 0.103728,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.103728-0.103728",
+      "extra": "Checking each record's output against the vocabulary's SHACL shapes."
+    },
+    {
+      "name": "ccda-entries-x10/stage/findings",
+      "unit": "s",
+      "value": 0.058711,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.058711-0.058711",
+      "extra": "Running the adapter's findings queries to find what the source record got wrong or left out. (Specification stage: findings.)"
+    },
+    {
+      "name": "ccda-entries-x10/stage/unresolved-addresses",
+      "unit": "s",
+      "value": 0.01815,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.01815-0.01815",
+      "extra": "Finding the references to records the document does not hold, which keep their computed names."
+    },
+    {
+      "name": "ccda-entries-x10/stage/detect",
+      "unit": "s",
+      "value": 0.010984,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.010984-0.010984",
+      "extra": "Running the adapter's detect query, which reports whether the adapter reads this document. The Bridge converts every record whatever the answer; it never routes."
+    },
+    {
+      "name": "ccda-entries-x10/stage/summary",
+      "unit": "s",
+      "value": 0.001207,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.001207-0.001207",
+      "extra": "Counting the graph's distinct triples and the findings once every record is done."
+    },
+    {
+      "name": "ccda-entries-x10/stage/serialising",
+      "unit": "s",
+      "value": 0.012423,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.012423-0.012423",
+      "extra": "Writing the graph and the findings out as Turtle or N-Triples."
+    },
+    {
+      "name": "ccda-entries-x10/stage/unaccounted",
+      "unit": "s",
+      "value": 0.019038,
+      "kind": "clock",
+      "samples": 1,
+      "range": "0.019038-0.019038",
+      "extra": "Seconds of the profiled convert that none of the stages accounts for, such as writing the document and the import into the graph."
+    },
+    {
+      "name": "ccda-entries-x10/output/graph",
+      "unit": "{count}",
+      "value": 1926,
+      "kind": "output",
+      "sha256": "ad5fa27c4fe8b29ebed8c8892c3bf3df74f202365f5e14dca5a7981d130dfc16",
+      "extra": "Distinct triples in the output graph, with a SHA-256 fingerprint of the output that is the same whenever the content is the same, whatever order the engine wrote it in and whatever it named its blank nodes."
+    },
+    {
+      "name": "ccda-entries-x10/output/findings",
+      "unit": "{count}",
+      "value": 1210,
+      "kind": "output",
+      "sha256": "54d67a6028e2259b4049f60782c6f8e43760fe11362f49b9d8e8dc308de0ce74",
+      "extra": "Distinct triples in the findings, with a SHA-256 fingerprint of them that is the same whenever the content is the same, whatever order the engine wrote them in and whatever it named its blank nodes."
+    },
+    {
+      "name": "ccda/load",
+      "unit": "s",
+      "value": 1.001255,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.968235-1.00239",
+      "extra": "Seconds to read the adapter's and the vocabulary's files, describe the adapter and prepare it, with the engine already started."
+    },
+    {
+      "name": "ccda/load/read-files",
+      "unit": "s",
+      "value": 0.008938,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.008367-0.009036",
+      "extra": "Seconds of the load spent reading files from disk."
+    },
+    {
+      "name": "ccda/load/prepare",
+      "unit": "s",
+      "value": 0.992317,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.9592-0.994023",
+      "extra": "Seconds of the load spent describing the adapter and preparing it: parsing and compiling its queries, schemas and shapes."
+    },
+    {
+      "name": "ccda/load/files-read",
+      "unit": "{count}",
+      "value": 58,
+      "kind": "cost",
+      "samples": 3,
+      "range": "58-58",
+      "extra": "Files read for the load, the adapter's and the vocabulary's."
+    },
+    {
+      "name": "ccda/load/missing-files",
+      "unit": "{count}",
+      "value": 0,
+      "kind": "cost",
+      "samples": 3,
+      "range": "0-0",
+      "extra": "Files the load needed that the adapter's description did not list, which the host read from the folder as the load asked for them."
+    },
+    {
+      "name": "ccda/boot/read-wasm",
+      "unit": "s",
+      "value": 0.007663,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.007654-0.007676",
+      "extra": "Seconds to read the engine's compiled code from disk."
+    },
+    {
+      "name": "ccda/boot/compile-wasm",
+      "unit": "s",
+      "value": 0.022155,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.021389-0.025114",
+      "extra": "Seconds to turn the engine's compiled code into something the machine can run."
+    },
+    {
+      "name": "ccda/boot/instantiate-wasm",
+      "unit": "s",
+      "value": 0.001827,
+      "kind": "clock",
+      "samples": 3,
+      "range": "0.001676-0.003217",
+      "extra": "Seconds to start the compiled code, which runs its start-up work."
+    }
+  ]
+}
