@@ -8,8 +8,9 @@
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  // Every Turtle, SPARQL and XML file is digested (see .editorconfig). JSON is
-  // not overridden: the crate and compatibility.json are JSON and carry no digest.
+  // A Turtle, SPARQL or XML file is left as written on save: a copied input
+  // keeps its checksum and a Bridge's output is committed unedited (see
+  // .editorconfig). JSON is not overridden: none of it is copied.
   "[xml]": {
     "files.insertFinalNewline": false,
     "files.trimTrailingWhitespace": false

@@ -52,9 +52,9 @@ Use conventional commits: `feat(adapter): ...`, `docs: ...`, `fix(fixtures): ...
 repository names its source and date. Do not put a closing keyword (`closes`, `fixes`, `resolves`) before an issue the
 pull request does not finish: GitHub closes it whatever the rest of the sentence says.
 
-Every file has its digest and origin in [`ro-crate-metadata.json`](ro-crate-metadata.json), the adapter's manifest. A
-change to a file updates its entry in the same commit, and a fixture input is never edited: a different input is a new
-file under a new name.
+Every file has its origin in [`ro-crate-metadata.json`](ro-crate-metadata.json), the adapter's manifest, and a file
+copied from a source has its checksum there too; a file written here has none. A change to a file updates its entry in
+the same commit. A fixture input, copied or authored, is never edited; [`fixtures/CLAUDE.md`](fixtures/CLAUDE.md) says what to do instead.
 
 ## A change that spans two repositories
 
