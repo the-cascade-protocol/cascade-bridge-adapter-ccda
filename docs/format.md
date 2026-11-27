@@ -415,7 +415,9 @@ problem's, an immunization's, a medication's, a procedure's, a result's and a re
 [C-CDA on FHIR's mapping guidance](https://hl7.org/fhir/us/ccda/en/mappingGuidance.html) (read 2026-11-02) maps an
 entry's `text/reference` to its resource's `text`. Only the statement's own: a concern act wraps the record and is
 none, so its text is not read, nor is a nested observation's. The referenced element is the row or item, not its
-table's header. A text with no visible character is none.
+table's header. A text with no visible character is none. A `text` that holds no `reference` and is not base64
+(`representation="B64"`) is itself the human-readable form, and its own text, with element breaks, untrimmed, is
+the `cascade:narrativeText` in the same way; a `text` that holds a `reference` is read through it alone.
 
 What no entry references is a section's **kept text**, its note's text, so a section makes a note whatever its
 template and entries, and none only when its kept text is empty or it has a `nullFlavor`. Its blocks are the nodes
