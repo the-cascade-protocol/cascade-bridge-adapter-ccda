@@ -9,8 +9,8 @@ layout HL7 publishes, so each `xs:include` and `xs:import` resolves as written.
 They are verbatim copies under HL7's 4-clause BSD licence, notices intact. Three
 files, `NarrativeBlock.xsd`, `infrastructureRoot.xsd` and `voc.xsd`, carry no
 notice and are taken under the same distribution. To change one, replace it from
-the commit the crate names and update the crate's digest, size and description
-in the same commit. HL7 publishes no digest, so the sha256 in the crate is the
+the commit the crate names and update the crate's checksum, size and description
+in the same commit. HL7 publishes no checksum, so the sha256 in the crate is the
 only check:
 
 ```

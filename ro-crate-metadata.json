@@ -45,7 +45,7 @@
       "identifier": "ccda",
       "name": "C-CDA R2.1 XML",
       "version": "0.1.0",
-      "description": "The Cascade Bridge Adapter for C-CDA R2.1 XML: the package of data a Cascade Bridge runs to turn a C-CDA ClinicalDocument, as a patient portal hands one out, into Cascade records. Import-only. This crate is the adapter's manifest: a Bridge reads the root entity first, for the format id, the source media type, the source schema, the envelope, the detect rule, the document table query, the mappings and the findings queries, the concept maps, the profile the Bridge must offer, the vocabulary repository and the paths, in it, of the ontology and shapes files the adapter is read against, the gap scheme every finding takes its body from, each gap declaring the sh:resultSeverity its findings carry where that is not sh:Info, the source accounting, and the test manifest. The data entities carry provenance for every committed file, and a sha256 computed locally over the committed bytes of each file whose bytes come from a source it names: the copied inputs, the schema and the benchmark inputs. Seven inputs are copied byte for byte from the conformance repository's fixtures/ccda at the commit isBasedOn names; the others are authored here, and each says so.",
+      "description": "The Cascade Bridge Adapter for C-CDA R2.1 XML: the package of data a Cascade Bridge runs to turn a C-CDA ClinicalDocument, as a patient portal hands one out, into Cascade records. Import-only. This crate is the adapter's manifest: a Bridge reads the root entity first, for the format id, the source media type, the source schema, the envelope, the detect rule, the document table query, the mappings and the findings queries, the concept maps, the profile the Bridge must offer, the vocabulary repository and the paths, in it, of the ontology and shapes files the adapter is read against, the gap scheme every finding takes its body from, each gap declaring the sh:resultSeverity its findings carry where that is not sh:Info, the source accounting, and the test manifest. The data entities carry provenance for every committed file, and a sha256 checksum of each copied input and of the schema. Seven inputs are copied byte for byte from the conformance repository's fixtures/ccda at the commit isBasedOn names; the others are authored here, and each says so.",
       "datePublished": "2026-10-07",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
@@ -3944,15 +3944,13 @@
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "The inputs a benchmark harness runs on this adapter, in the shape of bench/manifest.schema.json in cascade-bridge-spec. Each input's sha256 and bytes are of its gunzipped document; the crate's are of the committed file."
+      "description": "The inputs a benchmark harness runs on this adapter, in the shape of bench/manifest.schema.json in cascade-bridge-spec. Each input's sha256 and bytes are of its gunzipped document."
     },
     {
       "@id": "bench/medications-and-results-a-x10.xml.gz",
       "@type": "File",
       "name": "C-CDA benchmark input: medications-and-results-a, entries repeated 10 times",
       "encodingFormat": "application/gzip",
-      "contentSize": "4624",
-      "sha256": "c59ea02dfec6bd7919e2e60cbae377590725627cb6df073320ca4241e45c94a3",
       "isBasedOn": [
         {
           "@id": "https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/9d871d8be1389ba86c092c07bf5b444b6993b6bc/bench/generate/repeat_entries.py"
@@ -3972,8 +3970,6 @@
       "@type": "File",
       "name": "C-CDA benchmark input: medications-and-results-a, entries repeated 50 times",
       "encodingFormat": "application/gzip",
-      "contentSize": "10302",
-      "sha256": "c0bc5e1e78686bd352133fbe5bc8310fc7c67631a2caf44a2b4ba7595f78f185",
       "isBasedOn": [
         {
           "@id": "https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/9d871d8be1389ba86c092c07bf5b444b6993b6bc/bench/generate/repeat_entries.py"
@@ -4003,8 +3999,6 @@
       "@type": "File",
       "name": "C-CDA benchmark input: ten years of one Synthea person",
       "encodingFormat": "application/gzip",
-      "contentSize": "65748",
-      "sha256": "c32cc581b6645d5491721db28fc526aae4a17d808ea3fab372273974566e48c4",
       "isBasedOn": {
         "@id": "https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/651fe561867f1260b9b1144e8f431fba05eb9c7b/bench/synthea/generate.sh"
       },
@@ -6393,7 +6387,7 @@
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "How the fixtures are treated: a copied input carries its checksum and is never edited, a file written here carries none, and the checks the specification's lint cannot run."
+      "description": "How the fixtures are treated: a copied input carries its checksum, no input is edited, a file written here carries none, and the checks the specification's lint cannot run."
     },
     {
       "@id": "schema/CLAUDE.md",
