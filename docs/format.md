@@ -338,7 +338,8 @@ An RxNorm code and a LOINC code are written under their stems wherever they
 stand: a portal often codes a drug or a test in its own code system and gives
 the RxNorm or LOINC code as a `translation`.
 
-An immunization's `vaccineCode` is written as the first CVX code it carries, the `code` before a `translation`, and no other.
+An immunization's `vaccineCode` is written as the first CVX code it carries, the `code` before a `translation`, and no other,
+the code trimmed of spaces.
 
 A test's, a drug's, a problem's and a procedure's code and each of its
 translations are carried, every one. A code in a system its kind has a term
@@ -354,8 +355,8 @@ without regard to the prefix's case. A SNOMED CT code of a drug stays a
 literal while M16, how a drug's codes are matched (unruled, the-cascade-protocol/cascade-vocabulary#286),
 is open. A code
 stated with no code system, or with one that is no OID, or a code system with
-no code, or a code of spaces only, is not carried and is a finding, `ccda:codeNotCarried`, as an
-immunization's code in a system other than CVX is.
+no code, or a code of spaces only, is not carried and is a finding, `ccda:codeNotCarried`, and so is a vaccine's, a
+code or a translation, and a vaccine's code in a system other than CVX.
 
 A result's every `interpretationCode`, and each translation of one, in HL7
 ObservationInterpretation (`2.16.840.1.113883.5.83`) is a

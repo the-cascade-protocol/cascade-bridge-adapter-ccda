@@ -10,10 +10,10 @@ PREFIX bridge: <https://ns.cascadeprotocol.org/bridge/v1-draft#>
 PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 
 # A status an immunization, a procedure or a medication states that the
-# concept map its mapping reads it through does not hold; a vaccine's code in a
-# code system no predicate of an immunization carries; a code of a drug or a
-# procedure with no code system, or a code system that is no OID, or no code, or
-# a code of blanks; and a nullFlavor on its time or a
+# concept map its mapping reads it through does not hold; a code of a vaccine, a
+# drug or a procedure with no code system, or a code system that is no OID, or no
+# code, or a code of blanks, and a vaccine's code in a code system no predicate
+# of an immunization carries; and a nullFlavor on its time or a
 # bound of it that is no NullFlavor code. A statement whose negationInd is true is
 # not-done whatever its statusCode says.
 
@@ -54,25 +54,13 @@ WHERE {
   }
   UNION
   {
-    ?statement ?cnS ?consumable . ?consumable a v3:consumable ; ?mpS ?product .
-    ?product a v3:manufacturedProduct ; ?mmS ?material . ?material a v3:manufacturedMaterial ; ?cS ?code .
-    ?code a v3:code .
-    VALUES ?class { "Immunization" }
-    { ?code xyz:codeSystem ?value . }
-    UNION
-    { ?code ?trS ?translation . ?translation a v3:translation ; xyz:codeSystem ?value . }
-    FILTER (REPLACE(?value, "^urn:oid:", "") != "2.16.840.1.113883.12.292")
-    BIND (ccda:codeNotCarried AS ?gap)
-  }
-  UNION
-  {
     {
       ?statement ?cnS ?consumable . ?consumable a v3:consumable ; ?mpS ?product .
       ?product a v3:manufacturedProduct ; ?mmS ?material . ?material a v3:manufacturedMaterial .
       { ?material ?cS ?coding . ?coding a v3:code }
       UNION
       { ?material ?cS ?code . ?code a v3:code ; ?trS ?coding . ?coding a v3:translation }
-      BIND ("MedicationRequest" AS ?class)
+      VALUES ?class { "MedicationRequest" "Immunization" }
     }
     UNION
     {
@@ -85,7 +73,8 @@ WHERE {
     OPTIONAL { ?coding xyz:codeSystem ?statedSystem }
     FILTER (BOUND(?statedCode) || BOUND(?statedSystem))
     BIND (LCASE(REPLACE(REPLACE(?statedSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")) AS ?statedKey)
-    FILTER (!BOUND(?statedCode) || !BOUND(?statedSystem) || !REGEX(?statedKey, "^[0-2](\\.(0|[1-9][0-9]*))+$") || REPLACE(?statedCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") = "")
+    FILTER (!BOUND(?statedCode) || !BOUND(?statedSystem) || !REGEX(?statedKey, "^[0-2](\\.(0|[1-9][0-9]*))+$") || REPLACE(?statedCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") = ""
+           || (?class = "Immunization" && REPLACE(?statedSystem, "^urn:oid:", "") != "2.16.840.1.113883.12.292"))
     BIND (COALESCE(?statedSystem, ?statedCode) AS ?value)
     BIND (ccda:codeNotCarried AS ?gap)
   }
