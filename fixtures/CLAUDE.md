@@ -4,20 +4,22 @@ The cases a Bridge's harness runs, and the inputs and expected outputs they name
 Nothing here executes; `manifest.ttl` declares the cases and the rule each is
 judged by, and the crate records where every file came from.
 
-## Every byte is recorded, and inputs are never edited
+## A copied input carries its checksum and is never edited
 
-Every file under `in/`, `facts/`, `expected/` and `findings/` has its digest in the crate,
-and `.gitattributes` and `.editorconfig` protect them from normalisation. A
-change updates the crate's digest, size and description in the same commit.
+`.gitattributes` and `.editorconfig` keep every file under `in/`, `facts/`, `expected/` and
+`findings/` from normalisation. The crate records a checksum and size for a copied input and
+for nothing else here: the lint recomputes it, so a copy that changed fails. A file written here
+has none, because git holds it; a change to one updates its crate description where that no
+longer fits.
 
 An input is one of two kinds, and the crate says which:
 
 - **Copied**: from `../../conformance`, `fixtures/ccda/` at the commit the
   crate's `isBasedOn` names, under the same file name, byte for byte, with a
-  `sameAs` to its blob. None names a custodian or an author, so each fails the
+  `sameAs` to its blob and its checksum. Never edited. None names a custodian or an author, so each fails the
   CDA schema, and its findings say where.
 - **Authored here**: written for a case the conformance corpus does not hold,
-  with the date it was written. Each validates against the CDA schema, bar a malformed value a case is about. An
+  with the date it was written, and no checksum. Each validates against the CDA schema, bar a malformed value a case is about. An
   authored input is edited only by replacing it, as a new file under a new name.
 
 An input is committed once. A case that needs the same bytes twice names one
