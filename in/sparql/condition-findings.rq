@@ -1,5 +1,6 @@
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX sh:     <http://www.w3.org/ns/shacl#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX sh:    <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 PREFIX void:   <http://rdfs.org/ns/void#>
@@ -13,7 +14,9 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 # does not hold: its Problem Status Observation's, or, where it has none, its
 # concern act's. And a code of its value with no code system, or a code
 # system that is no OID, or no code, and a nullFlavor on its time or a bound of it that is no NullFlavor
-# code, so no reason for the absent date is carried.
+# code, so no reason for the absent date is carried. And an absent reason of its
+# value or a translation that no list defines, where no other code of it is
+# carried: reported at the code that states it.
 
 CONSTRUCT {
   [] a oa:Annotation ;
@@ -55,7 +58,7 @@ WHERE {
           STRAFTER(STR(?outerSlot), "#_"), ".", STRAFTER(STR(?bodySlot), "#_"), ".",
           STRAFTER(STR(?componentSlot), "#_"), ".", STRAFTER(STR(?sectionSlot), "#_"), ".",
           STRAFTER(STR(?entrySlot), "#_"), ".", STRAFTER(STR(?actSlot), "#_"), ".", ?innerSlots) AS ?slots)
-  ?row ccda:statementAt ?slots ; ccda:refinement ?refinement .
+  ?row ccda:statementAt ?slots ; ccda:refinement ?statementRefinement .
   BIND (EXISTS {
           ?condition ?anyS ?anyRelationship . ?anyRelationship a v3:entryRelationship ; ?anyO ?anyStatus .
           ?anyStatus a v3:observation ; ?anyT ?anyTemplate ; ?anyVS ?anyValue .
@@ -120,9 +123,9 @@ WHERE {
   }
   UNION
   {
-    { ?condition ?vS ?coding . ?coding a v3:value }
+    { ?condition ?vS ?valueElement . ?valueElement a v3:value . BIND (?valueElement AS ?coding) }
     UNION
-    { ?condition ?vS ?coded . ?coded a v3:value ; ?trS ?coding . ?coding a v3:translation }
+    { ?condition ?vS ?valueElement . ?valueElement a v3:value ; ?trS ?coding . ?coding a v3:translation }
     ?coding xyz:code ?statedAbsentReason ; xyz:codeSystem ?absentSystem .
     ?system skos:inScheme ccda:codeSystems ; skos:notation ?systemKey ; void:uriSpace ?stem .
     FILTER (?systemKey IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
@@ -142,7 +145,28 @@ WHERE {
       FILTER (REGEX(?otherKey, "^[0-2](\\.(0|[1-9][0-9]*))+$"))
       FILTER (REPLACE(?otherCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") != "")
     }
+    {
+      # Once for the document, joined to each value by its key; document-table.rq says why.
+      SELECT (?rankedValue AS ?valueElement) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    {
+      SELECT (?rankedCoding AS ?coding) (COUNT(?earlierCoding) AS ?codingAt) WHERE {
+        ?codingParent ?codingPS ?rankedCoding . ?rankedCoding a ?codingType .
+        ?codingParent ?codingPE ?earlierCoding . ?earlierCoding a ?codingType .
+        VALUES ?codingType { v3:value v3:translation }
+        FILTER (xsd:integer(STRAFTER(STR(?codingPE), "#_")) <= xsd:integer(STRAFTER(STR(?codingPS), "#_")))
+      } GROUP BY ?rankedCoding
+    }
+    BIND (CONCAT("/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]",
+                 IF(sameTerm(?coding, ?valueElement), "",
+                    CONCAT("/*[local-name()='translation' and namespace-uri()='urn:hl7-org:v3'][", STR(?codingAt), "]")),
+                 "/@code") AS ?codedStep)
     BIND (ccda:absentReasonNotCarried AS ?gap)
   }
   FILTER (?gap != ccda:concernStatusNotMapped || !?statedStatus)
+  BIND (CONCAT(?statementRefinement, COALESCE(?codedStep, "")) AS ?refinement)
 }

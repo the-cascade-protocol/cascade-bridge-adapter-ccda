@@ -93,8 +93,8 @@ is still real, so a problem a source closes by its act alone is absent from a vi
 immunization whose `negationInd` is true was not done, whatever its
 `statusCode` says.
 
-An allergy's status is its Allergy Status Observation's, else, where it states none, its Allergy Concern
-Act's `statusCode`, as C-CDA on FHIR has it: "`/statusCode` → `.clinicalStatus` is to be
+An allergy's status is its Allergy Status Observation's, else, where it states none, the `statusCode` of the act
+that wraps it, an Allergy Concern Act or any other, as C-CDA on FHIR has it: "`/statusCode` → `.clinicalStatus` is to be
 used only if the C-CDA Allergy Status Observation (see below) is missing"
 ([Allergies](https://hl7.org/fhir/us/ccda/en/CF-allergies.html), read 2026-10-31).
 That page publishes no map for the act's code, so the rows are the map HL7 publishes
@@ -422,8 +422,9 @@ the `cascade:narrativeText` in the same way; a `text` that holds a `reference` i
 
 What no entry references is a section's **kept text**, its note's text, so a section makes a note whatever its
 template and entries, and none only when its kept text is empty or it has a `nullFlavor`; a section's title is only
-its note's, so one that makes none, and is not `ccda:sectionNotMapped`, carries its title nowhere, the finding
-`ccda:sectionTitleNotCarried` at the title. Its blocks are the nodes
+its note's, so one that makes none carries its title nowhere. Where it holds a Note Activity, a note that is not the
+section's and does not take the title, that is the finding `ccda:sectionTitleNotCarried` at the title; where it holds none, the title repeats what
+its records' classes say, as its code does, and is left out unreported. Its blocks are the nodes
 of its `text` at and under which no element is referenced, whose parent is the `text` or a referenced container:
 `text`, `table`, `thead`, `tbody`, `tfoot` and `list` are containers, and every other element, a paragraph, an item, a
 row, a caption, is kept or dropped whole, so a row an entry references only for a name leaves with its other cells.

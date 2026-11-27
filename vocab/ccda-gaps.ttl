@@ -13,7 +13,7 @@ ccda:sectionNotMapped a skos:Concept ;
   sh:resultSeverity sh:Warning .
 
 ccda:sectionTitleNotCarried a skos:Concept ;
-  skos:prefLabel "A section's title is carried only as the title of the note the section makes, so a section that makes no note, because its entries reference all of its text or it states none, carries its title nowhere."@en ;
+  skos:prefLabel "A section's title is carried only as the title of the note the section makes. A section that holds a Note Activity and makes no note itself, because its entries reference all of its text or it states none, carries its title nowhere, and this says so; a Note Activity's title is its own. A section that holds no Note Activity and makes no note is not reported: its title repeats what the classes of its records say, as its code does, and is left out."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:carriedWithLoss .
 
