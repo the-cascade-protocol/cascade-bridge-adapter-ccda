@@ -161,6 +161,11 @@ ccda:concernTime a skos:Concept ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:noPredicate .
 
+ccda:concernActId a skos:Concept ;
+  skos:prefLabel "An Allergy Concern Act or a Problem Concern Act states an id, and no Cascade term carries it: the record is made from the statement the act wraps and takes that statement's id; a Note Activity's own id is carried."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
+
 ccda:codedRouteAndSite a skos:Concept ;
   skos:prefLabel "A route or site is coded, and no Cascade predicate carries the code; an immunization's display name is carried, and a medication's is not."@en ;
   skos:inScheme ccda:gaps ;

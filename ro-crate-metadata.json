@@ -159,6 +159,9 @@
           "@id": "in/sparql/entry-findings.rq"
         },
         {
+          "@id": "in/sparql/concern-act-findings.rq"
+        },
+        {
           "@id": "in/sparql/allergy-findings.rq"
         },
         {
@@ -306,6 +309,9 @@
         },
         {
           "@id": "in/sparql/entry-findings.rq"
+        },
+        {
+          "@id": "in/sparql/concern-act-findings.rq"
         },
         {
           "@id": "in/sparql/allergy-findings.rq"
@@ -1686,6 +1692,16 @@
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
       "description": "Each entry of a mapped section from which no record is made, valued by the least templateId root its statement claims."
+    },
+    {
+      "@id": "in/sparql/concern-act-findings.rq",
+      "@type": "File",
+      "name": "Findings: concern act ids not carried",
+      "encodingFormat": "application/sparql-query",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "Each id an Allergy Concern Act or a Problem Concern Act states, addressed at the act, which no record carries: a record takes its statement's id."
     },
     {
       "@id": "in/sparql/allergy-findings.rq",
