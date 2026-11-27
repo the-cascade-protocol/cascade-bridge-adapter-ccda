@@ -167,7 +167,7 @@ ccda:concernTime a skos:Concept ;
   skos:broader bridge:noPredicate .
 
 ccda:concernActId a skos:Concept ;
-  skos:prefLabel "An Allergy Concern Act or a Problem Concern Act states an id, and no Cascade term carries it: the record is made from the statement the act wraps and takes that statement's id; a Note Activity's own id is carried."@en ;
+  skos:prefLabel "An act that wraps the statement a record is made from, an Allergy Concern Act or a Problem Concern Act, states an id, and no Cascade term carries it: the record takes the wrapped statement's id; a Note Activity's own id is carried."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:carriedWithLoss .
 

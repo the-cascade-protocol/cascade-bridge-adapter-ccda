@@ -46,9 +46,9 @@ wraps it:
 | a note | an unstructured document's body, its `nonXMLBody` | `DocumentReference` |
 | a note | a section whose text holds a block no record's statement references, whatever its template or entries ([Narrative references](#narrative-references)) | `DocumentReference` |
 
-A record takes its statement's `id`, never its act's: each `id` an Allergy Concern Act or a Problem Concern Act
-states, as a root, an extension or both, is carried nowhere and is a finding, `ccda:concernActId`, at the act, one for
-each `id`. A Note Activity is its own statement, so its `id` is its record's.
+A record takes its statement's `id`, never its act's: each `id` of an act that wraps the statement of a record, an
+Allergy Concern Act or a Problem Concern Act, as a root, an extension or both, is carried nowhere and is a finding,
+`ccda:concernActId`, at the act, one for each `id`. A Note Activity is its own statement, so its `id` is its record's.
 
 The organizations the header names are records too, outside the table's classes:
 the custodian's `representedCustodianOrganization` and each author's

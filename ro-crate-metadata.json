@@ -1719,7 +1719,7 @@
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "Each id an Allergy Concern Act or a Problem Concern Act states, addressed at the act, which no record carries: a record takes its statement's id."
+      "description": "Each id of an act that wraps the statement of a record, an Allergy Concern Act or a Problem Concern Act, addressed at the act, which no record carries: a record takes its statement's id."
     },
     {
       "@id": "in/sparql/allergy-findings.rq",

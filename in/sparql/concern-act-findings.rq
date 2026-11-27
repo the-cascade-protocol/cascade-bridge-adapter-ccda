@@ -7,11 +7,12 @@ PREFIX v3:     <urn:hl7-org:v3>
 PREFIX bridge: <https://ns.cascadeprotocol.org/bridge/v1-draft#>
 PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 
-# The id an Allergy Concern Act or a Problem Concern Act states, written as the
-# record id of a statement is: root and extension, or whichever it states. The
-# record is made from the statement the act wraps and takes the statement's id,
-# so the act's is carried nowhere. One finding for each id, at the act, however
-# many statements the act wraps. An act whose entry makes no record is the
+# The id an act states that wraps the statement a record is made from, as an
+# Allergy Concern Act or a Problem Concern Act does, written as the record id of
+# a statement is: root and extension, or whichever it states. The record takes
+# the statement's id, so the act's is carried nowhere. One finding for each id,
+# at the act, however many statements the act wraps. A Note Activity is its own
+# statement and wraps none, and an act whose entry makes no record is the
 # finding entryNotMapped, not this.
 
 CONSTRUCT {
@@ -32,9 +33,7 @@ WHERE {
     ?component a v3:component ; ?sectionSlot ?section .
     ?section a v3:section ; ?entrySlot ?entry .
     ?entry a v3:entry ; ?actSlot ?act .
-    ?act a v3:act ; ?templateSlot ?template ; ?idSlot ?id .
-    ?template a v3:templateId ; xyz:root ?concernRoot .
-    VALUES ?concernRoot { "2.16.840.1.113883.10.20.22.4.30" "2.16.840.1.113883.10.20.22.4.3" }
+    ?act a v3:act ; ?idSlot ?id .
     ?id a v3:id .
     OPTIONAL { ?id xyz:root ?idRoot }
     OPTIONAL { ?id xyz:extension ?idExtension }
