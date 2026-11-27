@@ -13,7 +13,7 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 # Each element of a structured dosage a medication states, at the element,
 # valued by its name; and each NDC medication.rq makes no 11-digit code of, at
 # the medication; and each time a listed medication's (mood EVN) author states,
-# at the medication, valued by the time as written. A periodic effectiveTime is a dosage's timing; an
+# at the time's value, valued by the time as written. A periodic effectiveTime is a dosage's timing; an
 # interval one is the medication's start and end. A route and a site are the
 # accounting's ccda:codedRouteAndSite, and a status and codes
 # entry-statement-findings.rq's.
@@ -83,8 +83,22 @@ WHERE {
   UNION
   {
     ?medication xyz:moodCode "EVN" ; ?aS ?author . ?author a v3:author ; ?atS ?authorTime . ?authorTime a v3:time ; xyz:value ?value .
+    {
+      SELECT (?rankedAuthor AS ?author) (CONCAT("/*[local-name()='author' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierAuthor)), "]") AS ?authorStep) WHERE {
+        ?authorParent ?authorS ?rankedAuthor . ?rankedAuthor a v3:author .
+        ?authorParent ?authorE ?earlierAuthor . ?earlierAuthor a v3:author .
+        FILTER (xsd:integer(STRAFTER(STR(?authorE), "#_")) <= xsd:integer(STRAFTER(STR(?authorS), "#_")))
+      } GROUP BY ?rankedAuthor
+    }
+    {
+      SELECT (?rankedTime AS ?authorTime) (CONCAT("/*[local-name()='time' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierTime)), "]/@value") AS ?timeStep) WHERE {
+        ?timeParent ?timeS ?rankedTime . ?rankedTime a v3:time .
+        ?timeParent ?timeE ?earlierTime . ?earlierTime a v3:time .
+        FILTER (xsd:integer(STRAFTER(STR(?timeE), "#_")) <= xsd:integer(STRAFTER(STR(?timeS), "#_")))
+      } GROUP BY ?rankedTime
+    }
     BIND (ccda:listedMedicationAuthorTime AS ?gap)
-    BIND ("" AS ?dosingStep)
+    BIND (CONCAT(?authorStep, ?timeStep) AS ?dosingStep)
   }
   BIND (CONCAT(?medicationAt, ?dosingStep) AS ?refinement)
 }

@@ -17,8 +17,8 @@ PREFIX ccda:     <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 #   - the severity, from a Severity Observation on the allergy itself, else on
 #     its first reaction, where C-CDA R2.1 puts it;
 #   - the clinical status, from its Allergy Status Observation, else, where it
-#     states none, from the statusCode of the act that wraps it, whatever its
-#     template, where that maps to a clinical status.
+#     states none, from the statusCode of the concern act that wraps it, one with
+#     the concern template or coded CONC, where that maps to a clinical status.
 # A coded value is carried only through the concept map its rows were
 # transcribed into, and only in the code system that map reads; a code outside it is a finding of allergy-findings.rq. An
 # NDC names a packaged product, not the substance a person is allergic to, so it
@@ -154,6 +154,10 @@ WHERE {
             { SELECT ?concernRelationship WHERE { ?concernRelationship a v3:entryRelationship } }
           }
           ?concern a v3:act ; ?cnSS ?concernStatus .
+          { ?concern ?cnTS ?concernTemplate . ?concernTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.30" }
+          UNION
+          { ?concern ?cnCS ?concernCode . ?concernCode a v3:code ; xyz:code "CONC" ; xyz:codeSystem ?concernSystem .
+            FILTER (REPLACE(?concernSystem, "^urn:oid:", "") = "2.16.840.1.113883.5.6") }
           ?concernStatus a v3:statusCode ; xyz:code ?code .
           ?concept skos:inScheme ccda:allergyConcernStatuses ; skos:notation ?key ; skos:exactMatch|skos:broadMatch ?match .
           ?match skos:notation ?value .

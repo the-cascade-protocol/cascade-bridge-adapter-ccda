@@ -16,6 +16,7 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 # another system, a bound of a two-bound IVL_PQ value or of a reference range
 # that is not inclusive, a number not in REAL's decimal form or beyond twenty
 # digits of the point, a value's or a time's nullFlavor that is no NullFlavor code, a
+# value's at the nullFlavor and a status's at its code, a
 # second value or range, a code of the test with no code system, or a code
 # system that is no OID, or no code, and an interpretation flag in a code
 # system other than HL7 ObservationInterpretation, at the result; and
@@ -52,6 +53,13 @@ WHERE {
     BIND (STRAFTER(STR(?statementSlot), "#_") AS ?statementAt)
     {
       ?result ?sS ?statusCode . ?statusCode a v3:statusCode ; xyz:code ?value .
+      {
+        SELECT (?rankedStatus AS ?statusCode) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+          ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+          ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+          FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+        } GROUP BY ?rankedStatus
+      }
       FILTER NOT EXISTS {
         ?concept skos:inScheme ccda:resultStatuses ; skos:notation ?key .
         FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
@@ -94,7 +102,16 @@ WHERE {
     }
     UNION
     {
-      { ?result ?vS ?resultValue . ?resultValue a v3:value ; xyz:nullFlavor ?value . }
+      {
+        ?result ?vS ?resultValue . ?resultValue a v3:value ; xyz:nullFlavor ?value .
+        {
+          SELECT (?rankedValue AS ?resultValue) (CONCAT("/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierValue)), "]/@nullFlavor") AS ?codedStep) WHERE {
+            ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+            ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+            FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+          } GROUP BY ?rankedValue
+        }
+      }
       UNION
       { ?result ?flavourTimeSlot ?flavourTime . ?flavourTime a v3:effectiveTime ; xyz:nullFlavor ?value . }
       UNION
@@ -220,7 +237,7 @@ WHERE {
     # The row at these slots, and then its class: the class first is every row of it.
     { SELECT ?row ?rowRefinement WHERE { ?row ccda:recordClass "Observation" ; ccda:refinement ?rowRefinement } }
   }
-  BIND (COALESCE(?rowRefinement, ?componentRefinement) AS ?refinement)
+  BIND (CONCAT(COALESCE(?rowRefinement, ?componentRefinement), COALESCE(?codedStep, "")) AS ?refinement)
   OPTIONAL {
     # Once for the document, joined to each row by its key; document-table.rq says why.
     SELECT DISTINCT (?ownMemberSlots AS ?memberSlots) (true AS ?memberHoldsRow) WHERE {

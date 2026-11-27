@@ -1,6 +1,6 @@
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
-PREFIX sh:    <http://www.w3.org/ns/shacl#>
+PREFIX sh:     <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 PREFIX void:   <http://rdfs.org/ns/void#>
@@ -12,7 +12,9 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 
 # A status a problem states that the concept map condition.rq reads it through
 # does not hold: its Problem Status Observation's, or, where it has none, its
-# concern act's. And a code of its value with no code system, or a code
+# concern act's, each at the status's own code; the concern act's status where the
+# problem states one no map holds, which is then read from nowhere; and the display
+# name of a status observation's value, which nothing carries. And a code of its value with no code system, or a code
 # system that is no OID, or no code, and a nullFlavor on its time or a bound of it that is no NullFlavor
 # code, so no reason for the absent date is carried. And an absent reason of its
 # value or a translation that no list defines, where no other code of it is
@@ -65,11 +67,43 @@ WHERE {
           ?anyTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
           ?anyValue a v3:value ; xyz:code ?anyCode .
         } AS ?statedStatus)
+  BIND (EXISTS {
+          ?condition ?mapS ?mapRelationship . ?mapRelationship a v3:entryRelationship ; ?mapO ?mapStatus .
+          ?mapStatus a v3:observation ; ?mapT ?mapTemplate ; ?mapVS ?mapValue .
+          ?mapTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
+          ?mapValue a v3:value ; xyz:code ?mapCode ; xyz:codeSystem ?mapSystem .
+          FILTER (REPLACE(?mapSystem, "^urn:oid:", "") = "2.16.840.1.113883.6.96")
+          ?mapConcept skos:inScheme ccda:problemStatuses ; skos:notation ?mapKey .
+          FILTER (?mapKey = LCASE(REPLACE(?mapCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+        } AS ?statedStatusMapped)
   {
     ?condition ?rS ?statusRelationship . ?statusRelationship a v3:entryRelationship ; ?oS ?observation .
     ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
     ?ot a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
     ?coded a v3:value ; xyz:code ?value .
+    {
+      SELECT (?rankedStatusRelationship AS ?statusRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatusRelationship)), "]") AS ?statusRelationshipStep) WHERE {
+        ?statusRelationshipParent ?statusRelationshipS ?rankedStatusRelationship . ?rankedStatusRelationship a v3:entryRelationship .
+        ?statusRelationshipParent ?statusRelationshipE ?earlierStatusRelationship . ?earlierStatusRelationship a v3:entryRelationship .
+        FILTER (xsd:integer(STRAFTER(STR(?statusRelationshipE), "#_")) <= xsd:integer(STRAFTER(STR(?statusRelationshipS), "#_")))
+      } GROUP BY ?rankedStatusRelationship
+    }
+    {
+      SELECT (?rankedObservation AS ?observation) (CONCAT("/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierObservation)), "]") AS ?observationStep) WHERE {
+        ?observationParent ?observationS ?rankedObservation . ?rankedObservation a v3:observation .
+        ?observationParent ?observationE ?earlierObservation . ?earlierObservation a v3:observation .
+        FILTER (xsd:integer(STRAFTER(STR(?observationE), "#_")) <= xsd:integer(STRAFTER(STR(?observationS), "#_")))
+      } GROUP BY ?rankedObservation
+    }
+    {
+      # Once for the document, joined to each value by its key; document-table.rq says why.
+      SELECT (?rankedValue AS ?coded) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    BIND (CONCAT(?statusRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@code") AS ?codedStep)
     OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
     FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.6.96" || NOT EXISTS {
       ?concept skos:inScheme ccda:problemStatuses ; skos:notation ?key .
@@ -79,12 +113,63 @@ WHERE {
   }
   UNION
   {
+    ?condition ?rS ?statusRelationship . ?statusRelationship a v3:entryRelationship ; ?oS ?observation .
+    ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
+    ?ot a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
+    ?coded a v3:value ; xyz:displayName ?value .
+    {
+      SELECT (?rankedStatusRelationship AS ?statusRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatusRelationship)), "]") AS ?statusRelationshipStep) WHERE {
+        ?statusRelationshipParent ?statusRelationshipS ?rankedStatusRelationship . ?rankedStatusRelationship a v3:entryRelationship .
+        ?statusRelationshipParent ?statusRelationshipE ?earlierStatusRelationship . ?earlierStatusRelationship a v3:entryRelationship .
+        FILTER (xsd:integer(STRAFTER(STR(?statusRelationshipE), "#_")) <= xsd:integer(STRAFTER(STR(?statusRelationshipS), "#_")))
+      } GROUP BY ?rankedStatusRelationship
+    }
+    {
+      SELECT (?rankedObservation AS ?observation) (CONCAT("/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierObservation)), "]") AS ?observationStep) WHERE {
+        ?observationParent ?observationS ?rankedObservation . ?rankedObservation a v3:observation .
+        ?observationParent ?observationE ?earlierObservation . ?earlierObservation a v3:observation .
+        FILTER (xsd:integer(STRAFTER(STR(?observationE), "#_")) <= xsd:integer(STRAFTER(STR(?observationS), "#_")))
+      } GROUP BY ?rankedObservation
+    }
+    {
+      SELECT (?rankedValue AS ?coded) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    BIND (CONCAT(?statusRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@displayName") AS ?codedStep)
+    BIND (ccda:observationValueDisplayNameNotCarried AS ?gap)
+  }
+  UNION
+  {
     ?act ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+    {
+      SELECT (?rankedStatus AS ?status) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
+    }
+    BIND (true AS ?atAct)
     FILTER NOT EXISTS {
       ?concept skos:inScheme ccda:concernStatuses ; skos:notation ?key .
       FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
     }
     BIND (ccda:concernStatusNotMapped AS ?gap)
+  }
+  UNION
+  {
+    ?act ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+    {
+      SELECT (?rankedStatus AS ?status) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
+    }
+    BIND (true AS ?atAct)
+    BIND (ccda:concernStatusNotCarriedBesideUnmappedStatus AS ?gap)
   }
   UNION
   {
@@ -168,5 +253,10 @@ WHERE {
     BIND (ccda:absentReasonNotCarried AS ?gap)
   }
   FILTER (?gap != ccda:concernStatusNotMapped || !?statedStatus)
-  BIND (CONCAT(?statementRefinement, COALESCE(?codedStep, "")) AS ?refinement)
+  FILTER (?gap != ccda:concernStatusNotCarriedBesideUnmappedStatus || (?statedStatus && !?statedStatusMapped))
+  BIND (CONCAT(IF(BOUND(?atAct),
+                  CONCAT(STRBEFORE(?statementRefinement, "/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]"),
+                         "/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]"),
+                  ?statementRefinement),
+               COALESCE(?codedStep, "")) AS ?refinement)
 }

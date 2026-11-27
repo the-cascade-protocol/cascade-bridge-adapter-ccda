@@ -529,7 +529,8 @@
 
 [] a bridge:PathEntry ;
   bridge:sourcePath "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='author' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='time' and namespace-uri()='urn:hl7-org:v3']/@value" ;
-  bridge:verdict bridge:carried ;
+  bridge:verdict bridge:carriedInPart ;
+  bridge:namesGap ccda:listedMedicationAuthorTime ;
   bridge:concern bridge:concernDates ;
   bridge:carriedAs
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.4.16" ; bridge:inRecordClass cascade:PrescribedOrReportedMedication ; bridge:asProperty cascade:prescriptionWrittenDate ] .
@@ -818,7 +819,8 @@
 
 [] a bridge:PathEntry ;
   bridge:sourcePath "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3']/@displayName" ;
-  bridge:verdict bridge:carried ;
+  bridge:verdict bridge:carriedInPart ;
+  bridge:namesGap ccda:observationValueDisplayNameNotCarried ;
   bridge:concern bridge:concernCodes ;
   bridge:carriedAs
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.4.7" ; bridge:inRecordClass cascade:AllergyOrIntolerance ; bridge:asProperty cascade:reactionManifestationText ] .
@@ -1050,7 +1052,8 @@
 
 [] a bridge:PathEntry ;
   bridge:sourcePath "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3']/@displayName" ;
-  bridge:verdict bridge:carried ;
+  bridge:verdict bridge:carriedInPart ;
+  bridge:namesGap ccda:observationValueDisplayNameNotCarried ;
   bridge:concern bridge:concernCodes ;
   bridge:carriedAs
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.4.7" ; bridge:inRecordClass cascade:AllergyOrIntolerance ; bridge:asProperty cascade:reactionManifestationText ] .
@@ -1242,7 +1245,8 @@
 
 [] a bridge:PathEntry ;
   bridge:sourcePath "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='administrativeGenderCode' and namespace-uri()='urn:hl7-org:v3']/@code" ;
-  bridge:verdict bridge:carried ;
+  bridge:verdict bridge:carriedInPart ;
+  bridge:namesGap ccda:administrativeGenderNotMapped ;
   bridge:concern bridge:concernIdentity ;
   bridge:carriedAs
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.1.1" ; bridge:inRecordClass cascade:PatientProfile ; bridge:asProperty cascade:administrativeGender ] .
@@ -1428,7 +1432,8 @@
 
 [] a bridge:PathEntry ;
   bridge:sourcePath "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='code' and namespace-uri()='urn:hl7-org:v3']/@code" ;
-  bridge:verdict bridge:carried ;
+  bridge:verdict bridge:carriedInPart ;
+  bridge:namesGap ccda:documentType ;
   bridge:concern bridge:concernCodes ;
   bridge:carriedAs
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.1.10" ; bridge:inRecordClass cascade:ClinicalNoteOrDocument ; bridge:asProperty cascade:noteOrDocumentTypeCode ] ,
@@ -3019,6 +3024,7 @@
   bridge:verdict bridge:carried ;
   bridge:concern bridge:concernCodes ;
   bridge:carriedAs
+    [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.4.2" ; bridge:inRecordClass cascade:LaboratoryTestResult ; bridge:asProperty cascade:valueAbsentForReason ] ,
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.4.2" ; bridge:inRecordClass cascade:LaboratoryTestResult ; bridge:asProperty cascade:resultValueKind ] ,
     [ bridge:inSourceRecordType "2.16.840.1.113883.10.20.22.4.2" ; bridge:inRecordClass cascade:LaboratoryTestResult ; bridge:asProperty cascade:resultValueText ] .
 

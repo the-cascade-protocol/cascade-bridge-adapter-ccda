@@ -87,14 +87,17 @@ release does not read, a Procedure Activity Act or Observation among them, is a 
 
 A problem's status is its Problem Status Observation's, else, where it states none, its concern act's, by the map of
 `../vocab/ccda-concern-statuses.ttl`, the same rows as an allergy's below, and never when it states
-a Problem Status Observation with a code, whatever that code. An observation with none, a value with a
+a Problem Status Observation with a code, whatever that code: one outside the map is the finding
+`ccda:problemStatusNotMapped` and no status, and the act's own status, read from nowhere, is the finding
+`ccda:concernStatusNotCarriedBesideUnmappedStatus` at its `statusCode`. An observation with none, a value with a
 `nullFlavor` or no value at all, states no status. A closed concern act is `inactive` even where the problem
 is still real, so a problem a source closes by its act alone is absent from a view of the active ones. Its category is its section's, by the section's code. An
 immunization whose `negationInd` is true was not done, whatever its
 `statusCode` says.
 
-An allergy's status is its Allergy Status Observation's, else, where it states none, the `statusCode` of the act
-that wraps it, an Allergy Concern Act or any other, as C-CDA on FHIR has it: "`/statusCode` → `.clinicalStatus` is to be
+An allergy's status is its Allergy Status Observation's, else, where it states none, the `statusCode` of the
+concern act that wraps it, one with the Allergy Concern Act template or coded `CONC` in HL7 ActClass
+(`2.16.840.1.113883.5.6`), as C-CDA on FHIR has it: "`/statusCode` → `.clinicalStatus` is to be
 used only if the C-CDA Allergy Status Observation (see below) is missing"
 ([Allergies](https://hl7.org/fhir/us/ccda/en/CF-allergies.html), read 2026-10-31).
 That page publishes no map for the act's code, so the rows are the map HL7 publishes
@@ -105,9 +108,17 @@ read 2026-10-31), `../vocab/ccda-allergy-concern-statuses.ttl`: `active` is
 where the allergy states no status observation with a code of its own; one with none, a value with a
 `nullFlavor` or no value at all, states no status. An allergy that states a code is
 never read through its act: an observation outside the map is the finding
-`ccda:allergyStatusNotMapped` and no status. A closed concern act is `inactive` even where the
-allergy is still real, so an allergy a source closes by its act alone is absent from a view
-of the active ones.
+`ccda:allergyStatusNotMapped` and no status, and the act's own status, which is then read from nowhere, is the
+finding `ccda:concernStatusNotCarriedBesideUnmappedStatus` at the act's `statusCode`, as it is for a problem. The status of an
+act that is no concern act is the act's, not the allergy's: it is the finding `ccda:actStatusNotCarried`. A closed
+concern act is `inactive` even where the allergy is still real, so an allergy a source closes by its act alone is
+absent from a view of the active ones.
+
+A status no map holds, and a gender code no map holds, is a finding at the `@code` that states it, and a result's
+`nullFlavor` that is no NullFlavor code is a finding at its `@nullFlavor`. A display name of the value of a status,
+criticality or severity observation is carried nowhere, and is the finding
+`ccda:observationValueDisplayNameNotCarried` at the `@displayName`. The time a listed medication's author states is
+the finding `ccda:listedMedicationAuthorTime` at the `@value`.
 
 A Medication Activity's mood says what it is: `INT`, a medication intended, is
 a prescription, and `EVN`, one taken, an entry on a list of what the person
@@ -190,7 +201,7 @@ A `nullFlavor` stands where a value would: on an `id`, a `code`, a `value` or a
 time. On a result's first `value`, on a time a record's date is read from (an
 `effectiveTime`, its `low` or its `high`) where no time is stated in its
 place, on the patient's `birthTime` and `administrativeGenderCode`, and on the
-`sdtc:deceasedTime` beside an `sdtc:deceasedInd` that is true, it is the reason
+`sdtc:deceasedTime`, beside whatever `sdtc:deceasedInd` states, it is the reason
 that value is absent:
 the version carries a node `<version>#absent-` and the property's local name,
 naming the property (`cascade:absentValueProperty`, a result's value being
@@ -215,8 +226,8 @@ system those codings are dropped, with no finding, since a code of the condition
 a reason it has none: the accounting's `carried` for such a coding's `@code` and
 `@codeSystem` (`../vocab/ccda-accounting.ttl`) is not true of it there. On
 an `id` or an address it says only that there is none, and elsewhere, where it
-stands alone, nothing is carried: on an `sdtc:deceasedInd`, or a death time
-with no true indicator, it states no death.
+stands alone, nothing is carried: on an `sdtc:deceasedInd` it states no death, and on a death time it states
+the date of death absent, not a death.
 
 ## Names
 

@@ -1,4 +1,5 @@
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 PREFIX sh:     <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
@@ -11,7 +12,7 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 
 # A nullFlavor that is no NullFlavor code where patient.rq would carry it as a
 # reason, and a gender code patient.rq's concept map does not hold, or holds in
-# another code system; each valued as written.
+# another code system, at the gender's code; each valued as written.
 
 CONSTRUCT {
   [] a oa:Annotation ;
@@ -31,9 +32,6 @@ WHERE {
   {
     VALUES ?flavouredType { v3:birthTime v3:administrativeGenderCode sdtc:deceasedTime }
     ?patient ?eS ?element . ?element a ?flavouredType ; xyz:nullFlavor ?value .
-    FILTER (?flavouredType != sdtc:deceasedTime || EXISTS {
-      ?patient ?iS ?indicator . ?indicator a sdtc:deceasedInd ; xyz:value ?indicatorValue . FILTER (REPLACE(?indicatorValue, "^[ \t\r\n]+|[ \t\r\n]+$", "") = "true")
-    })
     FILTER NOT EXISTS {
       ?flavourConcept skos:inScheme ccda:nullFlavors ; skos:notation ?flavourKey .
       FILTER (?flavourKey = LCASE(REPLACE(?value, "^[ \t\r\n]+|[ \t\r\n]+$", "")))
@@ -43,6 +41,21 @@ WHERE {
   UNION
   {
     ?patient ?gS ?gender . ?gender a v3:administrativeGenderCode ; xyz:code ?value .
+    {
+      SELECT (?rankedPatient AS ?patient) (CONCAT("/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierPatient)), "]") AS ?patientStep) WHERE {
+        ?patientParent ?patientS ?rankedPatient . ?rankedPatient a v3:patient .
+        ?patientParent ?patientE ?earlierPatient . ?earlierPatient a v3:patient .
+        FILTER (xsd:integer(STRAFTER(STR(?patientE), "#_")) <= xsd:integer(STRAFTER(STR(?patientS), "#_")))
+      } GROUP BY ?rankedPatient
+    }
+    {
+      SELECT (?rankedGender AS ?gender) (CONCAT("/*[local-name()='administrativeGenderCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierGender)), "]/@code") AS ?genderStep) WHERE {
+        ?genderParent ?genderS ?rankedGender . ?rankedGender a v3:administrativeGenderCode .
+        ?genderParent ?genderE ?earlierGender . ?earlierGender a v3:administrativeGenderCode .
+        FILTER (xsd:integer(STRAFTER(STR(?genderE), "#_")) <= xsd:integer(STRAFTER(STR(?genderS), "#_")))
+      } GROUP BY ?rankedGender
+    }
+    BIND (CONCAT(?patientStep, ?genderStep) AS ?codedStep)
     OPTIONAL { ?gender xyz:codeSystem ?codeSystem }
     FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.5.1" || NOT EXISTS {
       ?concept skos:inScheme ccda:administrativeGenders ; skos:notation ?key .
@@ -51,5 +64,6 @@ WHERE {
     BIND (ccda:administrativeGenderNotMapped AS ?gap)
   }
   BIND (CONCAT(STRAFTER(STR(?rtSlot), "#_"), ".", STRAFTER(STR(?prSlot), "#_")) AS ?slots)
-  ?row ccda:statementAt ?slots ; ccda:refinement ?refinement .
+  ?row ccda:statementAt ?slots ; ccda:refinement ?rowRefinement .
+  BIND (CONCAT(?rowRefinement, COALESCE(?codedStep, "")) AS ?refinement)
 }

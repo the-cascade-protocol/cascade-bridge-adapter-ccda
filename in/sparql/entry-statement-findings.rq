@@ -1,6 +1,6 @@
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
-PREFIX sh:    <http://www.w3.org/ns/shacl#>
+PREFIX sh:     <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 PREFIX void:   <http://rdfs.org/ns/void#>
@@ -11,7 +11,8 @@ PREFIX bridge: <https://ns.cascadeprotocol.org/bridge/v1-draft#>
 PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 
 # A status an immunization, a procedure or a medication states that the
-# concept map its mapping reads it through does not hold; a code of a vaccine, a
+# concept map its mapping reads it through does not hold, at the status's
+# code; a code of a vaccine, a
 # drug or a procedure with no code system, or a code system that is no OID, or no
 # code, or a code of blanks, and a vaccine's code in a code system no predicate
 # of an immunization carries; and a nullFlavor on its time or a
@@ -44,6 +45,14 @@ WHERE {
   ?row ccda:statementAt ?slots ; ccda:recordClass ?class ; ccda:refinement ?statementRefinement .
   {
     ?statement ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+    {
+      SELECT (?rankedStatus AS ?status) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?statusStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
+    }
+    BIND (?statusStep AS ?codedStep)
     VALUES (?class ?scheme ?gap) {
       ("Immunization" ccda:immunizationStatuses ccda:immunizationStatusNotMapped)
       ("Procedure"    ccda:procedureStatuses    ccda:procedureStatusNotMapped)
