@@ -117,7 +117,7 @@ ccda:actStatusNotCarried a skos:Concept ;
   skos:broader bridge:carriedWithLoss .
 
 ccda:observationValueDisplayNameNotCarried a skos:Concept ;
-  skos:prefLabel "A status, criticality or severity observation of an allergy, or a problem's status observation, states a display name for its value, and no Cascade predicate carries it; its code is carried, where the concept map holds it, and reported where it does not."@en ;
+  skos:prefLabel "A status, criticality or severity observation of an allergy, or a problem's status observation, states a display name for its value that no Cascade predicate carries, and that tells more than its code: the code is not one the concept map holds, or the name is not a label the map gives that code."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:carriedWithLoss .
 
@@ -208,6 +208,11 @@ ccda:structuredDosage a skos:Concept ;
 
 ccda:resultStatusNotMapped a skos:Concept ;
   skos:prefLabel "A result states a status outside the concept map of result statuses, and it is not carried."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:valueNotMapped .
+
+ccda:reportStatusNotMapped a skos:Concept ;
+  skos:prefLabel "A result organizer states a status outside the concept map of report statuses, and it is not carried."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:valueNotMapped .
 

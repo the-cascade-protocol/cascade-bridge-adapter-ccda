@@ -7,14 +7,18 @@ ccda:severities a skos:ConceptScheme ;
 ccda:severityMild a skos:Concept ;
   skos:inScheme ccda:severities ;
   skos:notation "255604002" ;
+  skos:prefLabel "Mild"@en ;
   skos:exactMatch [ skos:notation "mild" ; skos:inScheme <http://hl7.org/fhir/reaction-event-severity> ] .
 
 ccda:severityModerate a skos:Concept ;
   skos:inScheme ccda:severities ;
   skos:notation "6736007" ;
+  skos:prefLabel "Moderate severity"@en ;
+  skos:altLabel "Moderate"@en ;
   skos:exactMatch [ skos:notation "moderate" ; skos:inScheme <http://hl7.org/fhir/reaction-event-severity> ] .
 
 ccda:severitySevere a skos:Concept ;
   skos:inScheme ccda:severities ;
   skos:notation "24484000" ;
+  skos:prefLabel "Severe"@en ;
   skos:exactMatch [ skos:notation "severe" ; skos:inScheme <http://hl7.org/fhir/reaction-event-severity> ] .

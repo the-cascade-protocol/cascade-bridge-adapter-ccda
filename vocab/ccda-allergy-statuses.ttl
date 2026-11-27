@@ -7,14 +7,18 @@ ccda:allergyStatuses a skos:ConceptScheme ;
 ccda:allergyStatusActive a skos:Concept ;
   skos:inScheme ccda:allergyStatuses ;
   skos:notation "55561003" ;
+  skos:prefLabel "Active"@en ;
   skos:exactMatch [ skos:notation "active" ; skos:inScheme <http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical> ] .
 
 ccda:allergyStatusInactive a skos:Concept ;
   skos:inScheme ccda:allergyStatuses ;
   skos:notation "73425007" ;
+  skos:prefLabel "Inactive"@en ;
   skos:exactMatch [ skos:notation "inactive" ; skos:inScheme <http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical> ] .
 
 ccda:allergyStatusResolved a skos:Concept ;
   skos:inScheme ccda:allergyStatuses ;
   skos:notation "413322009" ;
+  skos:prefLabel "Problem resolved"@en ;
+  skos:altLabel "Resolved"@en ;
   skos:exactMatch [ skos:notation "resolved" ; skos:inScheme <http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical> ] .

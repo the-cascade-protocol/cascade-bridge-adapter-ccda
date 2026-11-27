@@ -114,10 +114,13 @@ act that is no concern act is the act's, not the allergy's: it is the finding `c
 concern act is `inactive` even where the allergy is still real, so an allergy a source closes by its act alone is
 absent from a view of the active ones.
 
-A status no map holds, and a gender code no map holds, is a finding at the `@code` that states it, and a result's
+A status no map holds, and a gender code no map holds, is a finding at the `@code` that states it, a result
+organizer's among them (`ccda:reportStatusNotMapped`), and a result's
 `nullFlavor` that is no NullFlavor code is a finding at its `@nullFlavor`. A display name of the value of a status,
 criticality or severity observation is carried nowhere, and is the finding
-`ccda:observationValueDisplayNameNotCarried` at the `@displayName`. The time a listed medication's author states is
+`ccda:observationValueDisplayNameNotCarried` at the `@displayName` only where it says more than the code: the code is
+carried and the name, trimmed and case-folded, is not a `skos:prefLabel` or `skos:altLabel` the map gives that code, or the
+code is not carried. A name that is the code's label is the code again. The time a listed medication's author states is
 the finding `ccda:listedMedicationAuthorTime` at the `@value`.
 
 A Medication Activity's mood says what it is: `INT`, a medication intended, is

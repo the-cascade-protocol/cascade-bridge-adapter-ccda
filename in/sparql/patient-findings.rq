@@ -40,7 +40,15 @@ WHERE {
   }
   UNION
   {
-    ?patient ?gS ?gender . ?gender a v3:administrativeGenderCode ; xyz:code ?value .
+    {
+      ?patient ?gS ?gender . ?gender a v3:administrativeGenderCode ; xyz:code ?value .
+      OPTIONAL { ?gender xyz:codeSystem ?codeSystem }
+      FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.5.1" || NOT EXISTS {
+        ?concept skos:inScheme ccda:administrativeGenders ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \t\r\n]+|[ \t\r\n]+$", "")))
+      })
+      BIND (ccda:administrativeGenderNotMapped AS ?gap)
+    }
     {
       SELECT (?rankedPatient AS ?patient) (CONCAT("/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierPatient)), "]") AS ?patientStep) WHERE {
         ?patientParent ?patientS ?rankedPatient . ?rankedPatient a v3:patient .
@@ -56,12 +64,6 @@ WHERE {
       } GROUP BY ?rankedGender
     }
     BIND (CONCAT(?patientStep, ?genderStep) AS ?codedStep)
-    OPTIONAL { ?gender xyz:codeSystem ?codeSystem }
-    FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.5.1" || NOT EXISTS {
-      ?concept skos:inScheme ccda:administrativeGenders ; skos:notation ?key .
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \t\r\n]+|[ \t\r\n]+$", "")))
-    })
-    BIND (ccda:administrativeGenderNotMapped AS ?gap)
   }
   BIND (CONCAT(STRAFTER(STR(?rtSlot), "#_"), ".", STRAFTER(STR(?prSlot), "#_")) AS ?slots)
   ?row ccda:statementAt ?slots ; ccda:refinement ?rowRefinement .

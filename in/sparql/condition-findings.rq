@@ -14,7 +14,8 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 # does not hold: its Problem Status Observation's, or, where it has none, its
 # concern act's, each at the status's own code; the concern act's status where the
 # problem states one no map holds, which is then read from nowhere; and the display
-# name of a status observation's value, which nothing carries. And a code of its value with no code system, or a code
+# name of a status observation's value, where the map does not hold its code or gives the code no such
+# label, which nothing carries. And a code of its value with no code system, or a code
 # system that is no OID, or no code, and a nullFlavor on its time or a bound of it that is no NullFlavor
 # code, so no reason for the absent date is carried. And an absent reason of its
 # value or a translation that no list defines, where no other code of it is
@@ -67,20 +68,19 @@ WHERE {
           ?anyTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
           ?anyValue a v3:value ; xyz:code ?anyCode .
         } AS ?statedStatus)
-  BIND (EXISTS {
-          ?condition ?mapS ?mapRelationship . ?mapRelationship a v3:entryRelationship ; ?mapO ?mapStatus .
-          ?mapStatus a v3:observation ; ?mapT ?mapTemplate ; ?mapVS ?mapValue .
-          ?mapTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
-          ?mapValue a v3:value ; xyz:code ?mapCode ; xyz:codeSystem ?mapSystem .
-          FILTER (REPLACE(?mapSystem, "^urn:oid:", "") = "2.16.840.1.113883.6.96")
-          ?mapConcept skos:inScheme ccda:problemStatuses ; skos:notation ?mapKey .
-          FILTER (?mapKey = LCASE(REPLACE(?mapCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
-        } AS ?statedStatusMapped)
   {
-    ?condition ?rS ?statusRelationship . ?statusRelationship a v3:entryRelationship ; ?oS ?observation .
-    ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
-    ?ot a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
-    ?coded a v3:value ; xyz:code ?value .
+    {
+      ?condition ?rS ?statusRelationship . ?statusRelationship a v3:entryRelationship ; ?oS ?observation .
+      ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
+      ?ot a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
+      ?coded a v3:value ; xyz:code ?value .
+      OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
+      FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.6.96" || NOT EXISTS {
+        ?concept skos:inScheme ccda:problemStatuses ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      })
+      BIND (ccda:problemStatusNotMapped AS ?gap)
+    }
     {
       SELECT (?rankedStatusRelationship AS ?statusRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatusRelationship)), "]") AS ?statusRelationshipStep) WHERE {
         ?statusRelationshipParent ?statusRelationshipS ?rankedStatusRelationship . ?rankedStatusRelationship a v3:entryRelationship .
@@ -104,19 +104,24 @@ WHERE {
       } GROUP BY ?rankedValue
     }
     BIND (CONCAT(?statusRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@code") AS ?codedStep)
-    OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
-    FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.6.96" || NOT EXISTS {
-      ?concept skos:inScheme ccda:problemStatuses ; skos:notation ?key .
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
-    })
-    BIND (ccda:problemStatusNotMapped AS ?gap)
   }
   UNION
   {
-    ?condition ?rS ?statusRelationship . ?statusRelationship a v3:entryRelationship ; ?oS ?observation .
-    ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
-    ?ot a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
-    ?coded a v3:value ; xyz:displayName ?value .
+    {
+      ?condition ?rS ?statusRelationship . ?statusRelationship a v3:entryRelationship ; ?oS ?observation .
+      ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
+      ?ot a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
+      ?coded a v3:value ; xyz:displayName ?value .
+      OPTIONAL { ?coded xyz:code ?statedCode }
+      OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
+      FILTER NOT EXISTS {
+        ?concept skos:inScheme ccda:problemStatuses ; skos:notation ?key ; skos:prefLabel|skos:altLabel ?label .
+        FILTER (?key = LCASE(REPLACE(?statedCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+        FILTER (REPLACE(?codeSystem, "^urn:oid:", "") = "2.16.840.1.113883.6.96")
+        FILTER (LCASE(REPLACE(STR(?label), "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")) = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      }
+      BIND (ccda:observationValueDisplayNameNotCarried AS ?gap)
+    }
     {
       SELECT (?rankedStatusRelationship AS ?statusRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatusRelationship)), "]") AS ?statusRelationshipStep) WHERE {
         ?statusRelationshipParent ?statusRelationshipS ?rankedStatusRelationship . ?rankedStatusRelationship a v3:entryRelationship .
@@ -139,11 +144,18 @@ WHERE {
       } GROUP BY ?rankedValue
     }
     BIND (CONCAT(?statusRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@displayName") AS ?codedStep)
-    BIND (ccda:observationValueDisplayNameNotCarried AS ?gap)
   }
   UNION
   {
-    ?act ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+    {
+      ?act ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+      BIND (true AS ?atAct)
+      FILTER NOT EXISTS {
+        ?concept skos:inScheme ccda:concernStatuses ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      }
+      BIND (ccda:concernStatusNotMapped AS ?gap)
+    }
     {
       SELECT (?rankedStatus AS ?status) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
         ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
@@ -151,16 +163,33 @@ WHERE {
         FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
       } GROUP BY ?rankedStatus
     }
-    BIND (true AS ?atAct)
-    FILTER NOT EXISTS {
-      ?concept skos:inScheme ccda:concernStatuses ; skos:notation ?key .
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
-    }
-    BIND (ccda:concernStatusNotMapped AS ?gap)
   }
   UNION
   {
-    ?act ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+    {
+      ?act ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+      { ?act ?stateRelationshipSlot ?stateRelationship . ?stateRelationship a v3:entryRelationship ; ?stateStatementSlot ?condition }
+      UNION
+      { ?act ?stateStatementSlot ?condition }
+      ?condition a v3:observation .
+      FILTER EXISTS {
+        ?condition ?anyS ?anyRelationship . ?anyRelationship a v3:entryRelationship ; ?anyO ?anyStatus .
+        ?anyStatus a v3:observation ; ?anyT ?anyTemplate ; ?anyVS ?anyValue .
+        ?anyTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
+        ?anyValue a v3:value ; xyz:code ?anyCode .
+      }
+      FILTER NOT EXISTS {
+        ?condition ?mapS ?mapRelationship . ?mapRelationship a v3:entryRelationship ; ?mapO ?mapStatus .
+        ?mapStatus a v3:observation ; ?mapT ?mapTemplate ; ?mapVS ?mapValue .
+        ?mapTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.6" .
+        ?mapValue a v3:value ; xyz:code ?mapCode ; xyz:codeSystem ?mapSystem .
+        FILTER (REPLACE(?mapSystem, "^urn:oid:", "") = "2.16.840.1.113883.6.96")
+        ?mapConcept skos:inScheme ccda:problemStatuses ; skos:notation ?mapKey .
+        FILTER (?mapKey = LCASE(REPLACE(?mapCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      }
+      BIND (true AS ?atAct)
+      BIND (ccda:concernStatusNotCarriedBesideUnmappedStatus AS ?gap)
+    }
     {
       SELECT (?rankedStatus AS ?status) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
         ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
@@ -168,8 +197,6 @@ WHERE {
         FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
       } GROUP BY ?rankedStatus
     }
-    BIND (true AS ?atAct)
-    BIND (ccda:concernStatusNotCarriedBesideUnmappedStatus AS ?gap)
   }
   UNION
   {
@@ -208,27 +235,30 @@ WHERE {
   }
   UNION
   {
-    { ?condition ?vS ?valueElement . ?valueElement a v3:value . BIND (?valueElement AS ?coding) }
-    UNION
-    { ?condition ?vS ?valueElement . ?valueElement a v3:value ; ?trS ?coding . ?coding a v3:translation }
-    ?coding xyz:code ?statedAbsentReason ; xyz:codeSystem ?absentSystem .
-    ?system skos:inScheme ccda:codeSystems ; skos:notation ?systemKey ; void:uriSpace ?stem .
-    FILTER (?systemKey IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
-    FILTER (?systemKey = LCASE(REPLACE(REPLACE(?absentSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")))
-    BIND (REPLACE(?statedAbsentReason, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") AS ?value)
-    FILTER (?value != "")
-    BIND (IRI(CONCAT(?stem, ENCODE_FOR_URI(?value))) AS ?absentReason)
-    FILTER NOT EXISTS { ?known skos:inScheme ccda:nullFlavors ; skos:exactMatch ?absentReason }
-    FILTER NOT EXISTS { ?absentReason skos:inScheme ccda:dataAbsentReasons }
-    FILTER NOT EXISTS {
-      { ?condition ?otherS ?otherCoding . ?otherCoding a v3:value }
+    {
+      { ?condition ?vS ?valueElement . ?valueElement a v3:value . BIND (?valueElement AS ?coding) }
       UNION
-      { ?condition ?otherS ?otherCoded . ?otherCoded a v3:value ; ?otherTrS ?otherCoding . ?otherCoding a v3:translation }
-      ?otherCoding xyz:code ?otherCode ; xyz:codeSystem ?otherSystem .
-      BIND (LCASE(REPLACE(REPLACE(?otherSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")) AS ?otherKey)
-      FILTER (?otherKey NOT IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
-      FILTER (REGEX(?otherKey, "^[0-2](\\.(0|[1-9][0-9]*))+$"))
-      FILTER (REPLACE(?otherCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") != "")
+      { ?condition ?vS ?valueElement . ?valueElement a v3:value ; ?trS ?coding . ?coding a v3:translation }
+      ?coding xyz:code ?statedAbsentReason ; xyz:codeSystem ?absentSystem .
+      ?system skos:inScheme ccda:codeSystems ; skos:notation ?systemKey ; void:uriSpace ?stem .
+      FILTER (?systemKey IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
+      FILTER (?systemKey = LCASE(REPLACE(REPLACE(?absentSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")))
+      BIND (REPLACE(?statedAbsentReason, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") AS ?value)
+      FILTER (?value != "")
+      BIND (IRI(CONCAT(?stem, ENCODE_FOR_URI(?value))) AS ?absentReason)
+      FILTER NOT EXISTS { ?known skos:inScheme ccda:nullFlavors ; skos:exactMatch ?absentReason }
+      FILTER NOT EXISTS { ?absentReason skos:inScheme ccda:dataAbsentReasons }
+      FILTER NOT EXISTS {
+        { ?condition ?otherS ?otherCoding . ?otherCoding a v3:value }
+        UNION
+        { ?condition ?otherS ?otherCoded . ?otherCoded a v3:value ; ?otherTrS ?otherCoding . ?otherCoding a v3:translation }
+        ?otherCoding xyz:code ?otherCode ; xyz:codeSystem ?otherSystem .
+        BIND (LCASE(REPLACE(REPLACE(?otherSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")) AS ?otherKey)
+        FILTER (?otherKey NOT IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
+        FILTER (REGEX(?otherKey, "^[0-2](\\.(0|[1-9][0-9]*))+$"))
+        FILTER (REPLACE(?otherCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") != "")
+      }
+      BIND (ccda:absentReasonNotCarried AS ?gap)
     }
     {
       # Once for the document, joined to each value by its key; document-table.rq says why.
@@ -250,10 +280,8 @@ WHERE {
                  IF(sameTerm(?coding, ?valueElement), "",
                     CONCAT("/*[local-name()='translation' and namespace-uri()='urn:hl7-org:v3'][", STR(?codingAt), "]")),
                  "/@code") AS ?codedStep)
-    BIND (ccda:absentReasonNotCarried AS ?gap)
   }
   FILTER (?gap != ccda:concernStatusNotMapped || !?statedStatus)
-  FILTER (?gap != ccda:concernStatusNotCarriedBesideUnmappedStatus || (?statedStatus && !?statedStatusMapped))
   BIND (CONCAT(IF(BOUND(?atAct),
                   CONCAT(STRBEFORE(?statementRefinement, "/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]"),
                          "/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]"),

@@ -1997,7 +1997,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-ProblemStatus.xml"
       },
-      "description": "SNOMED CT problem statuses to FHIR Condition clinical status codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "SNOMED CT problem statuses to FHIR Condition clinical status codes, each concept labelled with the code system's own label as skos:prefLabel and with another label in use as skos:altLabel (SNOMED CT International Edition 20260701, read on tx.fhir.org on 2026-11-26; 'Resolved' for 413322009 is the label C-CDA documents give it, not SNOMED CT's). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-concern-statuses.ttl",
@@ -2075,7 +2075,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-AllergyStatus.xml"
       },
-      "description": "SNOMED CT allergy statuses to FHIR AllergyIntolerance clinical status codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "SNOMED CT allergy statuses to FHIR AllergyIntolerance clinical status codes, each concept labelled with the code system's own label as skos:prefLabel and with another label in use as skos:altLabel (SNOMED CT International Edition 20260701, read on tx.fhir.org on 2026-11-26; 'Resolved' for 413322009 is the label C-CDA documents give it, not SNOMED CT's). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-allergy-intolerance-types.ttl",
@@ -2114,7 +2114,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-Criticality.xml"
       },
-      "description": "HL7 ObservationValue criticality codes to FHIR AllergyIntolerance criticality codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "HL7 ObservationValue criticality codes to FHIR AllergyIntolerance criticality codes, each concept labelled with the code system's own display as skos:prefLabel (HL7 v3 ObservationValue, read on tx.fhir.org on 2026-11-26). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-severities.ttl",
@@ -2127,7 +2127,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-Severity.xml"
       },
-      "description": "SNOMED CT severities to FHIR reaction severity codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "SNOMED CT severities to FHIR reaction severity codes, each concept labelled with the code system's own label as skos:prefLabel and with a synonym in use as skos:altLabel (SNOMED CT International Edition 20260701, read on tx.fhir.org on 2026-11-26). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-administrative-genders.ttl",
