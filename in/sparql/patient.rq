@@ -12,8 +12,8 @@ PREFIX sdtc:    <urn:hl7-org:sdtc>
 # The vocabulary holds one name, so the first given and the first family the
 # patient's names state, in document order, are carried. A birth or death time
 # is typed by its precision as every time is (allergy.rq), and a null flavour on
-# it or on the gender is the reason it is absent; a death time's only beside a
-# true indicator, since alone it states no death. A death time with a value is a
+# it or on the gender is the reason it is absent, a death time's beside any
+# indicator: it states the date of death absent, and no death. A death time with a value is a
 # death whatever the indicator says, as C-CDA on FHIR's Patient map reads them
 # (https://hl7.org/fhir/us/ccda/en/CF-patient.html, read 2026-10-29).
 
@@ -78,9 +78,6 @@ WHERE {
     ?patientRole ?pS ?patient . ?patient a v3:patient ; ?eS ?element .
     ?element a ?absentType ; xyz:nullFlavor ?flavour .
     FILTER NOT EXISTS { ?element ?statedAs ?stated }
-    FILTER (?absentType != sdtc:deceasedTime || EXISTS {
-      ?patient ?iS ?indicator . ?indicator a sdtc:deceasedInd ; xyz:value ?indicatorValue . FILTER (REPLACE(?indicatorValue, "^[ \t\r\n]+|[ \t\r\n]+$", "") = "true")
-    })
     ?flavourConcept skos:inScheme ccda:nullFlavors ; skos:notation ?flavourKey ; skos:exactMatch ?absentReason .
     FILTER (?flavourKey = LCASE(REPLACE(?flavour, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
     BIND (CONCAT("#absent-", STRAFTER(STR(?absentProperty), "#")) AS ?absentFragment)

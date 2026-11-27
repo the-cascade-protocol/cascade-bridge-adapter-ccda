@@ -253,6 +253,16 @@ WHERE {
           BIND ("1" AS ?tier)
           BIND (STRAFTER(STR(?xS), "#_") AS ?at)
         }
+        UNION
+        {
+          ?medication ?xS ?text . ?text a v3:text ; bridge:textWithElementBreaks ?value .
+          FILTER NOT EXISTS { ?text ?rfS ?reference . ?reference a v3:reference }
+          FILTER NOT EXISTS { ?text xyz:representation ?representation . FILTER (UCASE(?representation) = "B64") }
+          FILTER (REGEX(?value, "[^\\p{Z}\\p{Cc}\\p{Cf}]"))
+          BIND (cascade:narrativeText AS ?p)
+          BIND ("2" AS ?tier)
+          BIND (STRAFTER(STR(?xS), "#_") AS ?at)
+        }
         BIND (COALESCE(?within, "") AS ?inner)
         BIND (CONCAT(?tier, SUBSTR("0000000000", STRLEN(?at) + 1), ?at,
                      SUBSTR("00000000000000000000", STRLEN(?inner) + 1), ?inner, "|", ?value) AS ?ranked)

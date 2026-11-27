@@ -7,14 +7,17 @@ ccda:criticalities a skos:ConceptScheme ;
 ccda:criticalityHigh a skos:Concept ;
   skos:inScheme ccda:criticalities ;
   skos:notation "crith" ;
+  skos:prefLabel "high criticality"@en ;
   skos:exactMatch [ skos:notation "high" ; skos:inScheme <http://hl7.org/fhir/allergy-intolerance-criticality> ] .
 
 ccda:criticalityLow a skos:Concept ;
   skos:inScheme ccda:criticalities ;
   skos:notation "critl" ;
+  skos:prefLabel "low criticality"@en ;
   skos:exactMatch [ skos:notation "low" ; skos:inScheme <http://hl7.org/fhir/allergy-intolerance-criticality> ] .
 
 ccda:criticalityUnableToAssess a skos:Concept ;
   skos:inScheme ccda:criticalities ;
   skos:notation "critu" ;
+  skos:prefLabel "unable to assess criticality"@en ;
   skos:exactMatch [ skos:notation "unable-to-assess" ; skos:inScheme <http://hl7.org/fhir/allergy-intolerance-criticality> ] .

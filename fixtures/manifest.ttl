@@ -118,6 +118,10 @@
     <#narrative-breaks-in-blocks>
     <#results-report-beside-referenced-rows>
     <#statement-texts-referenced>
+    <#statement-texts-written-inline>
+    <#vaccine-codes-not-carried>
+    <#act-ids-wrapping-statements>
+    <#allergy-status-from-a-non-concern-act>
     <#section-text-partly-referenced>
     <#section-text-referenced-by-unmapped-entries>
     <#section-text-container-referenced>
@@ -133,6 +137,8 @@
     <#unstructured-document-header-partly-stated>
     <#section-text-referenced-by-untemplated-result>
     <#section-text-referenced-in-a-header-row>
+    <#report-status-not-mapped>
+    <#display-names-beside-carried-codes>
   ) .
 
 <#allergies-section> a bridge:IsomorphicConversionTest ;
@@ -1650,6 +1656,58 @@
     bridge:expectedFindings <findings/statement-texts-referenced.ttl>
   ] .
 
+<#statement-texts-written-inline> a bridge:IsomorphicConversionTest ;
+  mf:name "statement-texts-written-inline" ;
+  rdfs:comment "An immunization, an allergy, a problem, a medication, a procedure, a lab result and a report, each stating its text in the element itself, with no reference to the narrative: each carries it as its narrative text, as a referenced text is, and a second immunization whose text is a space carries none; no section states a text, so none makes a note." ;
+  mf:action [
+    bridge:input <in/statement-texts-written-inline.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/statement-texts-written-inline.ttl> ;
+    bridge:expectedFindings <findings/statement-texts-written-inline.ttl>
+  ] .
+
+<#vaccine-codes-not-carried> a bridge:IsomorphicConversionTest ;
+  mf:name "vaccine-codes-not-carried" ;
+  rdfs:comment "Five immunizations whose vaccine code is malformed, each reported as ccda:codeNotCarried and none carried: a code with no code system, a code system that is no OID, a code system with no code, a code of blanks, and a translation with no code system beside a CVX code, which is carried." ;
+  mf:action [
+    bridge:input <in/vaccine-codes-not-carried.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/vaccine-codes-not-carried.ttl> ;
+    bridge:expectedFindings <findings/vaccine-codes-not-carried.ttl>
+  ] .
+
+<#act-ids-wrapping-statements> a bridge:IsomorphicConversionTest ;
+  mf:name "act-ids-wrapping-statements" ;
+  rdfs:comment "Two acts that wrap the statement of a record, each with ids the record does not take: an allergy in an act with no concern template, and a Problem Concern Act of two problems with an id of a root and an extension, a root alone, an extension alone, and one that is a nullFlavor. Each id but the last is the finding ccda:concernActId, once, at its act and not for each problem." ;
+  mf:action [
+    bridge:input <in/act-ids-wrapping-statements.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/act-ids-wrapping-statements.ttl> ;
+    bridge:expectedFindings <findings/act-ids-wrapping-statements.ttl>
+  ] .
+
+<#allergy-status-from-a-non-concern-act> a bridge:IsomorphicConversionTest ;
+  mf:name "allergy-status-from-a-non-concern-act" ;
+  rdfs:comment "Three allergies with no Allergy Status Observation, each in an act whose statusCode is completed, which maps to inactive: an act coded PCPR with no concern template, an act coded CONC in the wrong code system (ActMood, not ActClass) with no template, and an act coded PCPR with the Allergy Concern Act template. Only the third is a concern act, so only its allergy has a clinical status; the other two have none, and ccda:allergyConcernStatusNotMapped is not reported for them, since a status read from nowhere is not a status outside the map." ;
+  mf:action [
+    bridge:input <in/allergy-status-from-a-non-concern-act.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/allergy-status-from-a-non-concern-act.ttl> ;
+    bridge:expectedFindings <findings/allergy-status-from-a-non-concern-act.ttl>
+  ] .
+
 <#section-text-partly-referenced> a bridge:IsomorphicConversionTest ;
   mf:name "section-text-partly-referenced" ;
   rdfs:comment "Four sections whose text entries reference in part. Immunizations: a run of text directly in the text, a table whose first row is referenced only by its vaccine's name, so the whole row goes with its other cells, and whose second row no entry references, so it stays with the table's caption and header; a list whose one item an immunization's text references, so the item is that immunization's narrative text and the list's caption goes; and ten paragraphs, two with the same text, kept in document order past the ninth slot. Allergies, Problems and Results: an allergy, a problem and a report each carry the element their text references, a problem's concern act's own text is read by no record, so the item it references stays in the Problems section's note, and the one unreferenced paragraph is the Results section's note." ;
@@ -1856,4 +1914,30 @@
   mf:result [
     bridge:expectedGraph <expected/entries-among-comments-and-stray-text.ttl> ;
     bridge:expectedFindings <findings/entries-among-comments-and-stray-text.ttl>
+  ] .
+
+<#report-status-not-mapped> a bridge:IsomorphicConversionTest ;
+  mf:name "report-status-not-mapped" ;
+  rdfs:comment "Three Result Organizers whose statusCode is completed, active and aborted. Only completed is in the concept map of report statuses, so the others carry no workflowStatus and each is reported as ccda:reportStatusNotMapped at its statusCode, valued as written; the results inside them are carried." ;
+  mf:action [
+    bridge:input <in/report-status-not-mapped.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/report-status-not-mapped.ttl> ;
+    bridge:expectedFindings <findings/report-status-not-mapped.ttl>
+  ] .
+
+<#display-names-beside-carried-codes> a bridge:IsomorphicConversionTest ;
+  mf:name "display-names-beside-carried-codes" ;
+  rdfs:comment "Display names beside status, criticality, severity and problem status codes the concept maps hold. A name that is the code's label, whatever its case or padding, is not reported: ' ACTIVE ' beside 55561003, 'High criticality' beside CRITH, 'Resolved' beside 413322009. A name that is not the code's label is ccda:observationValueDisplayNameNotCarried at the displayName: 'Mild' beside the severity 6736007 and 'Dormant' beside the problem status 73425007." ;
+  mf:action [
+    bridge:input <in/display-names-beside-carried-codes.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/display-names-beside-carried-codes.ttl> ;
+    bridge:expectedFindings <findings/display-names-beside-carried-codes.ttl>
   ] .

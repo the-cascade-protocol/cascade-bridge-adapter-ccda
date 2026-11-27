@@ -159,6 +159,9 @@
           "@id": "in/sparql/entry-findings.rq"
         },
         {
+          "@id": "in/sparql/concern-act-findings.rq"
+        },
+        {
           "@id": "in/sparql/allergy-findings.rq"
         },
         {
@@ -306,6 +309,9 @@
         },
         {
           "@id": "in/sparql/entry-findings.rq"
+        },
+        {
+          "@id": "in/sparql/concern-act-findings.rq"
         },
         {
           "@id": "in/sparql/allergy-findings.rq"
@@ -707,6 +713,12 @@
           "@id": "fixtures/in/section-text-referenced-by-untemplated-result.xml"
         },
         {
+          "@id": "fixtures/in/report-status-not-mapped.xml"
+        },
+        {
+          "@id": "fixtures/in/display-names-beside-carried-codes.xml"
+        },
+        {
           "@id": "fixtures/in/section-text-referenced-in-a-header-row.xml"
         },
         {
@@ -717,6 +729,18 @@
         },
         {
           "@id": "fixtures/in/statement-texts-referenced.xml"
+        },
+        {
+          "@id": "fixtures/in/statement-texts-written-inline.xml"
+        },
+        {
+          "@id": "fixtures/in/vaccine-codes-not-carried.xml"
+        },
+        {
+          "@id": "fixtures/in/act-ids-wrapping-statements.xml"
+        },
+        {
+          "@id": "fixtures/in/allergy-status-from-a-non-concern-act.xml"
         },
         {
           "@id": "fixtures/in/results-report-beside-referenced-rows.xml"
@@ -1238,6 +1262,12 @@
           "@id": "fixtures/expected/section-text-referenced-by-untemplated-result.ttl"
         },
         {
+          "@id": "fixtures/expected/report-status-not-mapped.ttl"
+        },
+        {
+          "@id": "fixtures/expected/display-names-beside-carried-codes.ttl"
+        },
+        {
           "@id": "fixtures/expected/section-text-referenced-in-a-header-row.ttl"
         },
         {
@@ -1248,6 +1278,18 @@
         },
         {
           "@id": "fixtures/expected/statement-texts-referenced.ttl"
+        },
+        {
+          "@id": "fixtures/expected/statement-texts-written-inline.ttl"
+        },
+        {
+          "@id": "fixtures/expected/vaccine-codes-not-carried.ttl"
+        },
+        {
+          "@id": "fixtures/expected/act-ids-wrapping-statements.ttl"
+        },
+        {
+          "@id": "fixtures/expected/allergy-status-from-a-non-concern-act.ttl"
         },
         {
           "@id": "fixtures/expected/results-report-beside-referenced-rows.ttl"
@@ -1301,6 +1343,12 @@
           "@id": "fixtures/findings/section-text-referenced-by-untemplated-result.ttl"
         },
         {
+          "@id": "fixtures/findings/report-status-not-mapped.ttl"
+        },
+        {
+          "@id": "fixtures/findings/display-names-beside-carried-codes.ttl"
+        },
+        {
           "@id": "fixtures/findings/section-text-referenced-in-a-header-row.ttl"
         },
         {
@@ -1311,6 +1359,18 @@
         },
         {
           "@id": "fixtures/findings/statement-texts-referenced.ttl"
+        },
+        {
+          "@id": "fixtures/findings/statement-texts-written-inline.ttl"
+        },
+        {
+          "@id": "fixtures/findings/vaccine-codes-not-carried.ttl"
+        },
+        {
+          "@id": "fixtures/findings/act-ids-wrapping-statements.ttl"
+        },
+        {
+          "@id": "fixtures/findings/allergy-status-from-a-non-concern-act.ttl"
         },
         {
           "@id": "fixtures/findings/results-report-beside-referenced-rows.ttl"
@@ -1670,12 +1730,12 @@
     {
       "@id": "in/sparql/section-findings.rq",
       "@type": "File",
-      "name": "Findings: sections not mapped",
+      "name": "Findings: sections not mapped, and titles not carried",
       "encodingFormat": "application/sparql-query",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "Each section whose templateIds name none this release maps, valued by its code."
+      "description": "Each section whose templateIds name none this release maps and from which no record is made, valued by its code, and the title of each carried section that makes no note, valued by its text."
     },
     {
       "@id": "in/sparql/entry-findings.rq",
@@ -1686,6 +1746,16 @@
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
       "description": "Each entry of a mapped section from which no record is made, valued by the least templateId root its statement claims."
+    },
+    {
+      "@id": "in/sparql/concern-act-findings.rq",
+      "@type": "File",
+      "name": "Findings: concern act ids not carried",
+      "encodingFormat": "application/sparql-query",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "Each id of an act that wraps the statement of a record, an Allergy Concern Act or a Problem Concern Act, addressed at the act, which no record carries: a record takes its statement's id."
     },
     {
       "@id": "in/sparql/allergy-findings.rq",
@@ -1745,7 +1815,7 @@
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "Each immunization, procedure or medication status outside the map its mapping reads it through, each vaccine code in a code system other than CVX, each code of a drug or a procedure with no code system, or one that is no OID, or no code, or blank, and each CPT code of a procedure after the first."
+      "description": "Each immunization, procedure or medication status outside the map its mapping reads it through, each vaccine code in a code system other than CVX, each code of a vaccine, a drug or a procedure with no code system, or one that is no OID, or no code, or blank, and each CPT code of a procedure after the first."
     },
     {
       "@id": "in/sparql/medication.rq",
@@ -1927,7 +1997,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-ProblemStatus.xml"
       },
-      "description": "SNOMED CT problem statuses to FHIR Condition clinical status codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "SNOMED CT problem statuses to FHIR Condition clinical status codes, each concept labelled with the code system's own label as skos:prefLabel and with another label in use as skos:altLabel (SNOMED CT International Edition 20260701, read on tx.fhir.org on 2026-11-26; 'Resolved' for 413322009 is the label C-CDA documents give it, not SNOMED CT's). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-concern-statuses.ttl",
@@ -2005,7 +2075,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-AllergyStatus.xml"
       },
-      "description": "SNOMED CT allergy statuses to FHIR AllergyIntolerance clinical status codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "SNOMED CT allergy statuses to FHIR AllergyIntolerance clinical status codes, each concept labelled with the code system's own label as skos:prefLabel and with another label in use as skos:altLabel (SNOMED CT International Edition 20260701, read on tx.fhir.org on 2026-11-26; 'Resolved' for 413322009 is the label C-CDA documents give it, not SNOMED CT's). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-allergy-intolerance-types.ttl",
@@ -2044,7 +2114,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-Criticality.xml"
       },
-      "description": "HL7 ObservationValue criticality codes to FHIR AllergyIntolerance criticality codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "HL7 ObservationValue criticality codes to FHIR AllergyIntolerance criticality codes, each concept labelled with the code system's own display as skos:prefLabel (HL7 v3 ObservationValue, read on tx.fhir.org on 2026-11-26). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-severities.ttl",
@@ -2057,7 +2127,7 @@
       "isBasedOn": {
         "@id": "https://github.com/HL7/ccda-on-fhir/blob/2ecc324bb9225a76f321b2df01e6515dec9bcc3a/input/maps/ConceptMap-CF-Severity.xml"
       },
-      "description": "SNOMED CT severities to FHIR reaction severity codes. Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
+      "description": "SNOMED CT severities to FHIR reaction severity codes, each concept labelled with the code system's own label as skos:prefLabel and with a synonym in use as skos:altLabel (SNOMED CT International Edition 20260701, read on tx.fhir.org on 2026-11-26). Transcribed from HL7's C-CDA on FHIR concept map at the isBasedOn URL, read on 2026-10-07: each row HL7 marks equivalent, as a skos:exactMatch of the FHIR code and its system, or a skos:broadMatch where several rows lead to one code."
     },
     {
       "@id": "vocab/ccda-administrative-genders.ttl",
@@ -3206,6 +3276,28 @@
       "description": "A Result Organizer holding a Result Observation, whose text references the first row of the section's table, and a component with no templateId, whose text references the second. Authored here on 2026-11-04, for a case the conformance corpus does not hold; it validates against the CDA schema."
     },
     {
+      "@id": "fixtures/in/report-status-not-mapped.xml",
+      "@type": "File",
+      "name": "C-CDA: report-status-not-mapped",
+      "encodingFormat": "application/cda+xml",
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "report-code-translation.xml's header under another document id, and a Results section of three Result Organizers whose statusCode is completed, active and aborted, each with one result observation. LOINC codes read on tx.fhir.org, 2026-11-26. Authored here on 2026-11-26, for a case the conformance corpus does not hold; it validates against the CDA schema."
+    },
+    {
+      "@id": "fixtures/in/display-names-beside-carried-codes.xml",
+      "@type": "File",
+      "name": "C-CDA: display-names-beside-carried-codes",
+      "encodingFormat": "application/cda+xml",
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "report-code-translation.xml's header under another document id, an Allergies section holding an Allergy Intolerance Observation (RxNorm 7980, read on RxNav 2026-11-26) with a status, a criticality and a severity observation, and a Problems section of two Problem Observations each with a Problem Status Observation, the display names beside each of those codes being the code's label in the concept map, bar two that are not. Codes read on tx.fhir.org, 2026-11-26. Authored here on 2026-11-26, for a case the conformance corpus does not hold; it validates against the CDA schema."
+    },
+    {
       "@id": "fixtures/in/section-text-referenced-in-a-header-row.xml",
       "@type": "File",
       "name": "C-CDA: section-text-referenced-in-a-header-row",
@@ -3248,6 +3340,50 @@
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
       "description": "The Medications, Procedures and Encounters sections of a hospital summary a synthetic patient's portal download holds (cascade-runtime-js packages/evals, priya-natarajan, kestrel-harbor-health-summary-5.xml), trimmed to one medication and one procedure. Copied and trimmed here on 2026-11-02, for a case the conformance corpus does not hold; synthetic, it names no real person."
+    },
+    {
+      "@id": "fixtures/in/statement-texts-written-inline.xml",
+      "@type": "File",
+      "name": "C-CDA: statement-texts-written-inline",
+      "encodingFormat": "application/cda+xml",
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "note-activity.xml's header under another document id, and sections with no text holding an immunization, an allergy, a problem, a medication, a procedure, a lab result in a Result Organizer and the organizer's sdtc:text, each stating its text in the element itself, and a second immunization whose text is a space. Codes read on NLM Clinical Tables, RxNav, CDC's CVX list and tx.fhir.org, 2026-11-26. Authored here on 2026-11-26, for a case the conformance corpus does not hold; it validates against the CDA schema."
+    },
+    {
+      "@id": "fixtures/in/vaccine-codes-not-carried.xml",
+      "@type": "File",
+      "name": "C-CDA: vaccine-codes-not-carried",
+      "encodingFormat": "application/cda+xml",
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "statement-texts-written-inline.xml's header under another document id, and an Immunizations section of five Immunization Activities whose vaccine code is a code with no code system, a code of 141 in the system CVX, a CVX code system with no code, a code of two spaces in CVX's OID, and CVX 133 with a translation that has no code system. CVX codes read on CDC's CVX list, 2026-11-26; the OID is the one the mappings read CVX by. Authored here on 2026-11-26, for a case the conformance corpus does not hold; it validates against the CDA schema bar the code of two spaces, a malformed value the case is about."
+    },
+    {
+      "@id": "fixtures/in/act-ids-wrapping-statements.xml",
+      "@type": "File",
+      "name": "C-CDA: act-ids-wrapping-statements",
+      "encodingFormat": "application/cda+xml",
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "statement-texts-written-inline.xml's header under another document id, an Allergies section holding an Allergy Intolerance Observation (RxNorm 7980, read on RxNav 2026-11-26) in an act with an id and no concern template, and a Problems section holding a Problem Concern Act with four ids and two Problem Observations (SNOMED CT 59621000 and 55822004, read on tx.fhir.org 2026-11-26). Authored here on 2026-11-26, for a case the conformance corpus does not hold; it validates against the CDA schema."
+    },
+    {
+      "@id": "fixtures/in/allergy-status-from-a-non-concern-act.xml",
+      "@type": "File",
+      "name": "C-CDA: allergy-status-from-a-non-concern-act",
+      "encodingFormat": "application/cda+xml",
+      "dateCreated": "2026-11-27",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "act-ids-wrapping-statements.xml's header under another document id, and an Allergies section of three Allergy Intolerance Observations (RxNorm 7980, 1191 and 2670, read on RxNav 2026-11-26) with no Allergy Status Observation, in an act coded PCPR with no concern template, an act coded CONC in the wrong code system with no template, and an act coded PCPR with the Allergy Concern Act template. Authored here on 2026-11-27, for a case the conformance corpus does not hold; it validates against the CDA schema."
     },
     {
       "@id": "fixtures/in/results-report-beside-referenced-rows.xml",
@@ -3457,6 +3593,34 @@
       "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
     },
     {
+      "@id": "fixtures/expected/report-status-not-mapped.ttl",
+      "@type": "File",
+      "name": "Expected graph for report-status-not-mapped",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/report-status-not-mapped.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
+    },
+    {
+      "@id": "fixtures/expected/display-names-beside-carried-codes.ttl",
+      "@type": "File",
+      "name": "Expected graph for display-names-beside-carried-codes",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/display-names-beside-carried-codes.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
+    },
+    {
       "@id": "fixtures/expected/section-text-referenced-in-a-header-row.ttl",
       "@type": "File",
       "name": "Expected graph for section-text-referenced-in-a-header-row",
@@ -3507,6 +3671,62 @@
         "@id": "fixtures/in/statement-texts-referenced.xml"
       },
       "dateCreated": "2026-11-02",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
+    },
+    {
+      "@id": "fixtures/expected/statement-texts-written-inline.ttl",
+      "@type": "File",
+      "name": "Expected graph for statement-texts-written-inline",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/statement-texts-written-inline.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
+    },
+    {
+      "@id": "fixtures/expected/vaccine-codes-not-carried.ttl",
+      "@type": "File",
+      "name": "Expected graph for vaccine-codes-not-carried",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/vaccine-codes-not-carried.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
+    },
+    {
+      "@id": "fixtures/expected/act-ids-wrapping-statements.ttl",
+      "@type": "File",
+      "name": "Expected graph for act-ids-wrapping-statements",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/act-ids-wrapping-statements.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "The records layer cascade-bridge-rs convert --out produces from the input it is about and the facts its test entry supplies, regenerated by the Bridge and committed unedited, never written by hand; its record names recomputed from each rule's inputs by cascade-vocabulary's tests/naming.py, and its version names checked against the hash of their own triples."
+    },
+    {
+      "@id": "fixtures/expected/allergy-status-from-a-non-concern-act.ttl",
+      "@type": "File",
+      "name": "Expected graph for allergy-status-from-a-non-concern-act",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/allergy-status-from-a-non-concern-act.xml"
+      },
+      "dateCreated": "2026-11-27",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
@@ -3723,6 +3943,34 @@
       "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
     },
     {
+      "@id": "fixtures/findings/report-status-not-mapped.ttl",
+      "@type": "File",
+      "name": "Expected findings for report-status-not-mapped",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/report-status-not-mapped.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
+    },
+    {
+      "@id": "fixtures/findings/display-names-beside-carried-codes.ttl",
+      "@type": "File",
+      "name": "Expected findings for display-names-beside-carried-codes",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/display-names-beside-carried-codes.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
+    },
+    {
       "@id": "fixtures/findings/section-text-referenced-in-a-header-row.ttl",
       "@type": "File",
       "name": "Expected findings for section-text-referenced-in-a-header-row",
@@ -3773,6 +4021,62 @@
         "@id": "fixtures/in/statement-texts-referenced.xml"
       },
       "dateCreated": "2026-11-02",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
+    },
+    {
+      "@id": "fixtures/findings/statement-texts-written-inline.ttl",
+      "@type": "File",
+      "name": "Expected findings for statement-texts-written-inline",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/statement-texts-written-inline.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
+    },
+    {
+      "@id": "fixtures/findings/vaccine-codes-not-carried.ttl",
+      "@type": "File",
+      "name": "Expected findings for vaccine-codes-not-carried",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/vaccine-codes-not-carried.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
+    },
+    {
+      "@id": "fixtures/findings/act-ids-wrapping-statements.ttl",
+      "@type": "File",
+      "name": "Expected findings for act-ids-wrapping-statements",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/act-ids-wrapping-statements.xml"
+      },
+      "dateCreated": "2026-11-26",
+      "license": {
+        "@id": "https://spdx.org/licenses/Apache-2.0"
+      },
+      "description": "cascade-bridge-rs convert --findings over the input it is about, with the facts its test entry supplies, committed unedited; each finding reviewed against in/sparql/ and the gap scheme."
+    },
+    {
+      "@id": "fixtures/findings/allergy-status-from-a-non-concern-act.ttl",
+      "@type": "File",
+      "name": "Expected findings for allergy-status-from-a-non-concern-act",
+      "encodingFormat": "text/turtle",
+      "about": {
+        "@id": "fixtures/in/allergy-status-from-a-non-concern-act.xml"
+      },
+      "dateCreated": "2026-11-27",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },

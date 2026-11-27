@@ -1,4 +1,5 @@
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 PREFIX sh:     <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
@@ -10,12 +11,15 @@ PREFIX bridge: <https://ns.cascadeprotocol.org/bridge/v1-draft#>
 PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 
 # A status an immunization, a procedure or a medication states that the
-# concept map its mapping reads it through does not hold; a vaccine's code in a
-# code system no predicate of an immunization carries; a code of a drug or a
-# procedure with no code system, or a code system that is no OID, or no code, or
-# a code of blanks; and a nullFlavor on its time or a
+# concept map its mapping reads it through does not hold, at the status's
+# code; a code of a vaccine, a
+# drug or a procedure with no code system, or a code system that is no OID, or no
+# code, or a code of blanks, and a vaccine's code in a code system no predicate
+# of an immunization carries; and a nullFlavor on its time or a
 # bound of it that is no NullFlavor code. A statement whose negationInd is true is
-# not-done whatever its statusCode says.
+# not-done whatever its statusCode says. And an absent reason of a procedure's
+# code or a translation that no list defines, where no other code of it is
+# carried: reported at the code that states it.
 
 CONSTRUCT {
   [] a oa:Annotation ;
@@ -38,31 +42,28 @@ WHERE {
           STRAFTER(STR(?outerSlot), "#_"), ".", STRAFTER(STR(?bodySlot), "#_"), ".",
           STRAFTER(STR(?componentSlot), "#_"), ".", STRAFTER(STR(?sectionSlot), "#_"), ".",
           STRAFTER(STR(?entrySlot), "#_"), ".", STRAFTER(STR(?statementSlot), "#_")) AS ?slots)
-  ?row ccda:statementAt ?slots ; ccda:recordClass ?class ; ccda:refinement ?refinement .
+  ?row ccda:statementAt ?slots ; ccda:recordClass ?class ; ccda:refinement ?statementRefinement .
   {
-    ?statement ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
-    VALUES (?class ?scheme ?gap) {
-      ("Immunization" ccda:immunizationStatuses ccda:immunizationStatusNotMapped)
-      ("Procedure"    ccda:procedureStatuses    ccda:procedureStatusNotMapped)
-      ("MedicationRequest" ccda:medicationStatuses ccda:medicationStatusNotMapped)
+    {
+      ?statement ?sS ?status . ?status a v3:statusCode ; xyz:code ?value .
+      VALUES (?class ?scheme ?gap) {
+        ("Immunization" ccda:immunizationStatuses ccda:immunizationStatusNotMapped)
+        ("Procedure"    ccda:procedureStatuses    ccda:procedureStatusNotMapped)
+        ("MedicationRequest" ccda:medicationStatuses ccda:medicationStatusNotMapped)
+      }
+      FILTER NOT EXISTS { ?statement xyz:negationInd "true" }
+      FILTER NOT EXISTS {
+        ?concept skos:inScheme ?scheme ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      }
     }
-    FILTER NOT EXISTS { ?statement xyz:negationInd "true" }
-    FILTER NOT EXISTS {
-      ?concept skos:inScheme ?scheme ; skos:notation ?key .
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+    {
+      SELECT (?rankedStatus AS ?status) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
     }
-  }
-  UNION
-  {
-    ?statement ?cnS ?consumable . ?consumable a v3:consumable ; ?mpS ?product .
-    ?product a v3:manufacturedProduct ; ?mmS ?material . ?material a v3:manufacturedMaterial ; ?cS ?code .
-    ?code a v3:code .
-    VALUES ?class { "Immunization" }
-    { ?code xyz:codeSystem ?value . }
-    UNION
-    { ?code ?trS ?translation . ?translation a v3:translation ; xyz:codeSystem ?value . }
-    FILTER (REPLACE(?value, "^urn:oid:", "") != "2.16.840.1.113883.12.292")
-    BIND (ccda:codeNotCarried AS ?gap)
   }
   UNION
   {
@@ -72,7 +73,7 @@ WHERE {
       { ?material ?cS ?coding . ?coding a v3:code }
       UNION
       { ?material ?cS ?code . ?code a v3:code ; ?trS ?coding . ?coding a v3:translation }
-      BIND ("MedicationRequest" AS ?class)
+      VALUES ?class { "MedicationRequest" "Immunization" }
     }
     UNION
     {
@@ -85,7 +86,8 @@ WHERE {
     OPTIONAL { ?coding xyz:codeSystem ?statedSystem }
     FILTER (BOUND(?statedCode) || BOUND(?statedSystem))
     BIND (LCASE(REPLACE(REPLACE(?statedSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")) AS ?statedKey)
-    FILTER (!BOUND(?statedCode) || !BOUND(?statedSystem) || !REGEX(?statedKey, "^[0-2](\\.(0|[1-9][0-9]*))+$") || REPLACE(?statedCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") = "")
+    FILTER (!BOUND(?statedCode) || !BOUND(?statedSystem) || !REGEX(?statedKey, "^[0-2](\\.(0|[1-9][0-9]*))+$") || REPLACE(?statedCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") = ""
+           || (?class = "Immunization" && REPLACE(?statedSystem, "^urn:oid:", "") != "2.16.840.1.113883.12.292"))
     BIND (COALESCE(?statedSystem, ?statedCode) AS ?value)
     BIND (ccda:codeNotCarried AS ?gap)
   }
@@ -114,29 +116,52 @@ WHERE {
   }
   UNION
   {
-    { ?statement ?cS ?coding . ?coding a v3:code }
-    UNION
-    { ?statement ?cS ?coded . ?coded a v3:code ; ?trS ?coding . ?coding a v3:translation }
-    VALUES ?class { "Procedure" }
-    ?coding xyz:code ?statedAbsentReason ; xyz:codeSystem ?absentSystem .
-    ?system skos:inScheme ccda:codeSystems ; skos:notation ?systemKey ; void:uriSpace ?stem .
-    FILTER (?systemKey IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
-    FILTER (?systemKey = LCASE(REPLACE(REPLACE(?absentSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")))
-    BIND (REPLACE(?statedAbsentReason, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") AS ?value)
-    FILTER (?value != "")
-    BIND (IRI(CONCAT(?stem, ENCODE_FOR_URI(?value))) AS ?absentReason)
-    FILTER NOT EXISTS { ?known skos:inScheme ccda:nullFlavors ; skos:exactMatch ?absentReason }
-    FILTER NOT EXISTS { ?absentReason skos:inScheme ccda:dataAbsentReasons }
-    FILTER NOT EXISTS {
-      { ?statement ?otherS ?otherCoding . ?otherCoding a v3:code }
+    {
+      { ?statement ?cS ?codeElement . ?codeElement a v3:code . BIND (?codeElement AS ?coding) }
       UNION
-      { ?statement ?otherS ?otherCoded . ?otherCoded a v3:code ; ?otherTrS ?otherCoding . ?otherCoding a v3:translation }
-      ?otherCoding xyz:code ?otherCode ; xyz:codeSystem ?otherSystem .
-      BIND (LCASE(REPLACE(REPLACE(?otherSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")) AS ?otherKey)
-      FILTER (?otherKey NOT IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
-      FILTER (REGEX(?otherKey, "^[0-2](\\.(0|[1-9][0-9]*))+$"))
-      FILTER (REPLACE(?otherCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") != "")
+      { ?statement ?cS ?codeElement . ?codeElement a v3:code ; ?trS ?coding . ?coding a v3:translation }
+      VALUES ?class { "Procedure" }
+      ?coding xyz:code ?statedAbsentReason ; xyz:codeSystem ?absentSystem .
+      ?system skos:inScheme ccda:codeSystems ; skos:notation ?systemKey ; void:uriSpace ?stem .
+      FILTER (?systemKey IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
+      FILTER (?systemKey = LCASE(REPLACE(REPLACE(?absentSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")))
+      BIND (REPLACE(?statedAbsentReason, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") AS ?value)
+      FILTER (?value != "")
+      BIND (IRI(CONCAT(?stem, ENCODE_FOR_URI(?value))) AS ?absentReason)
+      FILTER NOT EXISTS { ?known skos:inScheme ccda:nullFlavors ; skos:exactMatch ?absentReason }
+      FILTER NOT EXISTS { ?absentReason skos:inScheme ccda:dataAbsentReasons }
+      FILTER NOT EXISTS {
+        { ?statement ?otherS ?otherCoding . ?otherCoding a v3:code }
+        UNION
+        { ?statement ?otherS ?otherCoded . ?otherCoded a v3:code ; ?otherTrS ?otherCoding . ?otherCoding a v3:translation }
+        ?otherCoding xyz:code ?otherCode ; xyz:codeSystem ?otherSystem .
+        BIND (LCASE(REPLACE(REPLACE(?otherSystem, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "^urn:oid:", "", "i")) AS ?otherKey)
+        FILTER (?otherKey NOT IN ("2.16.840.1.113883.5.1008", "2.16.840.1.113883.4.642.4.1048"))
+        FILTER (REGEX(?otherKey, "^[0-2](\\.(0|[1-9][0-9]*))+$"))
+        FILTER (REPLACE(?otherCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") != "")
+      }
+      BIND (ccda:absentReasonNotCarried AS ?gap)
     }
-    BIND (ccda:absentReasonNotCarried AS ?gap)
+    {
+      # Once for the document, joined to each code by its key; document-table.rq says why.
+      SELECT (?rankedCode AS ?codeElement) (COUNT(?earlierCode) AS ?codeAt) WHERE {
+        ?codeParent ?codeS ?rankedCode . ?rankedCode a v3:code .
+        ?codeParent ?codeE ?earlierCode . ?earlierCode a v3:code .
+        FILTER (xsd:integer(STRAFTER(STR(?codeE), "#_")) <= xsd:integer(STRAFTER(STR(?codeS), "#_")))
+      } GROUP BY ?rankedCode
+    }
+    {
+      SELECT (?rankedCoding AS ?coding) (COUNT(?earlierCoding) AS ?codingAt) WHERE {
+        ?codingParent ?codingPS ?rankedCoding . ?rankedCoding a ?codingType .
+        ?codingParent ?codingPE ?earlierCoding . ?earlierCoding a ?codingType .
+        VALUES ?codingType { v3:code v3:translation }
+        FILTER (xsd:integer(STRAFTER(STR(?codingPE), "#_")) <= xsd:integer(STRAFTER(STR(?codingPS), "#_")))
+      } GROUP BY ?rankedCoding
+    }
+    BIND (CONCAT("/*[local-name()='code' and namespace-uri()='urn:hl7-org:v3'][", STR(?codeAt), "]",
+                 IF(sameTerm(?coding, ?codeElement), "",
+                    CONCAT("/*[local-name()='translation' and namespace-uri()='urn:hl7-org:v3'][", STR(?codingAt), "]")),
+                 "/@code") AS ?codedStep)
   }
+  BIND (CONCAT(?statementRefinement, COALESCE(?codedStep, "")) AS ?refinement)
 }

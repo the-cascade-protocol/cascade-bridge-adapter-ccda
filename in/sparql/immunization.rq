@@ -96,8 +96,10 @@ WHERE {
           { ?material ?cS ?coding . ?coding a v3:code . BIND ("1" AS ?tier) }
           UNION
           { ?material ?cS ?code . ?code a v3:code ; ?trS ?coding . ?coding a v3:translation . BIND ("2" AS ?tier) BIND (STRAFTER(STR(?trS), "#_") AS ?within) }
-          ?coding xyz:code ?value ; xyz:codeSystem ?codeSystem .
+          ?coding xyz:code ?stated ; xyz:codeSystem ?codeSystem .
           FILTER (REPLACE(?codeSystem, "^urn:oid:", "") = "2.16.840.1.113883.12.292")
+          BIND (REPLACE(?stated, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "") AS ?value)
+          FILTER (?value != "")
           BIND (cascade:vaccineCode AS ?p)
         }
         UNION
@@ -181,6 +183,16 @@ WHERE {
         }
         BIND (cascade:narrativeText AS ?p)
         BIND ("1" AS ?tier)
+        BIND (STRAFTER(STR(?xS), "#_") AS ?at)
+      }
+      UNION
+      {
+        ?immunization ?xS ?text . ?text a v3:text ; bridge:textWithElementBreaks ?value .
+        FILTER NOT EXISTS { ?text ?rfS ?reference . ?reference a v3:reference }
+        FILTER NOT EXISTS { ?text xyz:representation ?representation . FILTER (UCASE(?representation) = "B64") }
+        FILTER (REGEX(?value, "[^\\p{Z}\\p{Cc}\\p{Cf}]"))
+        BIND (cascade:narrativeText AS ?p)
+        BIND ("2" AS ?tier)
         BIND (STRAFTER(STR(?xS), "#_") AS ?at)
       }
       BIND (COALESCE(?within, "") AS ?inner)

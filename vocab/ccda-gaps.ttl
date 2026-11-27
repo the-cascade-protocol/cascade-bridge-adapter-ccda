@@ -9,13 +9,18 @@ ccda:gaps a skos:ConceptScheme ;
 ccda:sectionNotMapped a skos:Concept ;
   skos:prefLabel "A section is of a kind this release of the adapter does not map, and nothing in it is carried."@en ;
   skos:inScheme ccda:gaps ;
-  skos:broader bridge:valueNotMapped ;
+  skos:broader bridge:elementNotCarried ;
   sh:resultSeverity sh:Warning .
+
+ccda:sectionTitleNotCarried a skos:Concept ;
+  skos:prefLabel "A section's title is carried only as the title of the note the section makes. A section that holds a Note Activity and makes no note itself, because its entries reference all of its text or it states none, carries its title nowhere, and this says so; a Note Activity's title is its own. A section that holds no Note Activity and makes no note is not reported: its title repeats what the classes of its records say, as its code does, and is left out."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
 
 ccda:entryNotMapped a skos:Concept ;
   skos:prefLabel "An entry of a mapped section holds no statement this release of the adapter reads, where it reads one, and nothing in it is carried."@en ;
   skos:inScheme ccda:gaps ;
-  skos:broader bridge:valueNotMapped ;
+  skos:broader bridge:elementNotCarried ;
   sh:resultSeverity sh:Warning .
 
 ccda:entryIdRepeated a skos:Concept ;
@@ -92,7 +97,7 @@ ccda:procedureStatusNotMapped a skos:Concept ;
   skos:broader bridge:valueNotMapped .
 
 ccda:codeNotCarried a skos:Concept ;
-  skos:prefLabel "A code is stated with no code system, or with one that is no OID, or a code system is stated with no code; or an immunization's code or a result's interpretation is stated in a code system no Cascade predicate of it carries. It is not carried."@en ;
+  skos:prefLabel "A code is stated with no code system, or with one that is no OID, or a code system is stated with no code, or a code of blanks; or an immunization's code or a result's interpretation is stated in a code system no Cascade predicate of it carries. It is not carried."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:carriedWithLoss .
 
@@ -100,6 +105,21 @@ ccda:concernStatusNotMapped a skos:Concept ;
   skos:prefLabel "A problem states no status of its own, and its concern act a status outside the concept map of concern statuses, so no status is carried."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:valueNotMapped .
+
+ccda:concernStatusNotCarriedBesideUnmappedStatus a skos:Concept ;
+  skos:prefLabel "A problem or an allergy states a status of its own that the concept map does not hold, so no status is carried and the status its concern act states is not read: a concern act's status is read only where the statement states none."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
+
+ccda:actStatusNotCarried a skos:Concept ;
+  skos:prefLabel "An act that wraps the statement of an allergy and is no concern act, one with neither the Allergy Concern Act template nor the code CONC, states a status, and it is the act's, not the allergy's, so no status is carried for the allergy from it."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
+
+ccda:observationValueDisplayNameNotCarried a skos:Concept ;
+  skos:prefLabel "A status, criticality or severity observation of an allergy, or a problem's status observation, states a display name for its value that no Cascade predicate carries, and that tells more than its code: the code is not one the concept map holds, or the name is not a label the map gives that code."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
 
 ccda:documentId a skos:Concept ;
   skos:prefLabel "A document states an id that no note carries: an unstructured document's note takes it as its master identifier, and as its source record id where the document states no setId, from an id that has no nullFlavor and a root that is an OID or a UUID, and a structured document makes no note of the document."@en ;
@@ -161,6 +181,11 @@ ccda:concernTime a skos:Concept ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:noPredicate .
 
+ccda:concernActId a skos:Concept ;
+  skos:prefLabel "An act that wraps the statement a record is made from, an Allergy Concern Act or a Problem Concern Act, states an id, and no Cascade term carries it: the record takes the wrapped statement's id; a Note Activity's own id is carried."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
+
 ccda:codedRouteAndSite a skos:Concept ;
   skos:prefLabel "A route or site is coded, and no Cascade predicate carries the code; an immunization's display name is carried, and a medication's is not."@en ;
   skos:inScheme ccda:gaps ;
@@ -183,6 +208,11 @@ ccda:structuredDosage a skos:Concept ;
 
 ccda:resultStatusNotMapped a skos:Concept ;
   skos:prefLabel "A result states a status outside the concept map of result statuses, and it is not carried."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:valueNotMapped .
+
+ccda:reportStatusNotMapped a skos:Concept ;
+  skos:prefLabel "A result organizer states a status outside the concept map of report statuses, and it is not carried."@en ;
   skos:inScheme ccda:gaps ;
   skos:broader bridge:valueNotMapped .
 
@@ -211,7 +241,7 @@ ccda:resultNumberRefused a skos:Concept ;
 ccda:resultComponentNotMapped a skos:Concept ;
   skos:prefLabel "A result organizer holds a component that is no result observation, and nothing in it is carried."@en ;
   skos:inScheme ccda:gaps ;
-  skos:broader bridge:valueNotMapped ;
+  skos:broader bridge:elementNotCarried ;
   sh:resultSeverity sh:Warning .
 
 ccda:onlyFirstCarried a skos:Concept ;
@@ -257,7 +287,7 @@ ccda:medicationAuthor a skos:Concept ;
 ccda:listedMedicationAuthorTime a skos:Concept ;
   skos:prefLabel "The time the author of a listed medication, one of what the person takes, states is when the entry was recorded, not when a prescription was written, and no Cascade predicate carries it."@en ;
   skos:inScheme ccda:gaps ;
-  skos:broader bridge:noPredicate .
+  skos:broader bridge:carriedWithLoss .
 
 ccda:noteDataNotRead a skos:Concept ;
   skos:prefLabel "A note's text, a Note Activity's or an unstructured document's body, is base64 data that is not plain text, a PDF, RTF or HTML among them, or that cannot be decoded, or a file the document only references, so no narrative text is carried for it; its media type, and a referenced file's address, are carried as its attachment's, and its bytes stay in the kept document or at that address."@en ;

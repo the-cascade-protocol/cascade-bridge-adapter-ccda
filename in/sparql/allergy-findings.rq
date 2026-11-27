@@ -1,4 +1,5 @@
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 PREFIX sh:     <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
@@ -12,9 +13,15 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 # does not hold, or holds in another code system, and an NDC, which the map
 # holds for medications and allergy.rq never writes. A path holds the values of every observation an allergy nests,
 # so the accounting cannot name the map; this does, by template. And a nullFlavor
-# on its time or a bound of it that is no NullFlavor code. And a status its Allergy Concern Act states
-# that the concept map allergy.rq falls back on does not hold, where the allergy
-# states no Allergy Status Observation.
+# on its time or a bound of it that is no NullFlavor code. And a status the concern act that wraps the allergy
+# states, that the concept map allergy.rq falls back on does not hold, where the allergy
+# states no Allergy Status Observation; and the status of that act where the allergy states an
+# Allergy Status Observation whose code no map holds, which is then read from nowhere; and the status of an act
+# that wraps the allergy and is no concern act, which is not the allergy's. The display name of a status,
+# criticality or severity observation's value, where the map does not hold its code or gives the code no
+# such label, which is carried nowhere. Each is reported at the attribute
+# that states it: the allergy's own coded value and each nested observation's at its value, the
+# act's status at its statusCode.
 
 CONSTRUCT {
   [] a oa:Annotation ;
@@ -52,53 +59,285 @@ WHERE {
           STRAFTER(STR(?outerSlot), "#_"), ".", STRAFTER(STR(?bodySlot), "#_"), ".",
           STRAFTER(STR(?componentSlot), "#_"), ".", STRAFTER(STR(?sectionSlot), "#_"), ".",
           STRAFTER(STR(?entrySlot), "#_"), ".", STRAFTER(STR(?actSlot), "#_"), ".", ?innerSlots) AS ?slots)
-  ?row ccda:statementAt ?slots ; ccda:refinement ?refinement .
+  ?row ccda:statementAt ?slots ; ccda:refinement ?statementRefinement .
   {
-    ?allergy ?vS ?coded . ?coded a v3:value ; xyz:code ?value .
-    OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
-    FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.6.96" || NOT EXISTS {
-      ?concept skos:inScheme ?scheme ; skos:notation ?key .
-      FILTER (?scheme IN (ccda:allergyIntoleranceTypes, ccda:allergyIntoleranceCategories))
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
-    })
-    BIND (ccda:allergyTypeNotMapped AS ?gap)
+    {
+      ?allergy ?vS ?coded . ?coded a v3:value ; xyz:code ?value .
+      OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
+      FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != "2.16.840.1.113883.6.96" || NOT EXISTS {
+        ?concept skos:inScheme ?scheme ; skos:notation ?key .
+        FILTER (?scheme IN (ccda:allergyIntoleranceTypes, ccda:allergyIntoleranceCategories))
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      })
+      BIND (ccda:allergyTypeNotMapped AS ?gap)
+    }
+    {
+      # Once for the document, joined to each value by its key; document-table.rq says why.
+      SELECT (?rankedValue AS ?coded) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    BIND (CONCAT("/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@code") AS ?codedStep)
   }
   UNION
   {
-    ?allergy (!rdf:type)+ ?observation .
-    ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
-    ?ot a v3:templateId ; xyz:root ?nested .
-    ?coded a v3:value ; xyz:code ?value .
-    OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
-    VALUES (?nested ?scheme ?gap ?system) {
-      ("2.16.840.1.113883.10.20.22.4.28"  ccda:allergyStatuses ccda:allergyStatusNotMapped "2.16.840.1.113883.6.96")
-      ("2.16.840.1.113883.10.20.22.4.145" ccda:criticalities   ccda:criticalityNotMapped   "2.16.840.1.113883.5.1063")
-      ("2.16.840.1.113883.10.20.22.4.8"   ccda:severities      ccda:severityNotMapped      "2.16.840.1.113883.6.96")
+    {
+      ?allergy ?rS ?innerRelationship . ?innerRelationship a v3:entryRelationship ; ?oS ?observation .
+      ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
+      ?ot a v3:templateId ; xyz:root ?nested .
+      ?coded a v3:value ; xyz:code ?value .
+      OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
+      VALUES (?nested ?scheme ?gap ?system) {
+        ("2.16.840.1.113883.10.20.22.4.28"  ccda:allergyStatuses ccda:allergyStatusNotMapped "2.16.840.1.113883.6.96")
+        ("2.16.840.1.113883.10.20.22.4.145" ccda:criticalities   ccda:criticalityNotMapped   "2.16.840.1.113883.5.1063")
+        ("2.16.840.1.113883.10.20.22.4.8"   ccda:severities      ccda:severityNotMapped      "2.16.840.1.113883.6.96")
+      }
+      FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != ?system || NOT EXISTS {
+        ?concept skos:inScheme ?scheme ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      })
     }
-    FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != ?system || NOT EXISTS {
-      ?concept skos:inScheme ?scheme ; skos:notation ?key .
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
-    })
+    {
+      SELECT (?innerRankedRelationship AS ?innerRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?innerEarlierRelationship)), "]") AS ?innerRelationshipStep) WHERE {
+        ?innerRelationshipParent ?innerRelationshipS ?innerRankedRelationship . ?innerRankedRelationship a v3:entryRelationship .
+        ?innerRelationshipParent ?innerRelationshipE ?innerEarlierRelationship . ?innerEarlierRelationship a v3:entryRelationship .
+        FILTER (xsd:integer(STRAFTER(STR(?innerRelationshipE), "#_")) <= xsd:integer(STRAFTER(STR(?innerRelationshipS), "#_")))
+      } GROUP BY ?innerRankedRelationship
+    }
+    {
+      SELECT (?rankedObservation AS ?observation) (CONCAT("/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierObservation)), "]") AS ?observationStep) WHERE {
+        ?observationParent ?observationS ?rankedObservation . ?rankedObservation a v3:observation .
+        ?observationParent ?observationE ?earlierObservation . ?earlierObservation a v3:observation .
+        FILTER (xsd:integer(STRAFTER(STR(?observationE), "#_")) <= xsd:integer(STRAFTER(STR(?observationS), "#_")))
+      } GROUP BY ?rankedObservation
+    }
+    {
+      # Once for the document, joined to each value by its key; document-table.rq says why.
+      SELECT (?rankedValue AS ?coded) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    BIND (CONCAT(?innerRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@code") AS ?codedStep)
   }
   UNION
   {
-    ?act ?cnSS ?concernStatus .
-    ?concernStatus a v3:statusCode ; xyz:code ?value .
-    FILTER EXISTS {
-      ?act ?cnTS ?concernTemplate .
-      ?concernTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.30" .
+    {
+      ?allergy ?rS ?outerRelationship . ?outerRelationship a v3:entryRelationship ; ?oS ?outerObservation .
+      ?outerObservation a v3:observation ; ?iS ?innerRelationship . ?innerRelationship a v3:entryRelationship ; ?ioS ?observation .
+      ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
+      ?ot a v3:templateId ; xyz:root ?nested .
+      ?coded a v3:value ; xyz:code ?value .
+      OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
+      VALUES (?nested ?scheme ?gap ?system) {
+        ("2.16.840.1.113883.10.20.22.4.28"  ccda:allergyStatuses ccda:allergyStatusNotMapped "2.16.840.1.113883.6.96")
+        ("2.16.840.1.113883.10.20.22.4.145" ccda:criticalities   ccda:criticalityNotMapped   "2.16.840.1.113883.5.1063")
+        ("2.16.840.1.113883.10.20.22.4.8"   ccda:severities      ccda:severityNotMapped      "2.16.840.1.113883.6.96")
+      }
+      FILTER (COALESCE(REPLACE(?codeSystem, "^urn:oid:", ""), "") != ?system || NOT EXISTS {
+        ?concept skos:inScheme ?scheme ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      })
     }
-    FILTER NOT EXISTS {
-      ?concept skos:inScheme ccda:allergyConcernStatuses ; skos:notation ?key .
-      FILTER (?key = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+    {
+      SELECT (?rankedOuterRelationship AS ?outerRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierOuterRelationship)), "]") AS ?outerRelationshipStep) WHERE {
+        ?outerRelationshipParent ?outerRelationshipS ?rankedOuterRelationship . ?rankedOuterRelationship a v3:entryRelationship .
+        ?outerRelationshipParent ?outerRelationshipE ?earlierOuterRelationship . ?earlierOuterRelationship a v3:entryRelationship .
+        FILTER (xsd:integer(STRAFTER(STR(?outerRelationshipE), "#_")) <= xsd:integer(STRAFTER(STR(?outerRelationshipS), "#_")))
+      } GROUP BY ?rankedOuterRelationship
     }
-    FILTER NOT EXISTS {
-      ?allergy ?statedS ?statedRelationship . ?statedRelationship a v3:entryRelationship ; ?statedO ?stated .
-      ?stated a v3:observation ; ?statedT ?statedTemplate ; ?statedVS ?statedValue .
-      ?statedTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.28" .
-      ?statedValue a v3:value ; xyz:code ?statedCode .
+    {
+      SELECT (?rankedOuterObservation AS ?outerObservation) (CONCAT("/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierOuterObservation)), "]") AS ?outerObservationStep) WHERE {
+        ?outerObservationParent ?outerObservationS ?rankedOuterObservation . ?rankedOuterObservation a v3:observation .
+        ?outerObservationParent ?outerObservationE ?earlierOuterObservation . ?earlierOuterObservation a v3:observation .
+        FILTER (xsd:integer(STRAFTER(STR(?outerObservationE), "#_")) <= xsd:integer(STRAFTER(STR(?outerObservationS), "#_")))
+      } GROUP BY ?rankedOuterObservation
     }
-    BIND (ccda:allergyConcernStatusNotMapped AS ?gap)
+    {
+      SELECT (?innerRankedRelationship AS ?innerRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?innerEarlierRelationship)), "]") AS ?innerRelationshipStep) WHERE {
+        ?innerRelationshipParent ?innerRelationshipS ?innerRankedRelationship . ?innerRankedRelationship a v3:entryRelationship .
+        ?innerRelationshipParent ?innerRelationshipE ?innerEarlierRelationship . ?innerEarlierRelationship a v3:entryRelationship .
+        FILTER (xsd:integer(STRAFTER(STR(?innerRelationshipE), "#_")) <= xsd:integer(STRAFTER(STR(?innerRelationshipS), "#_")))
+      } GROUP BY ?innerRankedRelationship
+    }
+    {
+      SELECT (?rankedObservation AS ?observation) (CONCAT("/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierObservation)), "]") AS ?observationStep) WHERE {
+        ?observationParent ?observationS ?rankedObservation . ?rankedObservation a v3:observation .
+        ?observationParent ?observationE ?earlierObservation . ?earlierObservation a v3:observation .
+        FILTER (xsd:integer(STRAFTER(STR(?observationE), "#_")) <= xsd:integer(STRAFTER(STR(?observationS), "#_")))
+      } GROUP BY ?rankedObservation
+    }
+    {
+      SELECT (?rankedValue AS ?coded) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    BIND (CONCAT(?outerRelationshipStep, ?outerObservationStep, ?innerRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@code") AS ?codedStep)
+  }
+  UNION
+  {
+    {
+      ?allergy ?rS ?innerRelationship . ?innerRelationship a v3:entryRelationship ; ?oS ?observation .
+      ?observation a v3:observation ; ?otS ?ot ; ?ovS ?coded .
+      ?ot a v3:templateId ; xyz:root ?nested .
+      VALUES (?nested ?scheme ?system) {
+        ("2.16.840.1.113883.10.20.22.4.28"  ccda:allergyStatuses "2.16.840.1.113883.6.96")
+        ("2.16.840.1.113883.10.20.22.4.145" ccda:criticalities   "2.16.840.1.113883.5.1063")
+        ("2.16.840.1.113883.10.20.22.4.8"   ccda:severities      "2.16.840.1.113883.6.96")
+      }
+      ?coded a v3:value ; xyz:displayName ?value .
+      OPTIONAL { ?coded xyz:code ?statedCode }
+      OPTIONAL { ?coded xyz:codeSystem ?codeSystem }
+      FILTER NOT EXISTS {
+        ?concept skos:inScheme ?scheme ; skos:notation ?key ; skos:prefLabel|skos:altLabel ?label .
+        FILTER (?key = LCASE(REPLACE(?statedCode, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+        FILTER (REPLACE(?codeSystem, "^urn:oid:", "") = ?system)
+        FILTER (LCASE(REPLACE(STR(?label), "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")) = LCASE(REPLACE(?value, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", "")))
+      }
+      BIND (ccda:observationValueDisplayNameNotCarried AS ?gap)
+    }
+    {
+      SELECT (?innerRankedRelationship AS ?innerRelationship) (CONCAT("/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?innerEarlierRelationship)), "]") AS ?innerRelationshipStep) WHERE {
+        ?innerRelationshipParent ?innerRelationshipS ?innerRankedRelationship . ?innerRankedRelationship a v3:entryRelationship .
+        ?innerRelationshipParent ?innerRelationshipE ?innerEarlierRelationship . ?innerEarlierRelationship a v3:entryRelationship .
+        FILTER (xsd:integer(STRAFTER(STR(?innerRelationshipE), "#_")) <= xsd:integer(STRAFTER(STR(?innerRelationshipS), "#_")))
+      } GROUP BY ?innerRankedRelationship
+    }
+    {
+      SELECT (?rankedObservation AS ?observation) (CONCAT("/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierObservation)), "]") AS ?observationStep) WHERE {
+        ?observationParent ?observationS ?rankedObservation . ?rankedObservation a v3:observation .
+        ?observationParent ?observationE ?earlierObservation . ?earlierObservation a v3:observation .
+        FILTER (xsd:integer(STRAFTER(STR(?observationE), "#_")) <= xsd:integer(STRAFTER(STR(?observationS), "#_")))
+      } GROUP BY ?rankedObservation
+    }
+    {
+      SELECT (?rankedValue AS ?coded) (COUNT(?earlierValue) AS ?valueAt) WHERE {
+        ?valueParent ?valueS ?rankedValue . ?rankedValue a v3:value .
+        ?valueParent ?valueE ?earlierValue . ?earlierValue a v3:value .
+        FILTER (xsd:integer(STRAFTER(STR(?valueE), "#_")) <= xsd:integer(STRAFTER(STR(?valueS), "#_")))
+      } GROUP BY ?rankedValue
+    }
+    BIND (CONCAT(?innerRelationshipStep, ?observationStep, "/*[local-name()='value' and namespace-uri()='urn:hl7-org:v3'][", STR(?valueAt), "]/@displayName") AS ?codedStep)
+  }
+  UNION
+  {
+    {
+      {
+        ?act ?concernRelationshipSlot ?concernRelationship . ?concernRelationship a v3:entryRelationship ; ?concernStatementSlot ?allergy .
+      }
+      UNION
+      {
+        ?act ?concernStatementSlot ?allergy .
+      }
+      ?allergy a v3:observation .
+      ?act ?cnSS ?concernStatus .
+      ?concernStatus a v3:statusCode ; xyz:code ?value .
+      FILTER EXISTS {
+        { ?act ?cnTS ?concernTemplate . ?concernTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.30" }
+        UNION
+        { ?act ?cnCS ?concernCode . ?concernCode a v3:code ; xyz:code "CONC" ; xyz:codeSystem ?concernSystem .
+          FILTER (REPLACE(?concernSystem, "^urn:oid:", "") = "2.16.840.1.113883.5.6") }
+      }
+      BIND (true AS ?atAct)
+      FILTER NOT EXISTS {
+        ?concept skos:inScheme ccda:allergyConcernStatuses ; skos:notation ?key .
+        FILTER (?key = LCASE(REPLACE(?value, "^[ \t\r\n]+|[ \t\r\n]+$", "")))
+      }
+      FILTER NOT EXISTS {
+        ?allergy ?statedS ?statedRelationship . ?statedRelationship a v3:entryRelationship ; ?statedO ?stated .
+        ?stated a v3:observation ; ?statedT ?statedTemplate ; ?statedVS ?statedValue .
+        ?statedTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.28" .
+        ?statedValue a v3:value ; xyz:code ?statedCode .
+      }
+      BIND (ccda:allergyConcernStatusNotMapped AS ?gap)
+    }
+    {
+      SELECT (?rankedStatus AS ?concernStatus) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
+    }
+  }
+  UNION
+  {
+    {
+      {
+        ?act ?concernRelationshipSlot ?concernRelationship . ?concernRelationship a v3:entryRelationship ; ?concernStatementSlot ?allergy .
+      }
+      UNION
+      {
+        ?act ?concernStatementSlot ?allergy .
+      }
+      ?allergy a v3:observation .
+      ?act ?cnSS ?concernStatus .
+      ?concernStatus a v3:statusCode ; xyz:code ?value .
+      FILTER EXISTS {
+        { ?act ?cnTS ?concernTemplate . ?concernTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.30" }
+        UNION
+        { ?act ?cnCS ?concernCode . ?concernCode a v3:code ; xyz:code "CONC" ; xyz:codeSystem ?concernSystem .
+          FILTER (REPLACE(?concernSystem, "^urn:oid:", "") = "2.16.840.1.113883.5.6") }
+      }
+      BIND (true AS ?atAct)
+      FILTER EXISTS {
+        ?allergy ?statedS ?statedRelationship . ?statedRelationship a v3:entryRelationship ; ?statedO ?stated .
+        ?stated a v3:observation ; ?statedT ?statedTemplate ; ?statedVS ?statedValue .
+        ?statedTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.28" .
+        ?statedValue a v3:value ; xyz:code ?statedCode .
+      }
+      FILTER NOT EXISTS {
+        ?allergy ?statedS ?statedRelationship . ?statedRelationship a v3:entryRelationship ; ?statedO ?stated .
+        ?stated a v3:observation ; ?statedT ?statedTemplate ; ?statedVS ?statedValue .
+        ?statedTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.28" .
+        ?statedValue a v3:value ; xyz:code ?statedCode ; xyz:codeSystem ?statedSystem .
+        FILTER (REPLACE(?statedSystem, "^urn:oid:", "") = "2.16.840.1.113883.6.96")
+        ?statedConcept skos:inScheme ccda:allergyStatuses ; skos:notation ?statedKey .
+        FILTER (?statedKey = LCASE(REPLACE(?statedCode, "^[ \t\r\n]+|[ \t\r\n]+$", "")))
+      }
+      BIND (ccda:concernStatusNotCarriedBesideUnmappedStatus AS ?gap)
+    }
+    {
+      SELECT (?rankedStatus AS ?concernStatus) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
+    }
+  }
+  UNION
+  {
+    {
+      {
+        ?act ?concernRelationshipSlot ?concernRelationship . ?concernRelationship a v3:entryRelationship ; ?concernStatementSlot ?allergy .
+      }
+      UNION
+      {
+        ?act ?concernStatementSlot ?allergy .
+      }
+      ?allergy a v3:observation .
+      ?act ?cnSS ?concernStatus .
+      ?concernStatus a v3:statusCode ; xyz:code ?value .
+      FILTER NOT EXISTS {
+        { ?act ?cnTS ?concernTemplate . ?concernTemplate a v3:templateId ; xyz:root "2.16.840.1.113883.10.20.22.4.30" }
+        UNION
+        { ?act ?cnCS ?concernCode . ?concernCode a v3:code ; xyz:code "CONC" ; xyz:codeSystem ?concernSystem .
+          FILTER (REPLACE(?concernSystem, "^urn:oid:", "") = "2.16.840.1.113883.5.6") }
+      }
+      BIND (true AS ?atAct)
+      BIND (ccda:actStatusNotCarried AS ?gap)
+    }
+    {
+      SELECT (?rankedStatus AS ?concernStatus) (CONCAT("/*[local-name()='statusCode' and namespace-uri()='urn:hl7-org:v3'][", STR(COUNT(?earlierStatus)), "]/@code") AS ?codedStep) WHERE {
+        ?statusParent ?statusS ?rankedStatus . ?rankedStatus a v3:statusCode .
+        ?statusParent ?statusE ?earlierStatus . ?earlierStatus a v3:statusCode .
+        FILTER (xsd:integer(STRAFTER(STR(?statusE), "#_")) <= xsd:integer(STRAFTER(STR(?statusS), "#_")))
+      } GROUP BY ?rankedStatus
+    }
   }
   UNION
   {
@@ -136,4 +375,9 @@ WHERE {
     }
     BIND (ccda:nullFlavorNotListed AS ?gap)
   }
+  BIND (CONCAT(IF(BOUND(?atAct),
+                  CONCAT(STRBEFORE(?statementRefinement, "/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]"),
+                         "/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]"),
+                  ?statementRefinement),
+               COALESCE(?codedStep, "")) AS ?refinement)
 }

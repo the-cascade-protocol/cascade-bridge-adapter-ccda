@@ -4,6 +4,7 @@ PREFIX sh:     <http://www.w3.org/ns/shacl#>
 PREFIX oa:     <http://www.w3.org/ns/oa#>
 PREFIX fx:     <http://sparql.xyz/facade-x/ns/>
 PREFIX xyz:    <http://sparql.xyz/facade-x/data/>
+PREFIX dom:    <https://dom.spec.whatwg.org/#dom-node->
 PREFIX v3:     <urn:hl7-org:v3>
 PREFIX bridge: <https://ns.cascadeprotocol.org/bridge/v1-draft#>
 PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
@@ -12,6 +13,14 @@ PREFIX ccda:   <https://ns.cascadeprotocol.org/adapter/ccda/v1-draft#>
 # section, so this, and not the accounting, says a section is not carried. A
 # section a record is made from, or that is itself a note's record, is carried,
 # whatever its templateId. Its value is the section's code, where it states one.
+#
+# A section that holds a Note Activity and makes no note of its own, because its
+# entries reference all of its text or it states none, carries its title nowhere:
+# only the section's note takes it, and a Note Activity's title is its own. The
+# finding is at the title, valued by its text. A section holding no Note Activity
+# carries its title nowhere either, and the accounting owes it nowhere, so it is
+# left out, as the section's code is. The two findings are never both: a section
+# not mapped holds no record and states no note.
 
 CONSTRUCT {
   [] a oa:Annotation ;
@@ -19,7 +28,7 @@ CONSTRUCT {
       oa:hasSource bridge:thisRecord ;
       oa:hasSelector [ a oa:XPathSelector ; rdf:value ?refinement ]
     ] ;
-    oa:hasBody ccda:sectionNotMapped ;
+    oa:hasBody ?gap ;
     oa:motivatedBy oa:classifying ;
     sh:value ?value .
 }
@@ -29,7 +38,7 @@ WHERE {
   ?body a v3:structuredBody ; ?componentSlot ?component .
   ?component a v3:component ; ?sectionSlot ?section .
   ?section a v3:section .
-  FILTER NOT EXISTS {
+  BIND (EXISTS {
     ?section ?templateSlot ?template .
     ?template a v3:templateId ; xyz:root ?mapped .
     VALUES ?mapped {
@@ -40,7 +49,7 @@ WHERE {
       "2.16.840.1.113883.10.20.22.2.1" "2.16.840.1.113883.10.20.22.2.1.1"
       "2.16.840.1.113883.10.20.22.2.3" "2.16.840.1.113883.10.20.22.2.3.1"
     }
-  }
+  } AS ?templateMapped)
   BIND (CONCAT(STRAFTER(STR(?outerSlot), "#_"), ".", STRAFTER(STR(?bodySlot), "#_"), ".",
                STRAFTER(STR(?componentSlot), "#_"), ".", STRAFTER(STR(?sectionSlot), "#_"), ".") AS ?sectionSlots)
   OPTIONAL {
@@ -50,8 +59,29 @@ WHERE {
       BIND (REPLACE(CONCAT(?rowSlots, "."), "^([^.]*[.][^.]*[.][^.]*[.][^.]*[.]).*$", "$1") AS ?rowSectionSlots)
     }
   }
-  FILTER (!BOUND(?sectionHoldsRow))
-  OPTIONAL { ?section ?codeSlot ?code . ?code a v3:code ; xyz:code ?value }
+  OPTIONAL {
+    # Once for the document, joined to each row by its key; document-table.rq says why.
+    SELECT DISTINCT (CONCAT(?noteRowSlots, ".") AS ?sectionSlots) (true AS ?sectionMakesNote) WHERE {
+      ?noteRow ccda:statementAt ?noteRowSlots ; ccda:recordClass "DocumentReference" .
+      FILTER (REGEX(?noteRowSlots, "^[^.]*[.][^.]*[.][^.]*[.][^.]*$"))
+    }
+  }
+  OPTIONAL {
+    # Once for the document, joined to each row by its key; document-table.rq says why.
+    SELECT DISTINCT (CONCAT(REPLACE(?activityRowSlots, "[.][^.]*[.][^.]*$", ""), ".") AS ?sectionSlots) (true AS ?sectionHoldsNoteActivity) WHERE {
+      ?activityRow ccda:statementAt ?activityRowSlots ; ccda:recordClass "DocumentReference" .
+      FILTER (REGEX(?activityRowSlots, "^[^.]*[.][^.]*[.][^.]*[.][^.]*[.][^.]*[.][^.]*$"))
+    }
+  }
+  OPTIONAL { ?section ?codeSlot ?code . ?code a v3:code ; xyz:code ?codeValue }
+  OPTIONAL {
+    ?section ?titleSlot ?title . ?title a v3:title ; dom:textcontent ?written .
+    BIND (REPLACE(REPLACE(?written, "^[ \\t\\r\\n]+|[ \\t\\r\\n]+$", ""), "[ \\t\\r\\n]+", " ") AS ?titleText)
+    FILTER (STRLEN(?titleText) > 0)
+  }
+  BIND (IF(!BOUND(?sectionHoldsRow) && !?templateMapped, ccda:sectionNotMapped,
+           IF(BOUND(?sectionHoldsNoteActivity) && !BOUND(?sectionMakesNote) && BOUND(?titleText), ccda:sectionTitleNotCarried, 1/0)) AS ?gap)
+  FILTER (BOUND(?gap))
   {
     # Once for the document, joined to each row by its key; document-table.rq says why.
     SELECT (?rankedOuter AS ?outer) (COUNT(?earlierOuter) AS ?outerAt) WHERE {
@@ -72,5 +102,8 @@ WHERE {
     "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][", STR(?outerAt), "]",
     "/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]",
     "/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][", STR(?componentAt), "]",
-    "/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]") AS ?refinement)
+    "/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]") AS ?sectionRefinement)
+  BIND (IF(?gap = ccda:sectionNotMapped, ?sectionRefinement,
+           CONCAT(?sectionRefinement, "/*[local-name()='title' and namespace-uri()='urn:hl7-org:v3'][1]")) AS ?refinement)
+  BIND (IF(?gap = ccda:sectionNotMapped, ?codeValue, ?titleText) AS ?value)
 }
