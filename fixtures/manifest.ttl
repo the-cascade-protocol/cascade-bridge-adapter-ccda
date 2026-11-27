@@ -121,6 +121,7 @@
     <#statement-texts-written-inline>
     <#vaccine-codes-not-carried>
     <#act-ids-wrapping-statements>
+    <#allergy-status-from-a-non-concern-act>
     <#section-text-partly-referenced>
     <#section-text-referenced-by-unmapped-entries>
     <#section-text-container-referenced>
@@ -1690,6 +1691,19 @@
   mf:result [
     bridge:expectedGraph <expected/act-ids-wrapping-statements.ttl> ;
     bridge:expectedFindings <findings/act-ids-wrapping-statements.ttl>
+  ] .
+
+<#allergy-status-from-a-non-concern-act> a bridge:IsomorphicConversionTest ;
+  mf:name "allergy-status-from-a-non-concern-act" ;
+  rdfs:comment "Three allergies with no Allergy Status Observation, each in an act whose statusCode is completed, which maps to inactive: an act coded PCPR with no concern template, an act coded CONC in the wrong code system (ActMood, not ActClass) with no template, and an act coded PCPR with the Allergy Concern Act template. Only the third is a concern act, so only its allergy has a clinical status; the other two have none, and ccda:allergyConcernStatusNotMapped is not reported for them, since a status read from nowhere is not a status outside the map." ;
+  mf:action [
+    bridge:input <in/allergy-status-from-a-non-concern-act.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/allergy-status-from-a-non-concern-act.ttl> ;
+    bridge:expectedFindings <findings/allergy-status-from-a-non-concern-act.ttl>
   ] .
 
 <#section-text-partly-referenced> a bridge:IsomorphicConversionTest ;

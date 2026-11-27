@@ -2,261 +2,261 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix oa: <http://www.w3.org/ns/oa#> .
-_:f584678ef0af6c10ae6f81d6396593d2 a oa:XPathSelector ;
+_:d9cea688e23e47e8fc48709a2ca34805 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:b20564ef43a99124216e0b7deb10e541 a oa:XPathSelector ;
+_:f3969387a0768de1652b4392c88aa2df a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][5]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='administrativeGenderCode' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:f584678ef0af6c10ae6f81d6396593d2 oa:refinedBy _:b20564ef43a99124216e0b7deb10e541 .
-_:bdcad9230f016a3bd46932e701d17099 a oa:Annotation ;
-	oa:hasTarget _:a55c4f76fc7fcde524883214bca9e0e8 .
-_:a55c4f76fc7fcde524883214bca9e0e8 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
-	oa:hasSelector _:f584678ef0af6c10ae6f81d6396593d2 .
-_:bdcad9230f016a3bd46932e701d17099 oa:hasBody <https://www.w3.org/TR/xmlschema-1/#cvc-simple-type> ;
+_:d9cea688e23e47e8fc48709a2ca34805 oa:refinedBy _:f3969387a0768de1652b4392c88aa2df .
+_:d17fecdae2580fb0cbca94edd2d4bcdf a oa:Annotation ;
+	oa:hasTarget _:e0eee4e983c8e554118cf2fcb2f512f5 .
+_:e0eee4e983c8e554118cf2fcb2f512f5 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
+	oa:hasSelector _:d9cea688e23e47e8fc48709a2ca34805 .
+_:d17fecdae2580fb0cbca94edd2d4bcdf oa:hasBody <https://www.w3.org/TR/xmlschema-1/#cvc-simple-type> ;
 	oa:motivatedBy oa:classifying ;
 	sh:resultSeverity sh:Violation .
-_:c826ff454c9a9de71d4268037dd56600 a oa:XPathSelector ;
+_:fa43d4ea03b3773349cbf70d25c84a0c a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:d82ef52151ff576d817377375b599087 a oa:XPathSelector ;
+_:c3545e8a8b3058bde48d1b80ffd36442 a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][5]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='deceasedTime' and namespace-uri()='urn:hl7-org:sdtc'][1]" .
-_:c826ff454c9a9de71d4268037dd56600 oa:refinedBy _:d82ef52151ff576d817377375b599087 .
-_:ff9446afa722b4190910d9ee194b1003 a oa:Annotation ;
-	oa:hasTarget _:c7e5d4bde6385cce5b2638105c9d58d8 .
-_:c7e5d4bde6385cce5b2638105c9d58d8 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
-	oa:hasSelector _:c826ff454c9a9de71d4268037dd56600 .
-_:ff9446afa722b4190910d9ee194b1003 oa:hasBody <https://www.w3.org/TR/xmlschema-1/#cvc-simple-type> ;
+_:fa43d4ea03b3773349cbf70d25c84a0c oa:refinedBy _:c3545e8a8b3058bde48d1b80ffd36442 .
+_:d8d631feaa461443b2f7c5e630b18959 a oa:Annotation ;
+	oa:hasTarget _:e206c28c7986bcaf0b3d22bb9d18fc12 .
+_:e206c28c7986bcaf0b3d22bb9d18fc12 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
+	oa:hasSelector _:fa43d4ea03b3773349cbf70d25c84a0c .
+_:d8d631feaa461443b2f7c5e630b18959 oa:hasBody <https://www.w3.org/TR/xmlschema-1/#cvc-simple-type> ;
 	oa:motivatedBy oa:classifying ;
 	sh:resultSeverity sh:Violation .
-_:c2b6fdc73bb46fb254cc60972f71ef0 a oa:XPathSelector ;
+_:ad6ba7ed424dc3658b1c1ad13f289894 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:dc7bbf018e02f6865c1efd2b0895047e a oa:XPathSelector ;
+_:d8d0f806e5887a03510af984f7e88d3d a oa:XPathSelector ;
 	rdf:value "*[local-name()='author' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:c2b6fdc73bb46fb254cc60972f71ef0 oa:refinedBy _:dc7bbf018e02f6865c1efd2b0895047e .
-_:fd5fbaec19d6c8b36013e8f560a6b16b a oa:Annotation ;
-	oa:hasTarget _:c40e85b4324578ec241b7b748b9a638b .
-_:c40e85b4324578ec241b7b748b9a638b oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
-	oa:hasSelector _:c2b6fdc73bb46fb254cc60972f71ef0 .
-_:fd5fbaec19d6c8b36013e8f560a6b16b oa:hasBody ccda:documentAuthor ;
+_:ad6ba7ed424dc3658b1c1ad13f289894 oa:refinedBy _:d8d0f806e5887a03510af984f7e88d3d .
+_:b64cbfb9bb18a0d84313fdd002f6e320 a oa:Annotation ;
+	oa:hasTarget _:edbd3928e1951bd78da84f169ac550c1 .
+_:edbd3928e1951bd78da84f169ac550c1 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
+	oa:hasSelector _:ad6ba7ed424dc3658b1c1ad13f289894 .
+_:b64cbfb9bb18a0d84313fdd002f6e320 oa:hasBody ccda:documentAuthor ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='author' and namespace-uri()='urn:hl7-org:v3']" ;
 	sh:resultSeverity sh:Info .
-_:c1a540aab2eaefb10111ffbb20256d8d a oa:XPathSelector ;
+_:a38f0db0aa5830975793dc0881602e2a a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:ada19cfacd7c9f5ed847307d6092b914 a oa:XPathSelector ;
+_:fd3d18cd5c07ff3fd6d1284d55e35223 a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='code' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:c1a540aab2eaefb10111ffbb20256d8d oa:refinedBy _:ada19cfacd7c9f5ed847307d6092b914 .
-_:d8739669bd45334b6525046690ea7edc a oa:Annotation ;
-	oa:hasTarget _:af2f42950116788bfe863d460afd2551 .
-_:af2f42950116788bfe863d460afd2551 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
-	oa:hasSelector _:c1a540aab2eaefb10111ffbb20256d8d .
-_:d8739669bd45334b6525046690ea7edc oa:hasBody ccda:statementCode ;
+_:a38f0db0aa5830975793dc0881602e2a oa:refinedBy _:fd3d18cd5c07ff3fd6d1284d55e35223 .
+_:d5933f0f192dc5870001e44976e8853f a oa:Annotation ;
+	oa:hasTarget _:a636bcedd132ff37f7647697a0868096 .
+_:a636bcedd132ff37f7647697a0868096 oa:hasSource <../in/patient-gender-and-death-edges.xml> ;
+	oa:hasSelector _:a38f0db0aa5830975793dc0881602e2a .
+_:d5933f0f192dc5870001e44976e8853f oa:hasBody ccda:statementCode ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='code' and namespace-uri()='urn:hl7-org:v3']/@code" ;
 	sh:resultSeverity sh:Info .
-_:e5e8a38c56163941deb66a5d98091d6b a oa:XPathSelector ;
+_:e2542efc7154eac7da091633e2d83d4f a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:d2ed60672743c74d320d2607a762f321 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:e5e8a38c56163941deb66a5d98091d6b oa:refinedBy _:b28e8723aeab9abf986c961ddfecae5b .
-_:b28e8723aeab9abf986c961ddfecae5b a oa:XPathSelector ;
+_:d247c77389d91c7ca36c0d12ea1d89b1 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:e2542efc7154eac7da091633e2d83d4f oa:refinedBy _:b4662149724387ceee26c58ef875ae5b .
+_:b4662149724387ceee26c58ef875ae5b a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:d2ed60672743c74d320d2607a762f321 oa:hasSelector _:e5e8a38c56163941deb66a5d98091d6b .
-_:c82c3e129b9845831e7f16d809172e61 oa:hasTarget _:d2ed60672743c74d320d2607a762f321 ;
+_:d247c77389d91c7ca36c0d12ea1d89b1 oa:hasSelector _:e2542efc7154eac7da091633e2d83d4f .
+_:b2483d2a40ace1152fe819e1908df8e2 oa:hasTarget _:d247c77389d91c7ca36c0d12ea1d89b1 ;
 	sh:resultSeverity sh:Info ;
 	a oa:Annotation ;
 	oa:hasBody ccda:concernActId ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "2.16.840.1.113883.19.5.99999.4:CONCERN-7701" .
-_:a147fa5a7ea9c6ec308fd93604e500be a oa:XPathSelector ;
+_:bf47e8ecb333d1956bc30a885fd614b a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:b094185cf196bf3196028ea7034ee519 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:a147fa5a7ea9c6ec308fd93604e500be oa:refinedBy _:a32fea6c58f40c5c0edaacb63852ec40 .
-_:a32fea6c58f40c5c0edaacb63852ec40 a oa:XPathSelector ;
+_:ed85d14c68e59e61535306b3ff9fb108 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:bf47e8ecb333d1956bc30a885fd614b oa:refinedBy _:b8f5ffaca68eb7f31567cf8cbc52b090 .
+_:b8f5ffaca68eb7f31567cf8cbc52b090 a oa:XPathSelector ;
 	rdf:value "*[local-name()='id' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:b094185cf196bf3196028ea7034ee519 oa:hasSelector _:a147fa5a7ea9c6ec308fd93604e500be .
-_:df2ce3c8e3a0a02a3e591aaa4ab65cb9 oa:hasTarget _:b094185cf196bf3196028ea7034ee519 .
-_:d274eaa2a57d0a554d403c2ab0a72a27 a oa:XPathSelector ;
+_:ed85d14c68e59e61535306b3ff9fb108 oa:hasSelector _:bf47e8ecb333d1956bc30a885fd614b .
+_:a5585bea36074b9f5febbbc40a2010e4 oa:hasTarget _:ed85d14c68e59e61535306b3ff9fb108 .
+_:a7cd315ccb3e1fc3c519be96beabeb5d a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:f9c74061e4f182453611a7c179cc0ea1 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:d274eaa2a57d0a554d403c2ab0a72a27 oa:refinedBy _:b67185c955f6c32dcf5e55da8bdf703a .
-_:b67185c955f6c32dcf5e55da8bdf703a a oa:XPathSelector ;
+_:d612c58f563283592fe75aed776dd03d oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:a7cd315ccb3e1fc3c519be96beabeb5d oa:refinedBy _:dbb2d7c38eda4808feb29980fe6c4d13 .
+_:dbb2d7c38eda4808feb29980fe6c4d13 a oa:XPathSelector ;
 	rdf:value "*[local-name()='code' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:f9c74061e4f182453611a7c179cc0ea1 oa:hasSelector _:d274eaa2a57d0a554d403c2ab0a72a27 .
-_:e1e1959fc41f8c8811540dd790344147 oa:hasTarget _:f9c74061e4f182453611a7c179cc0ea1 .
-_:d51c83af2211c6a9d1782f0267443163 a oa:XPathSelector ;
+_:d612c58f563283592fe75aed776dd03d oa:hasSelector _:a7cd315ccb3e1fc3c519be96beabeb5d .
+_:cb953a7bb3655579e4bc0be1ece24c68 oa:hasTarget _:d612c58f563283592fe75aed776dd03d .
+_:c2ec4addd8e431fb9af053d6874c08e a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:f25b32cdb6f4f86225faaec81ff807cc oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:d51c83af2211c6a9d1782f0267443163 oa:refinedBy _:ecac05e6c2f8a4fed5af82a38fef0154 .
-_:ecac05e6c2f8a4fed5af82a38fef0154 a oa:XPathSelector ;
+_:ab962556591b7307153653c88bda3093 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:c2ec4addd8e431fb9af053d6874c08e oa:refinedBy _:b00ffa4486e787f535551bcf01a8d6ef .
+_:b00ffa4486e787f535551bcf01a8d6ef a oa:XPathSelector ;
 	rdf:value "*[local-name()='effectiveTime' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:f25b32cdb6f4f86225faaec81ff807cc oa:hasSelector _:d51c83af2211c6a9d1782f0267443163 .
-_:d30f47a6fa61bec63f9bf34234de5d4a oa:hasTarget _:f25b32cdb6f4f86225faaec81ff807cc .
-_:df2ce3c8e3a0a02a3e591aaa4ab65cb9 sh:resultSeverity sh:Info .
-_:e1e1959fc41f8c8811540dd790344147 sh:resultSeverity sh:Info .
-_:d30f47a6fa61bec63f9bf34234de5d4a sh:resultSeverity sh:Info .
-_:df2ce3c8e3a0a02a3e591aaa4ab65cb9 a oa:Annotation ;
+_:ab962556591b7307153653c88bda3093 oa:hasSelector _:c2ec4addd8e431fb9af053d6874c08e .
+_:db64a4f83cf911ddca1259dd4e1865c3 oa:hasTarget _:ab962556591b7307153653c88bda3093 .
+_:a5585bea36074b9f5febbbc40a2010e4 sh:resultSeverity sh:Info .
+_:cb953a7bb3655579e4bc0be1ece24c68 sh:resultSeverity sh:Info .
+_:db64a4f83cf911ddca1259dd4e1865c3 sh:resultSeverity sh:Info .
+_:a5585bea36074b9f5febbbc40a2010e4 a oa:Annotation ;
 	oa:hasBody ccda:documentId ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "2.16.840.1.113883.19.5.99999.1|CCD-2026-1029-E" .
-_:e1e1959fc41f8c8811540dd790344147 a oa:Annotation ;
+_:cb953a7bb3655579e4bc0be1ece24c68 a oa:Annotation ;
 	oa:hasBody ccda:documentType ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "34133-9" .
-_:d30f47a6fa61bec63f9bf34234de5d4a a oa:Annotation ;
+_:db64a4f83cf911ddca1259dd4e1865c3 a oa:Annotation ;
 	oa:hasBody ccda:documentTime ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "20261029090000-0500" .
-_:ccdd8e25a3d8f27ac7d972b785feaf10 a oa:XPathSelector ;
+_:b720a6fde6eb74d048a5389300fb4fe7 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:c16c0b1c5191b5839e601709f71eaa32 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:ccdd8e25a3d8f27ac7d972b785feaf10 oa:refinedBy _:d5fd869898a58b8927b8855be5fb030 .
-_:d5fd869898a58b8927b8855be5fb030 a oa:XPathSelector ;
+_:abbfc4d47d42e11f2ad3c4f609bc3096 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:b720a6fde6eb74d048a5389300fb4fe7 oa:refinedBy _:d65a3c86fc516492351dea6b8a52bfb7 .
+_:d65a3c86fc516492351dea6b8a52bfb7 a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][6]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:c16c0b1c5191b5839e601709f71eaa32 oa:hasSelector _:ccdd8e25a3d8f27ac7d972b785feaf10 .
-_:e8a87674fcd1b2e954c71835977375b oa:hasTarget _:c16c0b1c5191b5839e601709f71eaa32 .
-_:d385b39c8620d688a12468bc68315908 a oa:XPathSelector ;
+_:abbfc4d47d42e11f2ad3c4f609bc3096 oa:hasSelector _:b720a6fde6eb74d048a5389300fb4fe7 .
+_:ad6aefa52a1c7a5d4bbc1f2556b5cb8d oa:hasTarget _:abbfc4d47d42e11f2ad3c4f609bc3096 .
+_:e4e38219383b133d81835d01e354a840 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:dd2361a672f3da1fbb2addbfe5728979 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:d385b39c8620d688a12468bc68315908 oa:refinedBy _:ccb18dfdfb89aee9a9388c22797c7ee1 .
-_:ccb18dfdfb89aee9a9388c22797c7ee1 a oa:XPathSelector ;
+_:dd4fb4665dc4fe2d65af744cb9e509c8 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:e4e38219383b133d81835d01e354a840 oa:refinedBy _:eb159fc1212bfd2e19b8ad07fce33ea .
+_:eb159fc1212bfd2e19b8ad07fce33ea a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][5]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:dd2361a672f3da1fbb2addbfe5728979 oa:hasSelector _:d385b39c8620d688a12468bc68315908 .
-_:df32e98a6a4d8c45033929916a12f7f7 oa:hasTarget _:dd2361a672f3da1fbb2addbfe5728979 .
-_:c64172b412e8583ce15ec4a9753cb692 a oa:XPathSelector ;
+_:dd4fb4665dc4fe2d65af744cb9e509c8 oa:hasSelector _:e4e38219383b133d81835d01e354a840 .
+_:c7051474e91aea4f4e5089c9c1870136 oa:hasTarget _:dd4fb4665dc4fe2d65af744cb9e509c8 .
+_:e88cd9504c035b055014c4d1abf0077 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:aeaf620d33e8e6a4ff86a6af6c1be28a oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:c64172b412e8583ce15ec4a9753cb692 oa:refinedBy _:e372a3312031a3c2d6d24612c62129d3 .
-_:e372a3312031a3c2d6d24612c62129d3 a oa:XPathSelector ;
+_:bf3261f9fe4cfb9e8585e46a3a217ac9 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:e88cd9504c035b055014c4d1abf0077 oa:refinedBy _:fce7968a55f4408a67bb39840e0787e .
+_:fce7968a55f4408a67bb39840e0787e a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][4]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:aeaf620d33e8e6a4ff86a6af6c1be28a oa:hasSelector _:c64172b412e8583ce15ec4a9753cb692 .
-_:f89239fb5a33b96452095559e642331c oa:hasTarget _:aeaf620d33e8e6a4ff86a6af6c1be28a .
-_:ca431e0e59bc0cdf8b6a6a1f40586151 a oa:XPathSelector ;
+_:bf3261f9fe4cfb9e8585e46a3a217ac9 oa:hasSelector _:e88cd9504c035b055014c4d1abf0077 .
+_:e41bc9be5cd3c92e7667e9088256bc7a oa:hasTarget _:bf3261f9fe4cfb9e8585e46a3a217ac9 .
+_:bc03ba161ffa380e79c241866b91510b a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:dfea8fee5bfa6d7efef73178c47383c6 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:ca431e0e59bc0cdf8b6a6a1f40586151 oa:refinedBy _:f661b3bae248edf942abbddde1fd9d3a .
-_:f661b3bae248edf942abbddde1fd9d3a a oa:XPathSelector ;
+_:e7e6d28eecd6b378d8fab76be82243b3 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:bc03ba161ffa380e79c241866b91510b oa:refinedBy _:a6e011232c1132e279e9873e6dae9137 .
+_:a6e011232c1132e279e9873e6dae9137 a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][3]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:dfea8fee5bfa6d7efef73178c47383c6 oa:hasSelector _:ca431e0e59bc0cdf8b6a6a1f40586151 .
-_:b58336f0eadcb77cdae3b80cb2582cbb oa:hasTarget _:dfea8fee5bfa6d7efef73178c47383c6 .
-_:af3a18a0a9ba9aca853735470e98127a a oa:XPathSelector ;
+_:e7e6d28eecd6b378d8fab76be82243b3 oa:hasSelector _:bc03ba161ffa380e79c241866b91510b .
+_:b4fef4be8ce82ff30833945aaac040c3 oa:hasTarget _:e7e6d28eecd6b378d8fab76be82243b3 .
+_:f061bbed6349a3236acd5f48b45ab389 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:b772803586329f60038d05a5887158f1 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:af3a18a0a9ba9aca853735470e98127a oa:refinedBy _:b7f2a49e5264af5819164552330879bd .
-_:b7f2a49e5264af5819164552330879bd a oa:XPathSelector ;
+_:a9893b35c9b76d20072f3b7aa42d1464 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:f061bbed6349a3236acd5f48b45ab389 oa:refinedBy _:ac1d3bc6c83b84c5a015f9c9a12c57f3 .
+_:ac1d3bc6c83b84c5a015f9c9a12c57f3 a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][2]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:b772803586329f60038d05a5887158f1 oa:hasSelector _:af3a18a0a9ba9aca853735470e98127a .
-_:a2bf4903be191dd2e77572339960b2a7 oa:hasTarget _:b772803586329f60038d05a5887158f1 .
-_:b1cc4beaf30db49ecd7ff7fb7b1d5894 a oa:XPathSelector ;
+_:a9893b35c9b76d20072f3b7aa42d1464 oa:hasSelector _:f061bbed6349a3236acd5f48b45ab389 .
+_:e7ecc1b179fefc19ecaf47b501165140 oa:hasTarget _:a9893b35c9b76d20072f3b7aa42d1464 .
+_:d1940e86176bef16e61d89919a829cae a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:b57bc0ba43f4aff945491ada7359630c oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:b1cc4beaf30db49ecd7ff7fb7b1d5894 oa:refinedBy _:f1c157c8540ee7a6a6f60fb6da8f0553 .
-_:f1c157c8540ee7a6a6f60fb6da8f0553 a oa:XPathSelector ;
+_:f8db8b64ebb7e2d953e51997f5b7427e oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:d1940e86176bef16e61d89919a829cae oa:refinedBy _:b5069b3753ac177db578bdcfe362d095 .
+_:b5069b3753ac177db578bdcfe362d095 a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:b57bc0ba43f4aff945491ada7359630c oa:hasSelector _:b1cc4beaf30db49ecd7ff7fb7b1d5894 .
-_:de35f315dd6974f18b97d4420ec8756e oa:hasTarget _:b57bc0ba43f4aff945491ada7359630c .
-_:b7ba2e9d9415371de8aa5464c0e7deb4 a oa:XPathSelector ;
+_:f8db8b64ebb7e2d953e51997f5b7427e oa:hasSelector _:d1940e86176bef16e61d89919a829cae .
+_:d6d61a218d36619d8964e9260196a92a oa:hasTarget _:f8db8b64ebb7e2d953e51997f5b7427e .
+_:e9454d44b561dfa4a6fa55a7565a54cf a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:c9f92c644edfee35d18ea534f4c1ec9a oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:b7ba2e9d9415371de8aa5464c0e7deb4 oa:refinedBy _:a012009157fdb9f557d6a3150755e113 .
-_:a012009157fdb9f557d6a3150755e113 a oa:XPathSelector ;
+_:b3e277fef83cf7a83819acbf270e36ef oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:e9454d44b561dfa4a6fa55a7565a54cf oa:refinedBy _:e32f51bc31b61f1d9c8511d40d034598 .
+_:e32f51bc31b61f1d9c8511d40d034598 a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:c9f92c644edfee35d18ea534f4c1ec9a oa:hasSelector _:b7ba2e9d9415371de8aa5464c0e7deb4 .
-_:e74fb990bb75232305a31ad1baa3c540 oa:hasTarget _:c9f92c644edfee35d18ea534f4c1ec9a .
-_:e556debd209deaf173bcceb5933f76aa a oa:XPathSelector ;
+_:b3e277fef83cf7a83819acbf270e36ef oa:hasSelector _:e9454d44b561dfa4a6fa55a7565a54cf .
+_:cbe0aef4f61392ed56e2fbfdbf4ffa96 oa:hasTarget _:b3e277fef83cf7a83819acbf270e36ef .
+_:dd5498c15fcaf24a21c371ec63d7c9ea a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:feecab71b58bdd3bc0e7dd151803cdf9 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:e556debd209deaf173bcceb5933f76aa oa:refinedBy _:e8323a7b09ba1d9dcb63aad4727dfa6a .
-_:e8323a7b09ba1d9dcb63aad4727dfa6a a oa:XPathSelector ;
+_:b6077ae03e8009cb6e0b36d151cecbff oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:dd5498c15fcaf24a21c371ec63d7c9ea oa:refinedBy _:c58506212a691d5a64200fd714f627b9 .
+_:c58506212a691d5a64200fd714f627b9 a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='act' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entryRelationship' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='observation' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:feecab71b58bdd3bc0e7dd151803cdf9 oa:hasSelector _:e556debd209deaf173bcceb5933f76aa .
-_:fb954d548e0059dc457445dd6492188b oa:hasTarget _:feecab71b58bdd3bc0e7dd151803cdf9 .
-_:e8a87674fcd1b2e954c71835977375b sh:resultSeverity sh:Warning .
-_:df32e98a6a4d8c45033929916a12f7f7 sh:resultSeverity sh:Warning .
-_:f89239fb5a33b96452095559e642331c sh:resultSeverity sh:Warning .
-_:b58336f0eadcb77cdae3b80cb2582cbb sh:resultSeverity sh:Warning .
-_:a2bf4903be191dd2e77572339960b2a7 sh:resultSeverity sh:Warning .
-_:de35f315dd6974f18b97d4420ec8756e sh:resultSeverity sh:Warning .
-_:e74fb990bb75232305a31ad1baa3c540 sh:resultSeverity sh:Warning .
-_:fb954d548e0059dc457445dd6492188b sh:resultSeverity sh:Warning .
-_:e8a87674fcd1b2e954c71835977375b a oa:Annotation ;
+_:b6077ae03e8009cb6e0b36d151cecbff oa:hasSelector _:dd5498c15fcaf24a21c371ec63d7c9ea .
+_:a9a9833dacaa2cfc6e0f517086c19a93 oa:hasTarget _:b6077ae03e8009cb6e0b36d151cecbff .
+_:ad6aefa52a1c7a5d4bbc1f2556b5cb8d sh:resultSeverity sh:Warning .
+_:c7051474e91aea4f4e5089c9c1870136 sh:resultSeverity sh:Warning .
+_:e41bc9be5cd3c92e7667e9088256bc7a sh:resultSeverity sh:Warning .
+_:b4fef4be8ce82ff30833945aaac040c3 sh:resultSeverity sh:Warning .
+_:e7ecc1b179fefc19ecaf47b501165140 sh:resultSeverity sh:Warning .
+_:d6d61a218d36619d8964e9260196a92a sh:resultSeverity sh:Warning .
+_:cbe0aef4f61392ed56e2fbfdbf4ffa96 sh:resultSeverity sh:Warning .
+_:a9a9833dacaa2cfc6e0f517086c19a93 sh:resultSeverity sh:Warning .
+_:ad6aefa52a1c7a5d4bbc1f2556b5cb8d a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Patient" .
-_:df32e98a6a4d8c45033929916a12f7f7 a oa:Annotation ;
+_:c7051474e91aea4f4e5089c9c1870136 a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Patient" .
-_:f89239fb5a33b96452095559e642331c a oa:Annotation ;
+_:e41bc9be5cd3c92e7667e9088256bc7a a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Patient" .
-_:b58336f0eadcb77cdae3b80cb2582cbb a oa:Annotation ;
+_:b4fef4be8ce82ff30833945aaac040c3 a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Patient" .
-_:a2bf4903be191dd2e77572339960b2a7 a oa:Annotation ;
+_:e7ecc1b179fefc19ecaf47b501165140 a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Patient" .
-_:de35f315dd6974f18b97d4420ec8756e a oa:Annotation ;
+_:d6d61a218d36619d8964e9260196a92a a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Patient" .
-_:e74fb990bb75232305a31ad1baa3c540 a oa:Annotation ;
+_:cbe0aef4f61392ed56e2fbfdbf4ffa96 a oa:Annotation ;
 	oa:hasBody ccda:namingScopeNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "Condition" .
-_:fb954d548e0059dc457445dd6492188b a oa:Annotation ;
+_:a9a9833dacaa2cfc6e0f517086c19a93 a oa:Annotation ;
 	oa:hasBody ccda:patientOfStatementNotStated ;
 	oa:motivatedBy oa:classifying ;
 	sh:value 6 .
-_:e1deebcc8ac853bf6a1ce4f1c5d204ad a oa:XPathSelector ;
+_:f6995184c3f9dcf6d63638ad2a6a86df a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:d7740f845181d20b9ce5da0ada83d6c8 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:e1deebcc8ac853bf6a1ce4f1c5d204ad oa:refinedBy _:fa32bfa46f0031d9dd89f7712d911fa6 .
-_:fa32bfa46f0031d9dd89f7712d911fa6 a oa:XPathSelector ;
-	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][6]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:d7740f845181d20b9ce5da0ada83d6c8 oa:hasSelector _:e1deebcc8ac853bf6a1ce4f1c5d204ad .
-_:a68dbc7449201d8f51602ef1bf7a8611 oa:hasTarget _:d7740f845181d20b9ce5da0ada83d6c8 .
-_:e6c81ea993112c127db995bb88d9cab1 a oa:XPathSelector ;
+_:cf8ef6c8f4a2c022a2865fe60fac18df oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:f6995184c3f9dcf6d63638ad2a6a86df oa:refinedBy _:b24d5e3533f0cafa35504fed236e7b04 .
+_:b24d5e3533f0cafa35504fed236e7b04 a oa:XPathSelector ;
+	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][6]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='administrativeGenderCode' and namespace-uri()='urn:hl7-org:v3'][1]/@code" .
+_:cf8ef6c8f4a2c022a2865fe60fac18df oa:hasSelector _:f6995184c3f9dcf6d63638ad2a6a86df .
+_:dcbd0ea1cfd69a1298e1227246a96e2 oa:hasTarget _:cf8ef6c8f4a2c022a2865fe60fac18df .
+_:ed59d63210ad09b23cc1da8827c9c61a a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:be1eac10d3c3bcddc53e4de349a54980 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:e6c81ea993112c127db995bb88d9cab1 oa:refinedBy _:ab2fbfdb419ebc078fa2d1b65a6e83b6 .
-_:ab2fbfdb419ebc078fa2d1b65a6e83b6 a oa:XPathSelector ;
+_:f76e570ab1a720185387bd03c125c6e8 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:ed59d63210ad09b23cc1da8827c9c61a oa:refinedBy _:aa1a456b4e2c2fba73ae2b230375568a .
+_:aa1a456b4e2c2fba73ae2b230375568a a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][5]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:be1eac10d3c3bcddc53e4de349a54980 oa:hasSelector _:e6c81ea993112c127db995bb88d9cab1 .
-_:ee3f2c9039967f711a54a6a0f34c9ebd oa:hasTarget _:be1eac10d3c3bcddc53e4de349a54980 .
-_:bdcdb44d1cb5458ea85828cd26adebf7 a oa:XPathSelector ;
+_:f76e570ab1a720185387bd03c125c6e8 oa:hasSelector _:ed59d63210ad09b23cc1da8827c9c61a .
+_:be068ab80130481291cc487203e8af1c oa:hasTarget _:f76e570ab1a720185387bd03c125c6e8 .
+_:b61e9c7fe262da28c11cd7a0d268c9e0 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:a06ef4d34b157f2dd6e5374072ab733d oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:bdcdb44d1cb5458ea85828cd26adebf7 oa:refinedBy _:b9bf86acfb31bc1a50772ddb1db6cf53 .
-_:b9bf86acfb31bc1a50772ddb1db6cf53 a oa:XPathSelector ;
+_:ecd886b15b6dddd6112c8990442b674a oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:b61e9c7fe262da28c11cd7a0d268c9e0 oa:refinedBy _:ba703d4586563eba67a0497725b28eb2 .
+_:ba703d4586563eba67a0497725b28eb2 a oa:XPathSelector ;
 	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][5]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:a06ef4d34b157f2dd6e5374072ab733d oa:hasSelector _:bdcdb44d1cb5458ea85828cd26adebf7 .
-_:f78c175ba4279f8dc984b70c5f6423e9 oa:hasTarget _:a06ef4d34b157f2dd6e5374072ab733d .
-_:d4f2616e638d04abb3173c1dd9477e79 a oa:XPathSelector ;
+_:ecd886b15b6dddd6112c8990442b674a oa:hasSelector _:b61e9c7fe262da28c11cd7a0d268c9e0 .
+_:ed353d414101fb512c742cf8281a6930 oa:hasTarget _:ecd886b15b6dddd6112c8990442b674a .
+_:d4a48c07e9981df889c4d472d5a37cdb a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:b4471eb79b28eb8d5637c055c65aa6d0 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
-_:d4f2616e638d04abb3173c1dd9477e79 oa:refinedBy _:d58047815fd2906312a585e1d526903d .
-_:d58047815fd2906312a585e1d526903d a oa:XPathSelector ;
-	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][3]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:b4471eb79b28eb8d5637c055c65aa6d0 oa:hasSelector _:d4f2616e638d04abb3173c1dd9477e79 .
-_:fc73b8a2353f20cca8dbfb7404938d6b oa:hasTarget _:b4471eb79b28eb8d5637c055c65aa6d0 .
-_:a68dbc7449201d8f51602ef1bf7a8611 sh:resultSeverity sh:Info .
-_:ee3f2c9039967f711a54a6a0f34c9ebd sh:resultSeverity sh:Info .
-_:f78c175ba4279f8dc984b70c5f6423e9 sh:resultSeverity sh:Info .
-_:fc73b8a2353f20cca8dbfb7404938d6b sh:resultSeverity sh:Info .
-_:a68dbc7449201d8f51602ef1bf7a8611 a oa:Annotation ;
+_:a9d1c1809a55e9d544bc25dfb4423b29 oa:hasSource <../in/patient-gender-and-death-edges.xml> .
+_:d4a48c07e9981df889c4d472d5a37cdb oa:refinedBy _:df33f2d57470bcc6cc3629bafae36182 .
+_:df33f2d57470bcc6cc3629bafae36182 a oa:XPathSelector ;
+	rdf:value "*[local-name()='recordTarget' and namespace-uri()='urn:hl7-org:v3'][3]/*[local-name()='patientRole' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='patient' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='administrativeGenderCode' and namespace-uri()='urn:hl7-org:v3'][1]/@code" .
+_:a9d1c1809a55e9d544bc25dfb4423b29 oa:hasSelector _:d4a48c07e9981df889c4d472d5a37cdb .
+_:ea5c27accd3f1d99770216100aad8da1 oa:hasTarget _:a9d1c1809a55e9d544bc25dfb4423b29 .
+_:dcbd0ea1cfd69a1298e1227246a96e2 sh:resultSeverity sh:Info .
+_:be068ab80130481291cc487203e8af1c sh:resultSeverity sh:Info .
+_:ed353d414101fb512c742cf8281a6930 sh:resultSeverity sh:Info .
+_:ea5c27accd3f1d99770216100aad8da1 sh:resultSeverity sh:Info .
+_:dcbd0ea1cfd69a1298e1227246a96e2 a oa:Annotation ;
 	oa:hasBody ccda:administrativeGenderNotMapped ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "M" .
-_:ee3f2c9039967f711a54a6a0f34c9ebd a oa:Annotation ;
+_:be068ab80130481291cc487203e8af1c a oa:Annotation ;
 	oa:hasBody ccda:nullFlavorNotListed ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "XYZ" .
-_:f78c175ba4279f8dc984b70c5f6423e9 a oa:Annotation ;
+_:ed353d414101fb512c742cf8281a6930 a oa:Annotation ;
 	oa:hasBody ccda:nullFlavorNotListed ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "XYZ" .
-_:fc73b8a2353f20cca8dbfb7404938d6b a oa:Annotation ;
+_:ea5c27accd3f1d99770216100aad8da1 a oa:Annotation ;
 	oa:hasBody ccda:administrativeGenderNotMapped ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "U" .
