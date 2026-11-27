@@ -120,6 +120,7 @@
     <#statement-texts-referenced>
     <#statement-texts-written-inline>
     <#vaccine-codes-not-carried>
+    <#act-ids-wrapping-statements>
     <#section-text-partly-referenced>
     <#section-text-referenced-by-unmapped-entries>
     <#section-text-container-referenced>
@@ -1676,6 +1677,19 @@
   mf:result [
     bridge:expectedGraph <expected/vaccine-codes-not-carried.ttl> ;
     bridge:expectedFindings <findings/vaccine-codes-not-carried.ttl>
+  ] .
+
+<#act-ids-wrapping-statements> a bridge:IsomorphicConversionTest ;
+  mf:name "act-ids-wrapping-statements" ;
+  rdfs:comment "Two acts that wrap the statement of a record, each with ids the record does not take: an allergy in an act with no concern template, and a Problem Concern Act of two problems with an id of a root and an extension, a root alone, an extension alone, and one that is a nullFlavor. Each id but the last is the finding ccda:concernActId, once, at its act and not for each problem." ;
+  mf:action [
+    bridge:input <in/act-ids-wrapping-statements.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/act-ids-wrapping-statements.ttl> ;
+    bridge:expectedFindings <findings/act-ids-wrapping-statements.ttl>
   ] .
 
 <#section-text-partly-referenced> a bridge:IsomorphicConversionTest ;
