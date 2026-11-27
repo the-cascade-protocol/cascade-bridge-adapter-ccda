@@ -2,132 +2,145 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix oa: <http://www.w3.org/ns/oa#> .
-_:b31af92e2030f4798662f89d9445279d a oa:XPathSelector ;
+_:cd74570958711224c2908be261721112 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:b09f55e3ace347f3fb08e93ff2b4841a a oa:XPathSelector ;
+_:a4be2d3c486a5b756ec0a02f71014dbf a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][4]/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='consumable' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='manufacturedProduct' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='manufacturedMaterial' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='code' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:b31af92e2030f4798662f89d9445279d oa:refinedBy _:b09f55e3ace347f3fb08e93ff2b4841a .
-_:f69ebdd38d17f688cb3137a21ee21b26 a oa:Annotation ;
-	oa:hasTarget _:e84ab18915e9ab460fe237c4e6d8ffb2 .
-_:e84ab18915e9ab460fe237c4e6d8ffb2 oa:hasSource <../in/vaccine-codes-not-carried.xml> ;
-	oa:hasSelector _:b31af92e2030f4798662f89d9445279d .
-_:f69ebdd38d17f688cb3137a21ee21b26 oa:hasBody <https://www.w3.org/TR/xmlschema-2/#cvc-pattern-valid> ;
+_:cd74570958711224c2908be261721112 oa:refinedBy _:a4be2d3c486a5b756ec0a02f71014dbf .
+_:c9da8c8263733b2774bc36c869388066 a oa:Annotation ;
+	oa:hasTarget _:c69d666d57158fa3962b9dabbae03c7f .
+_:c69d666d57158fa3962b9dabbae03c7f oa:hasSource <../in/vaccine-codes-not-carried.xml> ;
+	oa:hasSelector _:cd74570958711224c2908be261721112 .
+_:c9da8c8263733b2774bc36c869388066 oa:hasBody <https://www.w3.org/TR/xmlschema-2/#cvc-pattern-valid> ;
 	oa:motivatedBy oa:classifying ;
 	sh:resultSeverity sh:Violation .
-_:cfaa0673fb5e5ff2272c605d65dd75fe a oa:XPathSelector ;
+_:d2b9d874ffb433b093639a1aa1bcf10 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:a62ab9855abd70bb4876c762afefc639 a oa:XPathSelector ;
+_:f06b0bd592e86b22b96303413a37c903 a oa:XPathSelector ;
 	rdf:value "*[local-name()='author' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:cfaa0673fb5e5ff2272c605d65dd75fe oa:refinedBy _:a62ab9855abd70bb4876c762afefc639 .
-_:a18bdc8d77df06e74314764b741ad591 a oa:Annotation ;
-	oa:hasTarget _:d5171e12859b778608a1eda03d69281e .
-_:d5171e12859b778608a1eda03d69281e oa:hasSource <../in/vaccine-codes-not-carried.xml> ;
-	oa:hasSelector _:cfaa0673fb5e5ff2272c605d65dd75fe .
-_:a18bdc8d77df06e74314764b741ad591 oa:hasBody ccda:documentAuthor ;
+_:d2b9d874ffb433b093639a1aa1bcf10 oa:refinedBy _:f06b0bd592e86b22b96303413a37c903 .
+_:f77ea71ca7aa0f410f0bc09514285ff3 a oa:Annotation ;
+	oa:hasTarget _:e88b576e168c3cf748809807a58723b .
+_:e88b576e168c3cf748809807a58723b oa:hasSource <../in/vaccine-codes-not-carried.xml> ;
+	oa:hasSelector _:d2b9d874ffb433b093639a1aa1bcf10 .
+_:f77ea71ca7aa0f410f0bc09514285ff3 oa:hasBody ccda:documentAuthor ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='author' and namespace-uri()='urn:hl7-org:v3']" ;
 	sh:resultSeverity sh:Info .
-_:e488c059e2c6947722af03c0251d3b7e a oa:XPathSelector ;
+_:cfede1c1ecde8a953f7795479577e9d9 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:fbf762d301114e626671b322b67e986e oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:e488c059e2c6947722af03c0251d3b7e oa:refinedBy _:e77af4822ed41228b009896e00f847f6 .
-_:e77af4822ed41228b009896e00f847f6 a oa:XPathSelector ;
+_:ded74574332e2c2e369ee0d8121bbec6 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:cfede1c1ecde8a953f7795479577e9d9 oa:refinedBy _:c4c023b7df2ca01efc3d75d889c4efc .
+_:c4c023b7df2ca01efc3d75d889c4efc a oa:XPathSelector ;
 	rdf:value "*[local-name()='id' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:fbf762d301114e626671b322b67e986e oa:hasSelector _:e488c059e2c6947722af03c0251d3b7e .
-_:ada8bcf582132d2aadda1de6628944bf oa:hasTarget _:fbf762d301114e626671b322b67e986e .
-_:ad25be0504a12c8091390ae0619441d9 a oa:XPathSelector ;
+_:ded74574332e2c2e369ee0d8121bbec6 oa:hasSelector _:cfede1c1ecde8a953f7795479577e9d9 .
+_:be846be7669d33bcf9f39aa851010e0a oa:hasTarget _:ded74574332e2c2e369ee0d8121bbec6 .
+_:bc1aba5d1668ef9563b9779881954c43 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:f06244895262f98775c072422de79ed8 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:ad25be0504a12c8091390ae0619441d9 oa:refinedBy _:d6f169ee2d99d53bcb20e044324e2a4d .
-_:d6f169ee2d99d53bcb20e044324e2a4d a oa:XPathSelector ;
+_:e21b03dbace4b8a2cff457f414eb82c9 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:bc1aba5d1668ef9563b9779881954c43 oa:refinedBy _:fa2fafccf87b8e1e3b161db126ca921f .
+_:fa2fafccf87b8e1e3b161db126ca921f a oa:XPathSelector ;
 	rdf:value "*[local-name()='code' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:f06244895262f98775c072422de79ed8 oa:hasSelector _:ad25be0504a12c8091390ae0619441d9 .
-_:c861469e1fdff9ae53dbb1279a34e140 oa:hasTarget _:f06244895262f98775c072422de79ed8 .
-_:abcc800fc625436679078652fe92a85 a oa:XPathSelector ;
+_:e21b03dbace4b8a2cff457f414eb82c9 oa:hasSelector _:bc1aba5d1668ef9563b9779881954c43 .
+_:a0af617f95f5a85679795455f958d143 oa:hasTarget _:e21b03dbace4b8a2cff457f414eb82c9 .
+_:caccdb3abe9f4d9195531ad2a9e8067e a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:f35d03ba3dba7166beed7748b4dc5e40 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:abcc800fc625436679078652fe92a85 oa:refinedBy _:b68457922aba49e8c183718620be3dc6 .
-_:b68457922aba49e8c183718620be3dc6 a oa:XPathSelector ;
+_:b271f6cd3da1bef6c6f3b75c98e0eba6 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:caccdb3abe9f4d9195531ad2a9e8067e oa:refinedBy _:a7766d499be60893ec3d589fabf6d75f .
+_:a7766d499be60893ec3d589fabf6d75f a oa:XPathSelector ;
 	rdf:value "*[local-name()='effectiveTime' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:f35d03ba3dba7166beed7748b4dc5e40 oa:hasSelector _:abcc800fc625436679078652fe92a85 .
-_:eae06729f2ea330952eab764271de1e1 oa:hasTarget _:f35d03ba3dba7166beed7748b4dc5e40 .
-_:ada8bcf582132d2aadda1de6628944bf sh:resultSeverity sh:Info .
-_:c861469e1fdff9ae53dbb1279a34e140 sh:resultSeverity sh:Info .
-_:eae06729f2ea330952eab764271de1e1 sh:resultSeverity sh:Info .
-_:ada8bcf582132d2aadda1de6628944bf a oa:Annotation ;
+_:b271f6cd3da1bef6c6f3b75c98e0eba6 oa:hasSelector _:caccdb3abe9f4d9195531ad2a9e8067e .
+_:f79b2ab2e5899b4352d806cc1af5068f oa:hasTarget _:b271f6cd3da1bef6c6f3b75c98e0eba6 .
+_:be846be7669d33bcf9f39aa851010e0a sh:resultSeverity sh:Info .
+_:a0af617f95f5a85679795455f958d143 sh:resultSeverity sh:Info .
+_:f79b2ab2e5899b4352d806cc1af5068f sh:resultSeverity sh:Info .
+_:be846be7669d33bcf9f39aa851010e0a a oa:Annotation ;
 	oa:hasBody ccda:documentId ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "2.16.840.1.113883.19.5.99999.1|CCD-2026-1126-B" .
-_:c861469e1fdff9ae53dbb1279a34e140 a oa:Annotation ;
+_:a0af617f95f5a85679795455f958d143 a oa:Annotation ;
 	oa:hasBody ccda:documentType ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "34133-9" .
-_:eae06729f2ea330952eab764271de1e1 a oa:Annotation ;
+_:f79b2ab2e5899b4352d806cc1af5068f a oa:Annotation ;
 	oa:hasBody ccda:documentTime ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "20261126090000-0500" .
-_:e1eb949c2f3dcc77597797ed394147 a oa:XPathSelector ;
+_:cb72c242180b0f76306334b0c9b985f0 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:c05db77cf691bbec3e32c3eed4b330a1 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:e1eb949c2f3dcc77597797ed394147 oa:refinedBy _:d30214a196e18b0b661bcf52bb31492 .
-_:d30214a196e18b0b661bcf52bb31492 a oa:XPathSelector ;
+_:b63c26d01225622cea955dc5152c3e78 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:cb72c242180b0f76306334b0c9b985f0 oa:refinedBy _:bd20d7fb37938967d9a569c2b5ea6c12 .
+_:bd20d7fb37938967d9a569c2b5ea6c12 a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][5]/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:c05db77cf691bbec3e32c3eed4b330a1 oa:hasSelector _:e1eb949c2f3dcc77597797ed394147 .
-_:b3514a7cae3081ef32ab830b9bde11f oa:hasTarget _:c05db77cf691bbec3e32c3eed4b330a1 .
-_:c544faa9b534416c9df34b88bf28c63c a oa:XPathSelector ;
+_:b63c26d01225622cea955dc5152c3e78 oa:hasSelector _:cb72c242180b0f76306334b0c9b985f0 .
+_:aac65978197e1304ec8f4c6158d42ac1 oa:hasTarget _:b63c26d01225622cea955dc5152c3e78 .
+_:b52e57c95dee424adc0a08499980240e a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:cc7d522937973c7a09ae5242569517c4 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:c544faa9b534416c9df34b88bf28c63c oa:refinedBy _:dce73529a57e87a0aa4009b7ac40d965 .
-_:dce73529a57e87a0aa4009b7ac40d965 a oa:XPathSelector ;
+_:fa08c9f29b162da3b876e8b51f62b96f oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:b52e57c95dee424adc0a08499980240e oa:refinedBy _:aa7eab6c9eea8c6a34bcf8e6260dd6c4 .
+_:aa7eab6c9eea8c6a34bcf8e6260dd6c4 a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][4]/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:cc7d522937973c7a09ae5242569517c4 oa:hasSelector _:c544faa9b534416c9df34b88bf28c63c .
-_:e9bde3f41e7fdd72298b8b7c3206aede oa:hasTarget _:cc7d522937973c7a09ae5242569517c4 .
-_:fe2f256c3193574f9de3590900884d8d a oa:XPathSelector ;
+_:fa08c9f29b162da3b876e8b51f62b96f oa:hasSelector _:b52e57c95dee424adc0a08499980240e .
+_:decf7a6ce624db177da88ba1e9602e8d oa:hasTarget _:fa08c9f29b162da3b876e8b51f62b96f .
+_:da7a6385ca1606d0a61c583e8377ded8 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:ac6e16d7ff22e7f2257a4f92859d44fb oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:fe2f256c3193574f9de3590900884d8d oa:refinedBy _:c8e2772a281851df016980c24aafba10 .
-_:c8e2772a281851df016980c24aafba10 a oa:XPathSelector ;
+_:cefd975a348137afffa33516f89b17b8 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:da7a6385ca1606d0a61c583e8377ded8 oa:refinedBy _:b045c984ca6cbf291109505ff56ab4ec .
+_:b045c984ca6cbf291109505ff56ab4ec a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][3]/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:ac6e16d7ff22e7f2257a4f92859d44fb oa:hasSelector _:fe2f256c3193574f9de3590900884d8d .
-_:d9da968a29e864a58737201baea8f6e1 oa:hasTarget _:ac6e16d7ff22e7f2257a4f92859d44fb .
-_:a3f4e21555b7b4d020d0bfb821d36c7 a oa:XPathSelector ;
+_:cefd975a348137afffa33516f89b17b8 oa:hasSelector _:da7a6385ca1606d0a61c583e8377ded8 .
+_:e4814c0491101fb41774d41f9630025f oa:hasTarget _:cefd975a348137afffa33516f89b17b8 .
+_:edd2be3935b53348a920a62cb93f4436 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:a3e185ee101cf4d5e8b5fabddf4810d3 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:a3f4e21555b7b4d020d0bfb821d36c7 oa:refinedBy _:d2f359247a4f654cb0aaf4d9bdeb6216 .
-_:d2f359247a4f654cb0aaf4d9bdeb6216 a oa:XPathSelector ;
+_:d141791de1df88d5a3984906f9597e2f oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:edd2be3935b53348a920a62cb93f4436 oa:refinedBy _:f10eaa91aa49d175d47260c13aa32179 .
+_:f10eaa91aa49d175d47260c13aa32179 a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][2]/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:a3e185ee101cf4d5e8b5fabddf4810d3 oa:hasSelector _:a3f4e21555b7b4d020d0bfb821d36c7 .
-_:eaecf29e0bd53165e58d8a379b7cf559 oa:hasTarget _:a3e185ee101cf4d5e8b5fabddf4810d3 .
-_:aec4bab56980f48a4caf8fcad5f757bf a oa:XPathSelector ;
+_:d141791de1df88d5a3984906f9597e2f oa:hasSelector _:edd2be3935b53348a920a62cb93f4436 .
+_:c0285661ff352c0d8c748e995d397db4 oa:hasTarget _:d141791de1df88d5a3984906f9597e2f .
+_:b863a3e504584673dac1c58f78738991 a oa:XPathSelector ;
 	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
-_:ecf1a2291ec5c3d5587e2f149747d5d3 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
-_:aec4bab56980f48a4caf8fcad5f757bf oa:refinedBy _:c06576c51307cfc4701d43dcf00c47a3 .
-_:c06576c51307cfc4701d43dcf00c47a3 a oa:XPathSelector ;
+_:dcf9136426d1cf38f34e6cdc108837cd oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:b863a3e504584673dac1c58f78738991 oa:refinedBy _:b8ffd26389b05d846381e5ce198c5b1e .
+_:b8ffd26389b05d846381e5ce198c5b1e a oa:XPathSelector ;
 	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='entry' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='substanceAdministration' and namespace-uri()='urn:hl7-org:v3'][1]" .
-_:ecf1a2291ec5c3d5587e2f149747d5d3 oa:hasSelector _:aec4bab56980f48a4caf8fcad5f757bf .
-_:c97ea02923136477bb36a7f4d07bd943 oa:hasTarget _:ecf1a2291ec5c3d5587e2f149747d5d3 .
-_:b3514a7cae3081ef32ab830b9bde11f sh:resultSeverity sh:Info .
-_:e9bde3f41e7fdd72298b8b7c3206aede sh:resultSeverity sh:Info .
-_:d9da968a29e864a58737201baea8f6e1 sh:resultSeverity sh:Info .
-_:eaecf29e0bd53165e58d8a379b7cf559 sh:resultSeverity sh:Info .
-_:c97ea02923136477bb36a7f4d07bd943 sh:resultSeverity sh:Info .
-_:b3514a7cae3081ef32ab830b9bde11f a oa:Annotation ;
+_:dcf9136426d1cf38f34e6cdc108837cd oa:hasSelector _:b863a3e504584673dac1c58f78738991 .
+_:c793587294472ce5568b9cb362f1d583 oa:hasTarget _:dcf9136426d1cf38f34e6cdc108837cd .
+_:aac65978197e1304ec8f4c6158d42ac1 sh:resultSeverity sh:Info .
+_:decf7a6ce624db177da88ba1e9602e8d sh:resultSeverity sh:Info .
+_:e4814c0491101fb41774d41f9630025f sh:resultSeverity sh:Info .
+_:c0285661ff352c0d8c748e995d397db4 sh:resultSeverity sh:Info .
+_:c793587294472ce5568b9cb362f1d583 sh:resultSeverity sh:Info .
+_:aac65978197e1304ec8f4c6158d42ac1 a oa:Annotation ;
 	oa:hasBody ccda:codeNotCarried ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "A-133" .
-_:e9bde3f41e7fdd72298b8b7c3206aede a oa:Annotation ;
+_:decf7a6ce624db177da88ba1e9602e8d a oa:Annotation ;
 	oa:hasBody ccda:codeNotCarried ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "2.16.840.1.113883.12.292" .
-_:d9da968a29e864a58737201baea8f6e1 a oa:Annotation ;
+_:e4814c0491101fb41774d41f9630025f a oa:Annotation ;
 	oa:hasBody ccda:codeNotCarried ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "2.16.840.1.113883.12.292" .
-_:eaecf29e0bd53165e58d8a379b7cf559 a oa:Annotation ;
+_:c0285661ff352c0d8c748e995d397db4 a oa:Annotation ;
 	oa:hasBody ccda:codeNotCarried ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "CVX" .
-_:c97ea02923136477bb36a7f4d07bd943 a oa:Annotation ;
+_:c793587294472ce5568b9cb362f1d583 a oa:Annotation ;
 	oa:hasBody ccda:codeNotCarried ;
 	oa:motivatedBy oa:classifying ;
 	sh:value "141" .
+_:d829664d9cfc8aed9002eaf3b060f528 a oa:XPathSelector ;
+	rdf:value "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']" .
+_:d3a5e0e9716f839ba2fefbcd76eb6bd4 oa:hasSource <../in/vaccine-codes-not-carried.xml> .
+_:d829664d9cfc8aed9002eaf3b060f528 oa:refinedBy _:cfcfea04609df935c6e3e4007e55f892 .
+_:cfcfea04609df935c6e3e4007e55f892 a oa:XPathSelector ;
+	rdf:value "*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3'][1]/*[local-name()='title' and namespace-uri()='urn:hl7-org:v3'][1]" .
+_:d3a5e0e9716f839ba2fefbcd76eb6bd4 oa:hasSelector _:d829664d9cfc8aed9002eaf3b060f528 .
+_:e311ebba7ac9ad52b23e4fe51651afc7 oa:hasTarget _:d3a5e0e9716f839ba2fefbcd76eb6bd4 ;
+	sh:resultSeverity sh:Info ;
+	a oa:Annotation ;
+	oa:hasBody ccda:sectionTitleNotCarried ;
+	oa:motivatedBy oa:classifying ;
+	sh:value "Immunizations" .
