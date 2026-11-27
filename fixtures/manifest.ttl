@@ -137,6 +137,8 @@
     <#unstructured-document-header-partly-stated>
     <#section-text-referenced-by-untemplated-result>
     <#section-text-referenced-in-a-header-row>
+    <#report-status-not-mapped>
+    <#display-names-beside-carried-codes>
   ) .
 
 <#allergies-section> a bridge:IsomorphicConversionTest ;
@@ -1912,4 +1914,30 @@
   mf:result [
     bridge:expectedGraph <expected/entries-among-comments-and-stray-text.ttl> ;
     bridge:expectedFindings <findings/entries-among-comments-and-stray-text.ttl>
+  ] .
+
+<#report-status-not-mapped> a bridge:IsomorphicConversionTest ;
+  mf:name "report-status-not-mapped" ;
+  rdfs:comment "Three Result Organizers whose statusCode is completed, active and aborted. Only completed is in the concept map of report statuses, so the others carry no workflowStatus and each is reported as ccda:reportStatusNotMapped at its statusCode, valued as written; the results inside them are carried." ;
+  mf:action [
+    bridge:input <in/report-status-not-mapped.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/report-status-not-mapped.ttl> ;
+    bridge:expectedFindings <findings/report-status-not-mapped.ttl>
+  ] .
+
+<#display-names-beside-carried-codes> a bridge:IsomorphicConversionTest ;
+  mf:name "display-names-beside-carried-codes" ;
+  rdfs:comment "Display names beside status, criticality, severity and problem status codes the concept maps hold. A name that is the code's label, whatever its case or padding, is not reported: ' ACTIVE ' beside 55561003, 'High criticality' beside CRITH, 'Resolved' beside 413322009. A name that is not the code's label is ccda:observationValueDisplayNameNotCarried at the displayName: 'Mild' beside the severity 6736007 and 'Dormant' beside the problem status 73425007." ;
+  mf:action [
+    bridge:input <in/display-names-beside-carried-codes.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/display-names-beside-carried-codes.ttl> ;
+    bridge:expectedFindings <findings/display-names-beside-carried-codes.ttl>
   ] .
