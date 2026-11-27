@@ -119,6 +119,7 @@
     <#results-report-beside-referenced-rows>
     <#statement-texts-referenced>
     <#statement-texts-written-inline>
+    <#vaccine-codes-not-carried>
     <#section-text-partly-referenced>
     <#section-text-referenced-by-unmapped-entries>
     <#section-text-container-referenced>
@@ -1662,6 +1663,19 @@
   mf:result [
     bridge:expectedGraph <expected/statement-texts-written-inline.ttl> ;
     bridge:expectedFindings <findings/statement-texts-written-inline.ttl>
+  ] .
+
+<#vaccine-codes-not-carried> a bridge:IsomorphicConversionTest ;
+  mf:name "vaccine-codes-not-carried" ;
+  rdfs:comment "Five immunizations whose vaccine code is malformed, each reported as ccda:codeNotCarried and none carried: a code with no code system, a code system that is no OID, a code system with no code, a code of blanks, and a translation with no code system beside a CVX code, which is carried." ;
+  mf:action [
+    bridge:input <in/vaccine-codes-not-carried.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/vaccine-codes-not-carried.ttl> ;
+    bridge:expectedFindings <findings/vaccine-codes-not-carried.ttl>
   ] .
 
 <#section-text-partly-referenced> a bridge:IsomorphicConversionTest ;
