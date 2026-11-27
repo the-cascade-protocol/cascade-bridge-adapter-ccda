@@ -421,7 +421,9 @@ table's header. A text with no visible character is none. A `text` that holds no
 the `cascade:narrativeText` in the same way; a `text` that holds a `reference` is read through it alone.
 
 What no entry references is a section's **kept text**, its note's text, so a section makes a note whatever its
-template and entries, and none only when its kept text is empty or it has a `nullFlavor`. Its blocks are the nodes
+template and entries, and none only when its kept text is empty or it has a `nullFlavor`; a section's title is only
+its note's, so one that makes none, and is not `ccda:sectionNotMapped`, carries its title nowhere, the finding
+`ccda:sectionTitleNotCarried` at the title. Its blocks are the nodes
 of its `text` at and under which no element is referenced, whose parent is the `text` or a referenced container:
 `text`, `table`, `thead`, `tbody`, `tfoot` and `list` are containers, and every other element, a paragraph, an item, a
 row, a caption, is kept or dropped whole, so a row an entry references only for a name leaves with its other cells.

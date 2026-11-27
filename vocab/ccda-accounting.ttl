@@ -2413,8 +2413,9 @@
 
 [] a bridge:PathEntry ;
   bridge:sourcePath "/*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='structuredBody' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='component' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='section' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='title' and namespace-uri()='urn:hl7-org:v3']" ;
-  bridge:verdict bridge:carried ;
+  bridge:verdict bridge:carriedInPart ;
   bridge:concern bridge:concernText ;
+  bridge:namesGap ccda:sectionTitleNotCarried ;
   bridge:carriedAs
     [ bridge:inRecordClass cascade:ClinicalNoteOrDocument ; bridge:asProperty cascade:noteOrDocumentTitle ] .
 

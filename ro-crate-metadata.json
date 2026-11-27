@@ -1694,12 +1694,12 @@
     {
       "@id": "in/sparql/section-findings.rq",
       "@type": "File",
-      "name": "Findings: sections not mapped",
+      "name": "Findings: sections not mapped, and titles not carried",
       "encodingFormat": "application/sparql-query",
       "license": {
         "@id": "https://spdx.org/licenses/Apache-2.0"
       },
-      "description": "Each section whose templateIds name none this release maps, valued by its code."
+      "description": "Each section whose templateIds name none this release maps and from which no record is made, valued by its code, and the title of each carried section that makes no note, valued by its text."
     },
     {
       "@id": "in/sparql/entry-findings.rq",

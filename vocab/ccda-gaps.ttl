@@ -12,6 +12,11 @@ ccda:sectionNotMapped a skos:Concept ;
   skos:broader bridge:valueNotMapped ;
   sh:resultSeverity sh:Warning .
 
+ccda:sectionTitleNotCarried a skos:Concept ;
+  skos:prefLabel "A section's title is carried only as the title of the note the section makes, so a section that makes no note, because its entries reference all of its text or it states none, carries its title nowhere."@en ;
+  skos:inScheme ccda:gaps ;
+  skos:broader bridge:carriedWithLoss .
+
 ccda:entryNotMapped a skos:Concept ;
   skos:prefLabel "An entry of a mapped section holds no statement this release of the adapter reads, where it reads one, and nothing in it is carried."@en ;
   skos:inScheme ccda:gaps ;
