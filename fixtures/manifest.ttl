@@ -118,6 +118,7 @@
     <#narrative-breaks-in-blocks>
     <#results-report-beside-referenced-rows>
     <#statement-texts-referenced>
+    <#statement-texts-written-inline>
     <#section-text-partly-referenced>
     <#section-text-referenced-by-unmapped-entries>
     <#section-text-container-referenced>
@@ -1648,6 +1649,19 @@
   mf:result [
     bridge:expectedGraph <expected/statement-texts-referenced.ttl> ;
     bridge:expectedFindings <findings/statement-texts-referenced.ttl>
+  ] .
+
+<#statement-texts-written-inline> a bridge:IsomorphicConversionTest ;
+  mf:name "statement-texts-written-inline" ;
+  rdfs:comment "An immunization, an allergy, a problem, a medication, a procedure, a lab result and a report, each stating its text in the element itself, with no reference to the narrative: each carries it as its narrative text, as a referenced text is, and a second immunization whose text is a space carries none; no section states a text, so none makes a note." ;
+  mf:action [
+    bridge:input <in/statement-texts-written-inline.xml> ;
+    bridge:envelope <../ro-crate-metadata.json#envelope-document> ;
+    bridge:facts <facts/portal-download.ttl>
+  ] ;
+  mf:result [
+    bridge:expectedGraph <expected/statement-texts-written-inline.ttl> ;
+    bridge:expectedFindings <findings/statement-texts-written-inline.ttl>
   ] .
 
 <#section-text-partly-referenced> a bridge:IsomorphicConversionTest ;
