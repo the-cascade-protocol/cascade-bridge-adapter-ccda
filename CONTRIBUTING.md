@@ -23,12 +23,116 @@ cd cascade-bridge-adapter-ccda
 The checks are the specification's, and they run in CI. To run the adapter lint yourself you need Python 3.12 and a
 checkout of [cascade-bridge-spec](https://github.com/the-cascade-protocol/cascade-bridge-spec);
 [`adapter/validation.md`](https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/main/adapter/validation.md) there gives
-the command and says what it checks. Running a mapping over a fixture is a Bridge's job: the one that must pass is
-named in [`compatibility.json`](compatibility.json), and CI runs it.
+the command and says what it checks. Running a mapping over a fixture is a Bridge's job: the Bridges that must pass are
+named in [`compatibility.json`](compatibility.json), and CI runs them. [Run a Bridge](#run-a-bridge) below does the same on
+your machine.
 
 The naming rules in `in/sparql/` are copied from cascade-vocabulary, so some checks read it as a sibling folder: clone
 [cascade-vocabulary](https://github.com/the-cascade-protocol/cascade-vocabulary) beside this repository, as
 [`in/CLAUDE.md`](in/CLAUDE.md) says the compatibility check does.
+
+## Run a Bridge
+
+A Bridge converts a document, judges the fixtures and surveys a folder. [cascade-bridge-rs](https://github.com/the-cascade-protocol/cascade-bridge-rs)
+is the first `compatibility.json` names, and every merge to it publishes a build as a `build-<commit>` release. Its Node
+host runs the same on Linux, macOS and Windows, with no Docker and no Rust. You need Node 24 or newer and the
+[GitHub CLI](https://cli.github.com/) signed in (`gh auth login`). In a POSIX shell (Git Bash on Windows), in the folder
+that holds your clone:
+
+```sh
+mkdir bridge && cd bridge && git init -q
+tag=$(gh release list -R the-cascade-protocol/cascade-bridge-rs -L 1 --json tagName -q '.[0].tagName')
+git fetch -q --depth 1 https://github.com/the-cascade-protocol/cascade-bridge-rs "${tag#build-}"
+git checkout -q FETCH_HEAD
+gh release download "$tag" -R the-cascade-protocol/cascade-bridge-rs -p cascade-bridge.tgz
+mkdir -p package/dist && tar -xzf cascade-bridge.tgz --strip-components=1 -C package/dist
+bridge_dir=$(pwd -W 2>/dev/null || pwd)
+bridge() { node "$bridge_dir/hosts/node/cascade-bridge.mjs" "$@"; }
+cd ..
+```
+
+The host is read from the commit the build was made from, so the two always match. `bridge` is a shell function, so it
+lasts for the shell: define it again in a new one, and repeat the steps to take a newer build. `bridge` alone prints the
+usage. The release also holds
+`cascade-bridge-x86_64-unknown-linux-gnu`, the executable CI runs, which takes the same arguments.
+
+## Run the tests
+
+`test` needs [cascade-vocabulary](https://github.com/the-cascade-protocol/cascade-vocabulary) checked out beside this
+repository, at `main` unless your change waits on a pull request there:
+
+```sh
+git clone --depth 1 https://github.com/the-cascade-protocol/cascade-vocabulary.git
+cd cascade-bridge-adapter-ccda
+bridge test . --vocabularies ../cascade-vocabulary
+```
+
+It prints a line for each case, `passed` or `failed` with what differs, and ends with a count: `133 passed`, or, as an
+example of a run where cases fail, `3 failed, 130 passed`. It takes seconds, and exits 1 when a case failed.
+
+`test` runs every case; none can be named. To read one, convert its input as its entry in
+[`fixtures/manifest.ttl`](fixtures/manifest.ttl) names it (`bridge:input`, `bridge:facts`, and `bridge:envelope` from the
+`#` on), and put the result beside the entry's `bridge:expectedGraph` and `bridge:expectedFindings`:
+
+```sh
+bridge convert . fixtures/in/allergies-section.xml --envelope '#envelope-document' \
+  --facts fixtures/facts/portal-download.ttl --vocabularies ../cascade-vocabulary \
+  --out ../one.ttl --findings ../one-findings.ttl
+```
+
+The expected files are compared as graphs, so a text diff of the output with `fixtures/expected/allergies-section.ttl`
+can differ in the order of triples and the labels of blank nodes, and `test` is the judge.
+
+## Survey real documents
+
+`survey` reads a folder of real documents against [`vocab/ccda-accounting.ttl`](vocab/ccda-accounting.ttl) and lists what
+the documents hold that the accounting has not settled, most common first. It converts nothing and needs no vocabulary.
+The specification's [`survey`](https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/main/engine/command.md#survey)
+section says what it reads and the columns of `--tsv`.
+
+**Never commit real exports, and never paste their contents into an issue.** Use exports of your own, or documents you
+may read.
+
+```sh
+bridge survey . ~/my-exports --tsv ../survey.tsv
+```
+
+A row of the survey is paths and counts, which can be quoted. Only the files directly in the folder are read. A C-CDA
+adapter has no record kinds, so each list is one group, and a path is an XPath, long enough that the `--tsv` file is
+easier to read than the screen. `--under <path>` keeps a place and the places below it. At the time of writing, over
+this repository's own `fixtures/in` it prints something like this (counts will differ; cut):
+
+```
+Documents  115 read, 0 not read, 115 record(s)
+
+Never decided: 0 path(s) no entry of the accounting covers
+
+No term yet: 82 path(s) whose entry says no Cascade term carries them
+       115       115  /*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='code' and namespace-uri()='urn:hl7-org:v3']  gap ccda:documentType (carried in part)
+       115       115  /*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='effectiveTime' and namespace-uri()='urn:hl7-org:v3']  gap ccda:documentTime (carried in part)
+...
+Left out on purpose: 302 path(s) whose entry says they are not carried
+  because The document's CDA type, realm, language and confidentiality, which describe the document, not the patient.
+         115       115  /*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='confidentialityCode' and namespace-uri()='urn:hl7-org:v3']
+         115       115  /*[local-name()='ClinicalDocument' and namespace-uri()='urn:hl7-org:v3']/*[local-name()='confidentialityCode' and namespace-uri()='urn:hl7-org:v3']/@code
+...
+Not read: 0 document(s)
+```
+
+The first number of a row is how many documents hold the place, the second how many times it occurs. A file that cannot
+be read is listed under `Not read` with its reason, such as `the file is empty`. What to do with a row:
+
+- **Never decided**: no entry stands for the place. Add one to `vocab/ccda-accounting.ttl` beside its neighbours, with the
+  verdict the documents call for.
+- **No term yet**: the entry says no Cascade term carries the place, and names the gap. The top row is the next candidate
+  for a term. Open an issue in [cascade-vocabulary](https://github.com/the-cascade-protocol/cascade-vocabulary/issues)
+  naming the gap, the place and a made-up example value, with the row.
+- **Left out on purpose**: read its reason against what your documents hold. If they show the reason is wrong, say so in
+  an issue here.
+
+When the vocabulary has the term, write the mapping in `in/sparql/`, change the entry to `bridge:carried` with its
+`bridge:carriedAs`, and add a test input that holds the place
+([`fixtures/CLAUDE.md`](fixtures/CLAUDE.md) says how an input is added). Survey again: the place is no longer listed.
 
 ## What a pull request must pass
 
