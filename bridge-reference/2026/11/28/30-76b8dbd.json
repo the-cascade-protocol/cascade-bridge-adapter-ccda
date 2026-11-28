@@ -1,0 +1,57 @@
+{
+  "env": {
+    "os": "Ubuntu 26.04.1 LTS",
+    "runner": "github-hosted",
+    "cpus": 4,
+    "node": "24.22.3",
+    "host": "node",
+    "profile": "wasm",
+    "cpu": "AMD EPYC 9V74 80-Core Processor"
+  },
+  "commit": {
+    "cascade-bridge-adapter-ccda": "76b8dbdee931cff6a98bb7bc3f0d982a421e3ce8",
+    "cascade-vocabulary": "287ca13fc7aa6b5a529ac76d3f69f35371afceaa",
+    "cascade-bridge-rs": "40f6e1af7ff2d7a67d71a47daa687a8e051c0f5c"
+  },
+  "results": [
+    {
+      "name": "ccda-entries-x10/output/graph",
+      "unit": "{count}",
+      "value": 1926,
+      "kind": "output",
+      "sha256": "ad5fa27c4fe8b29ebed8c8892c3bf3df74f202365f5e14dca5a7981d130dfc16",
+      "extra": "Distinct triples in the output graph, with a SHA-256 fingerprint of the output that is the same whenever the content is the same, whatever order the engine wrote it in and whatever it named its blank nodes."
+    },
+    {
+      "name": "ccda-entries-x10/output/findings",
+      "unit": "{count}",
+      "value": 1210,
+      "kind": "output",
+      "sha256": "3b6e7f1b6a87ec74dda929c9041172baf79847c922c838c2ff6c2a6596c521f2",
+      "extra": "Distinct triples in the findings, with a SHA-256 fingerprint of them that is the same whenever the content is the same, whatever order the engine wrote them in and whatever it named its blank nodes."
+    },
+    {
+      "name": "ccda-entries-x50/output/graph",
+      "unit": "{count}",
+      "value": 9126,
+      "kind": "output",
+      "sha256": "139d803f26e008902033b2b0e3393b1c53073557b209e9222053dbf3e93d0bfc",
+      "extra": "Distinct triples in the output graph, with a SHA-256 fingerprint of the output that is the same whenever the content is the same, whatever order the engine wrote it in and whatever it named its blank nodes."
+    },
+    {
+      "name": "ccda-entries-x50/output/findings",
+      "unit": "{count}",
+      "value": 5890,
+      "kind": "output",
+      "sha256": "90311d6a2e9e4139dadf767c0f783c38ebf6cbb89a73489baddce2e40e2dbdd5",
+      "extra": "Distinct triples in the findings, with a SHA-256 fingerprint of them that is the same whenever the content is the same, whatever order the engine wrote them in and whatever it named its blank nodes."
+    },
+    {
+      "name": "ccda-synthea-10y/timeout/convert",
+      "unit": "s",
+      "value": 3600,
+      "kind": "output",
+      "extra": "The input did not finish in its time limit, in the phase named; the value is the limit in seconds."
+    }
+  ]
+}
