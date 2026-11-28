@@ -23,8 +23,8 @@ cd cascade-bridge-adapter-ccda
 The checks are the specification's, and they run in CI. To run the adapter lint yourself you need Python 3.12 and a
 checkout of [cascade-bridge-spec](https://github.com/the-cascade-protocol/cascade-bridge-spec);
 [`adapter/validation.md`](https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/main/adapter/validation.md) there gives
-the command and says what it checks. Running a mapping over a fixture is a Bridge's job: the one that must pass is
-named in [`compatibility.json`](compatibility.json), and CI runs it. [Run a Bridge](#run-a-bridge) below does the same on
+the command and says what it checks. Running a mapping over a fixture is a Bridge's job: the Bridges that must pass are
+named in [`compatibility.json`](compatibility.json), and CI runs them. [Run a Bridge](#run-a-bridge) below does the same on
 your machine.
 
 The naming rules in `in/sparql/` are copied from cascade-vocabulary, so some checks read it as a sibling folder: clone
@@ -46,33 +46,36 @@ git fetch -q --depth 1 https://github.com/the-cascade-protocol/cascade-bridge-rs
 git checkout -q FETCH_HEAD
 gh release download "$tag" -R the-cascade-protocol/cascade-bridge-rs -p cascade-bridge.tgz
 mkdir -p package/dist && tar -xzf cascade-bridge.tgz --strip-components=1 -C package/dist
-export BRIDGE="node $PWD/hosts/node/cascade-bridge.mjs"
+bridge_dir=$(pwd -W 2>/dev/null || pwd)
+bridge() { node "$bridge_dir/hosts/node/cascade-bridge.mjs" "$@"; }
 cd ..
 ```
 
-The host is read from the commit the build was made from, so the two always match. `BRIDGE` lasts for the shell: set it
-again in a new one, and repeat the steps to take a newer build. `$BRIDGE` alone prints the usage. The release also holds
+The host is read from the commit the build was made from, so the two always match. `bridge` is a shell function, so it
+lasts for the shell: define it again in a new one, and repeat the steps to take a newer build. `bridge` alone prints the
+usage. The release also holds
 `cascade-bridge-x86_64-unknown-linux-gnu`, the executable CI runs, which takes the same arguments.
 
 ## Run the tests
 
-With cascade-vocabulary cloned beside this repository (above), at `main` unless your change waits on a pull request
-there:
+`test` needs [cascade-vocabulary](https://github.com/the-cascade-protocol/cascade-vocabulary) checked out beside this
+repository, at `main` unless your change waits on a pull request there:
 
 ```sh
+git clone --depth 1 https://github.com/the-cascade-protocol/cascade-vocabulary.git
 cd cascade-bridge-adapter-ccda
-$BRIDGE test . --vocabularies ../cascade-vocabulary
+bridge test . --vocabularies ../cascade-vocabulary
 ```
 
-It prints a line for each case, `passed` or `failed` with what differs, and ends with a count such as `3 failed, 130
-passed`. It takes seconds, and exits 1 when a case failed.
+It prints a line for each case, `passed` or `failed` with what differs, and ends with a count: `133 passed`, or, as an
+example of a run where cases fail, `3 failed, 130 passed`. It takes seconds, and exits 1 when a case failed.
 
 `test` runs every case; none can be named. To read one, convert its input as its entry in
 [`fixtures/manifest.ttl`](fixtures/manifest.ttl) names it (`bridge:input`, `bridge:facts`, and `bridge:envelope` from the
 `#` on), and put the result beside the entry's `bridge:expectedGraph` and `bridge:expectedFindings`:
 
 ```sh
-$BRIDGE convert . fixtures/in/allergies-section.xml --envelope '#envelope-document' \
+bridge convert . fixtures/in/allergies-section.xml --envelope '#envelope-document' \
   --facts fixtures/facts/portal-download.ttl --vocabularies ../cascade-vocabulary \
   --out ../one.ttl --findings ../one-findings.ttl
 ```
@@ -87,15 +90,17 @@ the documents hold that the accounting has not settled, most common first. It co
 The specification's [`survey`](https://github.com/the-cascade-protocol/cascade-bridge-spec/blob/main/engine/command.md#survey)
 section says what it reads and the columns of `--tsv`.
 
+**Never commit real exports, and never paste their contents into an issue.** Use exports of your own, or documents you
+may read.
+
 ```sh
-$BRIDGE survey . ~/my-exports --tsv ../survey.tsv
+bridge survey . ~/my-exports --tsv ../survey.tsv
 ```
 
-Use exports of your own, or documents you may read. Never commit them, and never paste their contents into an issue: a
-row of the survey is paths and counts, which can be quoted. Only the files directly in the folder are read. A C-CDA
+A row of the survey is paths and counts, which can be quoted. Only the files directly in the folder are read. A C-CDA
 adapter has no record kinds, so each list is one group, and a path is an XPath, long enough that the `--tsv` file is
-easier to read than the screen. `--under <path>` keeps a place and the places below it. Over this repository's own
-`fixtures/in` it prints (cut):
+easier to read than the screen. `--under <path>` keeps a place and the places below it. At the time of writing, over
+this repository's own `fixtures/in` it prints something like this (counts will differ; cut):
 
 ```
 Documents  115 read, 0 not read, 115 record(s)
